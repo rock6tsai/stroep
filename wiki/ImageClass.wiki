@@ -1,0 +1,42 @@
+= Documentation Image Class =
+===nl.stroep.utils.Image===
+
+Easily create an image without taking care of loaders and URLRequest etc.
+Most simple usage of the Image class:
+
+*Usage*
+{{{
+import nl.stroep.utils.Image
+
+var myImage:Image = new Image("myImage.jpg");
+this.addChild(myImage);
+ 
+}}}
+
+You can also add the most common eventListeners to the image:
+
+*Usage*
+{{{
+import nl.stroep.utils.Image
+
+var myImage:Image = new Image("myImage.jpg");
+this.addChild(myImage);
+
+myImage.addEventListener(Event.COMPLETE, onImageLoaded );
+myImage.addEventListener(IOErrorEvent.IO_ERROR, onImageError );
+myImage.addEventListener(ProgressEvent.PROGRESS, onImageLoading );
+
+function onImageLoaded (e:Event):void {
+   trace("image loaded!");
+}
+
+function onImageError (e:IOErrorEvent):void {
+   trace("image error", e.text);
+}
+
+function onImageLoading (e:ProgressEvent):void {
+   trace("loading image.. bytesLoaded=" + e.bytesLoaded + " bytesTotal=" + e.bytesTotal );
+}
+}}}
+
+_AS3 only_
