@@ -10,11 +10,28 @@ import nl.stroep.utils.Color
 // create orange color
 var myColor:Color = new Color(0xFFCC00);
 
+
+// get individual color values
 trace("value", myColor.value);
 trace("red", myColor.red);
 trace("green ", myColor.green);
 trace("blue", myColor.blue);
- 
+
+// set individual color values
+myColor.blue = 255;
+myColor.green = 0;
+myColor.red = 128;
+
+trace("value", myColor.value);
+trace("red", myColor.red);
+trace("green ", myColor.green);
+trace("blue", myColor.blue);
+}}}
+
+*Note*
+When you trace myColor.value, flash returns the whole number of the color, not the hex-value. If you want the hexadecimal value, you should use:
+{{{
+trace( myColor.value.toString(16) );
 }}}
 
 _AS3 only_
