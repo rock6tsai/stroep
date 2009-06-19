@@ -23,33 +23,33 @@
 		private var loader:Loader;
 		private var _src:String;
 		private var req:URLRequest;
-		private var scale:Number = 1;
+		private var scale:Number;
 		/**
 		 * 
 		 * @param	url	relative or absolute path to the image
 		 */
-		public function Image( url:String = "" ) 
-		{		
-			this.loader = new Loader();
-			this.addChild( loader );
-
-			this.loader.contentLoaderInfo.addEventListener( Event.COMPLETE, onLoadComplete );		   
-			this.loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, onError );		   
-			this.loader.contentLoaderInfo.addEventListener( ProgressEvent.PROGRESS, onLoading );	
-			
+		public function Image( url:String, scale:Number = 1 ) 
+		{
 			bitmapdata = new BitmapData ( 400, 300 );	
 			bitmap = new Bitmap( bitmapdata, PixelSnapping.AUTO, true );
+			this.addChild(bitmap);
 			
-			this.scale = scale;
-			
+			this.scale = scale;			
 			this.src = url;	
 		}		
 		
 		private function onLoadComplete(e:Event):void 
 		{	
-			bitmapdata = new BitmapData ( this.loader.width, this.loader.height );		
-			bitmapdata.draw( this.loader, new Matrix( 1, 0, 0, 1 , 0, 0 ), null, BlendMode.NORMAL, null, true );
-			bitmap = new Bitmap( bitmapdata, PixelSnapping.AUTO, true );
+			this.removeChild(bitmap);
+			bitmapdata = new BitmapData ( this.loader.width * scale, this.loader.height * scale );		
+			bitmapdata.draw( this.loader, new Matrix( scale, 0, 0, scale, 0, 0 ), null, BlendMode.NORMAL, null, true );
+			bitmap = new Bitmap( bitmapdata, PixelSnapping.AUTO, true );					
+			this.addChild(bitmap);
+			
+			this.loader.contentLoaderInfo.removeEventListener( Event.COMPLETE, onLoadComplete );
+			this.loader.contentLoaderInfo.removeEventListener( IOErrorEvent.IO_ERROR, onError );
+			this.loader.contentLoaderInfo.removeEventListener( ProgressEvent.PROGRESS, onLoading );
+			this.loader  = null;
 			
 			dispatchEvent(e);
 		}
@@ -72,6 +72,12 @@
 			
 			if ( value != "" && value != null )
 			{
+				this.loader = new Loader();
+
+				this.loader.contentLoaderInfo.addEventListener( Event.COMPLETE, onLoadComplete );
+				this.loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, onError );
+				this.loader.contentLoaderInfo.addEventListener( ProgressEvent.PROGRESS, onLoading );
+				
 				req = new URLRequest( value );			
 				this.loader.load( req );   
 			}
