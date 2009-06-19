@@ -8,16 +8,33 @@
 	import flash.geom.Rectangle;
 	
 	/**
-	 * Crop util
+	 * Crop util	
+	 * 
+	 *  @example
+	 * 		var myCroppedImage:Bitmap = CropUtil.crop( this, 0, 0, 1366, 768);
+	 * 		addChild(myCroppedImage);
+	 * 
 	 * @author Mark Knol - Stroep.nl - 2009 (c)
 	 */
 	public class CropUtil 
 	{		
-		public static function crop( _x:Number, _y:Number, _width:Number, _height:Number, scale:Number = 1, displayObject:DisplayObject = null):Bitmap
+		/**
+		 * crop a image on the stage or in a movieclip
+		 * 
+		 * @param	inDisplayObject		object on the display list (this or foobarMovie)
+		 * @param	inWidth				width of the cropped image (default = 550)
+		 * @param	inHeight			height of the cropped image (default = 400)
+		 * @param	inX					left starting point in pixels (default = 0)
+		 * @param	inY					top starting point in pixels (default = 0)
+		 * @param	inScale				scale (default 1, don't know any reason to change that...)
+		 * @return
+		 */
+		public static function crop( inDisplayObject:DisplayObject, inWidth:Number = 550, inHeight:Number = 400, inX:Number = 0, inY:Number = 0, inScale:Number = 1):Bitmap
 		{
-			var cropArea:Rectangle = new Rectangle( 0, 0, _width*scale, _height*scale );
-			var croppedBitmap:Bitmap = new Bitmap( new BitmapData( _width*scale, _height*scale ), PixelSnapping.ALWAYS, true );
-			croppedBitmap.bitmapData.draw( (displayObject!=null) ? displayObject : stage, new Matrix(scale, 0, 0, scale, -_x, -_y) , null, null, cropArea, true );
+			if (!inDisplayObject) { throw new Error('CropUtil.crop > needs a something on the display list'); return null; }
+			var cropArea:Rectangle = new Rectangle( 0, 0, inWidth * inScale, inHeight * inScale);
+			var croppedBitmap:Bitmap = new Bitmap( new BitmapData( inWidth * inScale, inHeight * inScale), PixelSnapping.ALWAYS, true );
+			croppedBitmap.bitmapData.draw( inDisplayObject, new Matrix(inScale, 0, 0, inScale, -inX, -inY), null, null, cropArea, true );
 			return croppedBitmap;
 		}
 	}

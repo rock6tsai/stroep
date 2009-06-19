@@ -28,7 +28,7 @@ package nl.stroep.utils
 		private var _ed:EventDispatcher;		
 		private var _serverpath:String;
 		
-		private var jpgEncoder:JPEGEncoder;
+		private var jpgEncoder:JPGEncoder;
 		
 		/**
 		 * Create instance of ImageSaver Class
@@ -48,7 +48,7 @@ package nl.stroep.utils
 		 * @param	backgroundColor	Optional. Custom background color with alpha-channel. Default: transparent/white
 		 * @param	JPGquality		Optional. The quality level between 1 and 100 that determines the level of compression used in the generated JPEG. 
 		 * @langversion ActionScript 3.0
-		 * @playerversion Flash 10.0
+		 * @playerversion Flash 9.0
 		 * @tiptext
 		 */
 		public function save( bitmapDrawable:IBitmapDrawable, filename:String, backgroundColor:Number = 0x00FFFFFF, JPGquality:int = 85, rect:Rectangle = null ):void
@@ -59,7 +59,7 @@ package nl.stroep.utils
 			switch ( extension.toUpperCase() )
 			{		
 				case EXTENSION_JPG :				
-					jpgEncoder = new JPEGEncoder( JPGquality )			
+					jpgEncoder = new JPGEncoder( JPGquality )			
 					this.bytearray = jpgEncoder.encode( bitmapdata );
 					break;
 				
@@ -68,7 +68,7 @@ package nl.stroep.utils
 					break;
 				
 				default :
-					jpgEncoder = new JPEGEncoder( JPGquality )			
+					jpgEncoder = new JPGEncoder( JPGquality )			
 					this.bytearray = jpgEncoder.encode( bitmapdata );
 			}
 			
@@ -95,7 +95,7 @@ package nl.stroep.utils
 		 * @playerversion Flash 10.0
 		 * @tiptext
 		 */
-		public function save( bitmapDrawable:IBitmapDrawable, filename:String, backgroundColor:Number = 0x00FFFFFF, JPGquality:int = 85, rect:Rectangle = null ):void
+		/*public function saveLocal( bitmapDrawable:IBitmapDrawable, filename:String, backgroundColor:Number = 0x00FFFFFF, JPGquality:int = 85, rect:Rectangle = null ):void
 		{				
 			var bitmapdata:BitmapData = this.getBitmapData( bitmapDrawable, backgroundColor, rect );			
 			var extension:String = this.getExtension( filename );
@@ -103,7 +103,7 @@ package nl.stroep.utils
 			switch ( extension.toUpperCase() )
 			{		
 				case EXTENSION_JPG :				
-					jpgEncoder = new JPEGEncoder( JPGquality )			
+					jpgEncoder = new JPGEncoder( JPGquality )			
 					this.bytearray = jpgEncoder.encode( bitmapdata );
 					break;
 				
@@ -112,7 +112,7 @@ package nl.stroep.utils
 					break;
 				
 				default :
-					jpgEncoder = new JPEGEncoder( JPGquality )			
+					jpgEncoder = new JPGEncoder( JPGquality )			
 					this.bytearray = jpgEncoder.encode( bitmapdata );
 			}
 		
@@ -120,7 +120,7 @@ package nl.stroep.utils
 			file.addEventListener( Event.COMPLETE, this.onSaveSucces );			
 			file.addEventListener( IOErrorEvent.IO_ERROR, this.onSaveFailed );
 			file.save( this.bytearray, filename );			
-		}
+		}*/
 				
 		/**
 		 * Draws bitmapDrawable intro new bitmapdata object using backgroundColor 
