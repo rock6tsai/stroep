@@ -26,8 +26,9 @@ myImage.addEventListener(Event.COMPLETE, onImageLoaded );
 myImage.addEventListener(IOErrorEvent.IO_ERROR, onImageError );
 myImage.addEventListener(ProgressEvent.PROGRESS, onImageLoading );
 
-function onImageLoaded (e:Event):void {
-   trace("image loaded!");
+function onImageLoaded (e:Event):void {   
+   var currentImage:Image = Image(e.currentTarget);
+   trace("image loaded! ", currentImage.src);
 }
 
 function onImageError (e:IOErrorEvent):void {
