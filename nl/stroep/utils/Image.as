@@ -1,4 +1,27 @@
-﻿package nl.stroep.utils 
+﻿/*The MIT License
+
+Copyright (c) 2009 Mark Knol
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.*/
+
+
+package nl.stroep.utils 
 {
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -24,11 +47,12 @@
 		private var _src:String;
 		private var req:URLRequest;
 		private var scale:Number;
+		private var _id:String;
 		/**
 		 * 
 		 * @param	url	relative or absolute path to the image
 		 */
-		public function Image( url:String, scale:Number = 1 ) 
+		public function Image( url:String, scale:Number = 1, id:String = "" ) 
 		{
 			bitmapdata = new BitmapData ( 400, 300 );	
 			bitmap = new Bitmap( bitmapdata, PixelSnapping.AUTO, true );
@@ -36,6 +60,7 @@
 			
 			this.scale = scale;			
 			this.src = url;	
+            this._id = id;
 		}		
 		
 		private function onLoadComplete(e:Event):void 
@@ -81,6 +106,11 @@
 				req = new URLRequest( value );			
 				this.loader.load( req );   
 			}
+		}
+		
+		public function get id():String
+		{
+			return _id;
 		}
 		
 	}
