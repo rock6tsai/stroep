@@ -25,7 +25,7 @@ package nl.stroep.utils
     /**
     * Util for working with Color
     *
-    * @author I-Company | Mark Knol | 2008
+    * @author Stroep.nl | Mark Knol
     */
     public class Color
     {      
