@@ -29,7 +29,9 @@ package nl.stroep.utils
     */
     public class Color
     {      
-		public var value:Number = 0;
+		/** the real color value */
+		public var value:uint = 0;
+		
 		
 		public function Color ( value:uint = 0xFFFFFF ):void
 		{
@@ -40,7 +42,7 @@ package nl.stroep.utils
         * Get the red value of a color
         *
         * @param color Enter full color from range 0x000000 to 0xFFFFFF
-        * @return Red value from the color
+        * @return Red colorvalue
         * @tiptext
         */
         public function get red ( ):uint       
@@ -53,7 +55,7 @@ package nl.stroep.utils
         * Get the green value of a color
         *
         * @param color Enter full color from range 0x000000 to 0xFFFFFF
-        * @return Green hexadecimal colorvalue
+        * @return Green colorvalue
         * @tiptext
         */
         public function get green ( ):uint       
@@ -66,7 +68,7 @@ package nl.stroep.utils
         * Get the blue value of a color
         *
         * @param color Enter full color from range 0x000000 to 0xFFFFFF
-        * @return Blue hexadecimal colorvalue
+        * @return Blue colorvalue
         * @tiptext
         */
         public function get blue ( ):uint       
@@ -74,12 +76,50 @@ package nl.stroep.utils
             return value & 0xFF;
         }
        
+		
+        /**
+         * Set new red value to a color
+         * @param    tint    range between 0-255
+         * @tiptext
+         */
+        public function set red ( tint:uint ):void
+        {
+			tint = limit( tint, 0, 255);           
+            this.value += (tint << 16)
+        }
        
+       
+        /**
+         * Set new green value to a color
+         * @param    tint    range between 0-255
+         * @tiptext
+         */
+        public function set green ( tint:uint ):void
+        {
+			tint = limit( tint, 0, 255);
+		   
+            this.value += (tint << 8);
+        }
+       
+       
+        /**
+         * Set new blue value to a color
+         * @param    tint    range between 0-255
+         * @tiptext
+         */
+        public function set blue ( tint:uint ):void
+        {		
+			tint = limit( tint, 0, 255);
+           
+            this.value += tint;
+        }
+		
+		
         /**
         * Get a grayscale color from a tint
         *
         * @param tint Enter tint from range 0 to 255
-        * @return Gray hexadecimal colorvalue
+        * @return Gray colorvalue
         * @tiptext
         */
         public static function grayscale ( tint:uint = 0 ):uint
@@ -90,84 +130,64 @@ package nl.stroep.utils
            
             return (tint << 16) | (tint << 8) | tint;
         }
-       
-        /**
-         * set new red value to a color
-         * @param    tint    range between 0-255
-         * @param    color    color to edit
-         * @tiptext
-         */
-        public function set red ( tint:uint ):void
-        {
-            // restriction
-            if (tint < 0) { tint = 0 }
-            if (tint > 255) { tint = 255 }
-           
-            this.value += (tint << 16)
-        }
-       
-       
-        /**
-         * set new green value to a color
-         * @param    tint    range between 0-255
-         * @param    color    color to edit
-         * @tiptext
-         */
-        public function set green ( tint:uint ):void
-        {
-            // restriction
-            if (tint < 0) { tint = 0 }
-            if (tint > 255) { tint = 255 }
-           
-            this.value += (tint << 8);
-        }
-       
-       
-        /**
-         * set new blue value to a color
-         * @param    tint    range between 0-255
-         * @param    color    color to edit
-         * @tiptext
-         */
-        public function set blue ( tint:uint  ):void
-        {
-            // restriction
-            if (tint < 0) { tint = 0 }
-            if (tint > 255) { tint = 255 }
-           
-            this.value += tint;
-        }
 		
        
         /**
-         * Darken or lighten color with count
-         * Darken = count < 0
-         * Lighten = count > 0
-         * @param    color    color to be darkened or lightened
-         * @return Hexadecimal colorvalue of darkened/lightened color
+         * Darken or lighten color with count(-255 to 255)<br/>
+         * Darken = count &lt; 0<br/>
+         * Lighten = count &gt; 0
+         * @param    count    amount sliding color (-255 to 255)
+         * @return darker color
 		 * @tiptext
          */
-        public function slideColor( count:Number = 0 ):uint
+        public function slideColor( count:int = 0 ):uint
         {
-            var retval:uint = value;  
-   
+            var retval:uint = value; 
+			
             var r:int = limit( (retval >> 16) + count, 0, 255)
             var g:int = limit( (retval >> 8 & 0xFF)  + count, 0, 255)
             var b:int = limit( (retval & 0xFF) + count, 0, 255)
            
             return ( r ) << 16 | ( g ) << 8 | ( b );
-        }       
+        }   
+		
+		
+		 /**
+         * Darken color with amount (0 to 255)
+         * @param    count    amount darken color (-255 to 255)
+         * @return darker color
+		 * @tiptext
+         */
+        public function darker( count:uint = 0 ):uint
+        {     
+            return slideColor(-count);
+        }   
+		
+		
+		/**
+         * Lighten color with amount (0 to 255)
+         * @param    count    amount lighten color (-255 to 255)
+         * @return lighter color
+		 * @tiptext
+         */
+        public function lighter( count:uint = 0 ):uint
+        {
+            return slideColor( count);        
+		}   
+		
 		
         private function limitToLower( value:Number, lowerLimit:Number ):Number
         {
             return Math.max( value, lowerLimit );
         }
 
+		
         private function limitToUpper( value:Number, upperLimit:Number ):Number
         {
             return Math.min( value, upperLimit );
         }
 
+		
         private function limit( value:Number, lowerLimit:Number, upperLimit:Number ):Number
         {
             return limitToLower( limitToUpper( value, upperLimit ), lowerLimit );
