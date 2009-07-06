@@ -24,9 +24,7 @@ package nl.stroep.utils
 {
 	/**
 	* ImageSaver class for easy saving displayobjects to JPG / PNG
-	* 
-	* @author © Copyright 2008, Mark Knol | Stroep
-	* More info + latest version: blog.stroep.nl
+	* @author © Copyright 2009, Mark Knol | Stroep
 	*/
 	
 	import com.adobe.images.*;
@@ -55,7 +53,7 @@ package nl.stroep.utils
 		 * Create instance of ImageSaver Class
 		 * @param	serverpath 		Required. Path to server.
 		 */
-		public function ImageSaver( serverpath:String ) 
+		public function ImageSaver( serverpath:String = "" ) 
 		{	
 			_serverpath = serverpath;
 			_ed = new EventDispatcher();
@@ -69,7 +67,7 @@ package nl.stroep.utils
 		 * @param	backgroundColor	Optional. Custom background color with alpha-channel. Default: transparent/white
 		 * @param	JPGquality		Optional. The quality level between 1 and 100 that determines the level of compression used in the generated JPEG. 
 		 * @langversion ActionScript 3.0
-		 * @playerversion Flash 9.0
+		 * @playerversion Flash 10.0
 		 * @tiptext
 		 */
 		public function save( bitmapDrawable:IBitmapDrawable, filename:String, backgroundColor:Number = 0x00FFFFFF, JPGquality:int = 85, rect:Rectangle = null ):void
@@ -93,8 +91,7 @@ package nl.stroep.utils
 					this.bytearray = jpgEncoder.encode( bitmapdata );
 			}
 			
-			this.urlRequest = new URLRequest( this._serverpath + "?filename=" + filename );
-			
+			this.urlRequest = new URLRequest( this._serverpath + "?filename=" + filename );			
 			this.urlRequest.contentType = this.CONTENT_TYPE;			
 			this.urlRequest.method = URLRequestMethod.POST;			
 			this.urlRequest.data = this.bytearray;
@@ -116,7 +113,7 @@ package nl.stroep.utils
 		 * @playerversion Flash 10.0
 		 * @tiptext
 		 */
-		/*public function saveLocal( bitmapDrawable:IBitmapDrawable, filename:String, backgroundColor:Number = 0x00FFFFFF, JPGquality:int = 85, rect:Rectangle = null ):void
+		public function saveLocal( bitmapDrawable:IBitmapDrawable, filename:String, backgroundColor:Number = 0x00FFFFFF, JPGquality:int = 85, rect:Rectangle = null ):void
 		{				
 			var bitmapdata:BitmapData = this.getBitmapData( bitmapDrawable, backgroundColor, rect );			
 			var extension:String = this.getExtension( filename );
@@ -137,11 +134,16 @@ package nl.stroep.utils
 					this.bytearray = jpgEncoder.encode( bitmapdata );
 			}
 		
+			this.urlRequest = new URLRequest( this._serverpath + "?filename=" + filename );			
+			this.urlRequest.contentType = this.CONTENT_TYPE;			
+			this.urlRequest.method = URLRequestMethod.POST;			
+			this.urlRequest.data = this.bytearray;
+			
 			var file:FileReference = new FileReference();			
 			file.addEventListener( Event.COMPLETE, this.onSaveSucces );			
 			file.addEventListener( IOErrorEvent.IO_ERROR, this.onSaveFailed );
 			file.save( this.bytearray, filename );			
-		}*/
+		}
 				
 		/**
 		 * Draws bitmapDrawable intro new bitmapdata object using backgroundColor 
