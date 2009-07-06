@@ -47,12 +47,11 @@ package nl.stroep.utils
 		private var _src:String;
 		private var req:URLRequest;
 		private var scale:Number;
-		private var _id:String;
 		/**
 		 * 
 		 * @param	url	relative or absolute path to the image
 		 */
-		public function Image( url:String, scale:Number = 1, id:String = "" ) 
+		public function Image( url:String, scale:Number = 1 ) 
 		{
 			bitmapdata = new BitmapData ( 400, 300 );	
 			bitmap = new Bitmap( bitmapdata, PixelSnapping.AUTO, true );
@@ -60,7 +59,6 @@ package nl.stroep.utils
 			
 			this.scale = scale;			
 			this.src = url;	
-            this._id = id;
 		}		
 		
 		private function onLoadComplete(e:Event):void 
@@ -106,13 +104,7 @@ package nl.stroep.utils
 				req = new URLRequest( value );			
 				this.loader.load( req );   
 			}
-		}
-		
-		public function get id():String
-		{
-			return _id;
-		}
-		
+		}		
 	}
 	
 }
