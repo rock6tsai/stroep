@@ -203,7 +203,7 @@ package nl.stroep.utils
 		
 		private function onViewImage(e:ContextMenuEvent):void 
 		{
-			navigateToURL(new URLRequest(this._src), "_self");
+			navigateToURL(new URLRequest(this._src), "_blank");
 		}
 		
 		private function onRemoveContextMenuListeners(e:Event):void 
