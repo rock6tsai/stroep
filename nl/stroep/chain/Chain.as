@@ -1,5 +1,7 @@
 ﻿package nl.stroep.chain
 {
+	import flash.events.Event;
+	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.clearTimeout;
 	import flash.utils.setTimeout;
@@ -10,11 +12,12 @@
 	 * @author Mark Knol
 	 */
 	
-	final public class Chain
+	 /// Dispatched when the chain finishes playing / reaches last item
+	 [Event(name="complete", type="flash.events.Event")]
+	 
+	final public class Chain extends EventDispatcher
 	{		
 		private const _list:/*ChainItem*/Array = [];
-		private var _onComplete:Function = null;
-		private var _totalInterval:int = 0;
 		private var _currentIndex:int = 0;
 		private var _currentRepeatIndex:int = 0;
 		private var _repeatCount:int = 0;
@@ -23,14 +26,14 @@
 		private var _isPlaying:Boolean = false;
 		private var _timer:Timer;
 		
+		
 		/// Constructor
 		public function Chain() 
-		{
-			trace("created Chain");
-			
+		{	
 			_timer = new Timer(0);			
 			_timer.addEventListener(TimerEvent.TIMER, onTimer);
 		}
+		
 		
 		/// Stop playing, use doContinue to play futher from current point
 		public function stop():void
@@ -61,24 +64,23 @@
 			{
 				_currentIndex = _list.length - 1;
 			}
-			trace("resetted",_reversed)
+			
 			_currentRepeatIndex = 0;
 		}
 		
 		/// Adds a function at a specified interval (in milliseconds).
-		public function add(delay:Number = 0, func:Function = null):Chain
+		public function add(func:Function, delay:Number = 0):Chain
 		{
-			_list.push( new ChainItem(delay, func) );
+			_list.push( new ChainItem(func, delay) );
 			
 			return this;
 		}
 		
 		/// Start playing the sequence
-		public function play(repeatCount:int = 0, onComplete:Function = null):void
+		public function play(repeatCount:int = 0):void
 		{
 			this._reversed = false;
 			this._repeatCount = repeatCount;
-			this._onComplete = onComplete;
 			
 			if (_list.length > 0)
 			{
@@ -90,11 +92,10 @@
 		}	
 		
 		/// Start playing the sequence reversed
-		public function playReversed(repeatCount:int = 0, onComplete:Function = null):void
+		public function playReversed(repeatCount:int = 0):void
 		{
 			this._reversed = true;
 			this._repeatCount = repeatCount;
-			this._onComplete = onComplete;
 			
 			if (_list.length > 0)
 			{
@@ -124,13 +125,13 @@
 		}
 		
 		/// Returns the string representation of the Chain private vars.
-		public function toString():String
+		public override function toString():String
 		{
 			var retval:String = "_currentRepeatIndex:" + _currentRepeatIndex + ", _currentIndex:" + _currentIndex + ", _reversed:" + _reversed + ", _repeatCount:" + _repeatCount + ", loop length:" + _list.length;
 			return retval;
 		}
 		
-		private function execute (index:uint):void
+		protected function execute(index:uint):void
 		{	
 			_timer.stop();
 			
@@ -148,47 +149,33 @@
 		}	
 		
 		/// 
-		private function executeOnComplete():void
-		{
-			if (_onComplete != null)
-			{
-				var obj:ChainItem 
-				if (!_reversed)
-				{
-					obj = _list[_list.length-1] as ChainItem;
-				}
-				else
-				{
-					obj = _list[0] as ChainItem;
-				}
+		protected function executeOnComplete():void
+		{	
+			var obj:ChainItem;
 			
-				_intervalCompleteID = setTimeout ( _onComplete, obj.delay, this );
+			if (!_reversed)
+			{
+				obj = _list[_list.length - 1] as ChainItem;
 			}
-		}
-
+			else
+			{
+				obj = _list[0] as ChainItem;
+			}
 		
-		/// Get total interval count for 1 loop. Calculate does loop (call on start), otherwise use private _totalInterval
-		private function get totalLoopIntervalTime( ):Number
-		{
-			var retval:Number = 0;
-			var i:int = 0;
-			
-			for (i = 0; i < _list.length; ++i) 
-			{
-				retval += _list[i].delay;				
-			}
-			
-			_totalInterval = retval;
-			
-			return _totalInterval;
+			_intervalCompleteID = setTimeout( dispatchComplete, obj.delay );
 		}
 		
-		private function onTimer(e:TimerEvent):void 
+		protected function dispatchComplete():void
+		{
+			dispatchEvent( new Event( Event.COMPLETE, false, false) );
+		}
+		
+		protected function onTimer(e:TimerEvent):void 
 		{
 			if (!_reversed && _currentRepeatIndex >= _repeatCount && _currentIndex == 0 || 
-				_reversed  && _currentRepeatIndex >= _repeatCount && _currentIndex == _list.length - 1 ) 
+				_reversed  && _currentRepeatIndex >= _repeatCount && _currentIndex == _list.length - 1 )
 			{		
-				this.stop();			
+				this.stop();
 				this.executeOnComplete();
 			}
 			else
@@ -203,7 +190,6 @@
 			else
 			{
 				_currentIndex --;
-				
 			}
 			
 			if (!_reversed && _currentIndex >= _list.length)
@@ -221,19 +207,19 @@
 		}
 		
 		/// Return chain is playing, stopped or completed
-		public function get isPlaying():Boolean { return _isPlaying; }
+		public function get isPlaying():Boolean { return _isPlaying }
 	}
 
 }
 
-class ChainItem
+final class ChainItem
 {
+	public var func:Function;
 	public var delay:Number = 0;
-	public var func:Function = null;
 	
-	public function ChainItem(delay:Number = 0, func:Function = null) 
+	public function ChainItem( func:Function, delay:Number = 0 ) 
 	{
-		this.delay = delay;
 		this.func = func;
+		this.delay = delay;
 	}
 }
