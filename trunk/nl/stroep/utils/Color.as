@@ -27,16 +27,43 @@ package nl.stroep.utils
     *
     * @author Stroep.nl | Mark Knol
     */
-    public class Color
+    public final class Color
     {      
-		/** the real color value */
-		public var value:uint = 0;
+		private var _value:int = 0;
 		
+		protected var _red:int = 0;
+		protected var _green:int = 0;
+		protected var _blue:int = 0;
 		
-		public function Color ( value:uint = 0xFFFFFF ):void
+		protected var grayList:Array = [];
+		
+		public function Color ( value:int = 0xFFFFFF ):void
 		{
 			this.value = value;
+			
+			for (var i:uint = 0; i < 255; ++i) 
+			{
+				grayList.push((i << 16) | (i << 8) | i);
+			}
 		}
+		
+		
+		/// get the real color value
+		public function get value():int 
+		{ 
+			return (_red << 16) | (_green << 8) | _blue; 
+		}
+		
+		/// set the real color value
+		public function set value ( value:int ):void 
+		{
+            _red  = value >> 16 & 0xFF; // red
+            _green  = value  >> 8 & 0xFF; // green
+			_blue = value & 0xFF; // blue
+			
+			_value = value;
+		}
+		
 		
         /**
         * Get the red value of a color
@@ -45,9 +72,9 @@ package nl.stroep.utils
         * @return Red colorvalue
         * @tiptext
         */
-        public function get red ( ):uint       
+        public function get red ( ):int
         {
-            return value >> 16 & 0xFF;
+            return _red;
         }
        
        
@@ -58,9 +85,9 @@ package nl.stroep.utils
         * @return Green colorvalue
         * @tiptext
         */
-        public function get green ( ):uint       
+        public function get green ( ):int
         {
-            return value >> 8 & 0xFF;
+            return _green;
         }
        
        
@@ -71,9 +98,9 @@ package nl.stroep.utils
         * @return Blue colorvalue
         * @tiptext
         */
-        public function get blue ( ):uint       
+        public function get blue ( ):int
         {
-            return value & 0xFF;
+            return _blue;
         }
        
 		
@@ -82,10 +109,10 @@ package nl.stroep.utils
          * @param    tint    range between 0-255
          * @tiptext
          */
-        public function set red ( tint:uint ):void
+        public function set red ( val:int ):void
         {
-			tint = limit( tint, 0, 255);           
-            this.value += (tint << 16)
+			_red = val;
+			_red = limit( _red, 0, 255 );
         }
        
        
@@ -94,11 +121,10 @@ package nl.stroep.utils
          * @param    tint    range between 0-255
          * @tiptext
          */
-        public function set green ( tint:uint ):void
+        public function set green ( val:int ):void
         {
-			tint = limit( tint, 0, 255);
-		   
-            this.value += (tint << 8);
+            _green = val;
+			_green = limit( _green, 0, 255 );
         }
        
        
@@ -107,13 +133,11 @@ package nl.stroep.utils
          * @param    tint    range between 0-255
          * @tiptext
          */
-        public function set blue ( tint:uint ):void
-        {		
-			tint = limit( tint, 0, 255);
-           
-            this.value += tint;
+        public function set blue ( val:int ):void
+        {
+            _blue = val;
+			_blue = limit( _blue, 0, 255 );
         }
-		
 		
         /**
         * Get a grayscale color from a tint
@@ -122,15 +146,28 @@ package nl.stroep.utils
         * @return Gray colorvalue
         * @tiptext
         */
-        public static function grayscale ( tint:uint = 0 ):uint
+        public static function grayscale ( val:int = 0 ):int
         {
-            // restriction
-            if (tint < 0) { tint = 0 }
-            if (tint > 255) { tint = 255 }
-           
-            return (tint << 16) | (tint << 8) | tint;
+			if (val < 0){ val = 0 }
+			if (val > 255) { val = 255 }
+			
+            return (val << 16) | (val << 8) | val;
         }
 		
+		/**
+        * Get a grayscale color from a tint using precalculated internal Vector
+        *
+        * @param tint Enter tint from range 0 to 255
+        * @return Gray colorvalue
+        * @tiptext
+        */
+		public function grayscaleFast ( val:int = 0 ):int
+        {
+			if (val < 0){ val = 0 }
+			if (val > 255) { val = 255 }
+			
+            return grayList[val];
+        }
        
         /**
          * Darken or lighten color with count(-255 to 255)<br/>
@@ -140,25 +177,25 @@ package nl.stroep.utils
          * @return darker color
 		 * @tiptext
          */
-        public function slideColor( count:int = 0 ):uint
+        public function slideColor( count:int = 0 ):int
         {
-            var retval:uint = value; 
+            var retval:int = value; 
 			
             var r:int = limit( (retval >> 16) + count, 0, 255)
             var g:int = limit( (retval >> 8 & 0xFF)  + count, 0, 255)
             var b:int = limit( (retval & 0xFF) + count, 0, 255)
            
-            return ( r ) << 16 | ( g ) << 8 | ( b );
+            return (r << 16) | (g << 8) | ( b );
         }   
 		
 		
 		 /**
          * Darken color with amount (0 to 255)
-         * @param    count    amount darken color (-255 to 255)
+         * @param    count    amount to darken color (0 to 255)
          * @return darker color
 		 * @tiptext
          */
-        public function darker( count:uint = 0 ):uint
+        public function darker( count:int = 0 ):int
         {     
             return slideColor(-count);
         }   
@@ -166,33 +203,21 @@ package nl.stroep.utils
 		
 		/**
          * Lighten color with amount (0 to 255)
-         * @param    count    amount lighten color (-255 to 255)
+         * @param    count    amount to lighten color (0 to 255)
          * @return lighter color
 		 * @tiptext
          */
-        public function lighter( count:uint = 0 ):uint
+        public function lighter( count:int = 0 ):int
         {
-            return slideColor( count);        
+            return slideColor(count);
 		}   
 		
 		
-        private function limitToLower( value:Number, lowerLimit:Number ):Number
+        protected function limit( val:Number, lowerLimit:Number, upperLimit:Number ):Number
         {
-            return Math.max( value, lowerLimit );
-        }
-
-		
-        private function limitToUpper( value:Number, upperLimit:Number ):Number
-        {
-            return Math.min( value, upperLimit );
-        }
-
-		
-        private function limit( value:Number, lowerLimit:Number, upperLimit:Number ):Number
-        {
-            return limitToLower( limitToUpper( value, upperLimit ), lowerLimit );
+			if (val < lowerLimit){ return lowerLimit }
+			if (val > upperLimit) { return upperLimit }
+			return val;
         }
     }
-
-	
 }
