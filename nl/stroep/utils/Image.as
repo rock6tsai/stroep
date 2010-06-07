@@ -67,7 +67,7 @@ package nl.stroep.utils
 		 */
 		public function Image( url:String, scale:Number = 1, enableContextMenu:Boolean = false ) 
 		{
-			bitmapdata = new BitmapData ( 400, 300 );	
+			bitmapdata = new BitmapData ( 1, 1, true, 0x00FFFFFF );	
 			bitmap = new Bitmap( bitmapdata, PixelSnapping.AUTO, true );
 			this.addChild(bitmap);
 			
@@ -79,7 +79,7 @@ package nl.stroep.utils
 		private function onLoadComplete(e:Event):void 
 		{	
 			this.removeChild(bitmap);
-			bitmapdata = new BitmapData ( this.loader.width * scale, this.loader.height * scale );		
+			bitmapdata = new BitmapData ( this.loader.width * scale, this.loader.height * scale, true, 0x00FFFFFF );		
 			bitmapdata.draw( this.loader, new Matrix( scale, 0, 0, scale, 0, 0 ), null, BlendMode.NORMAL, null, true );
 			bitmap = new Bitmap( bitmapdata, PixelSnapping.AUTO, true );					
 			this.addChild(bitmap);
