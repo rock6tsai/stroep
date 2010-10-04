@@ -1,0 +1,22 @@
+#summary Description of the framework
+
+= Introduction =
+
+Over time I have created this framework which helps you to easily setup a flash website. The framework makes use of SWFAddress for deeplinking and TweenLite for transitions. 
+
+= Features =
+
+These are the features of the framework
+  * Global page creation + linking
+  * Deeplinking enabled
+  * Page class with overridable states
+  * Navigation system
+  * Global event system
+  * Automatic Event removal system   
+  * Transition between pages
+  * Global page settings
+   * Transition in/out between page
+   * Easing/time customizable
+   * Alignment options
+  * Settings can be overrided on page level
+  * Custom transitions are possible by implementing ITransition
