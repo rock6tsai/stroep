@@ -17,12 +17,12 @@ These are the features of the framework
   * Global EventListener
   * Automatic Event removal system   
   * Transition between pages 
-    * Full custom transitions are possible by implementing ITransition. This keeps your freedom of expression and makes it usable for every custom project.
+    * Xustom transitions are possible. This keeps your freedom of expression and makes it usable for every custom project. Just implement ITransition.
   * Global page settings
     * Transition in/out between page
     * Easing/time customizable
     * Alignment options
-    * Settings can be overrided on page level
+    * All settings can be overrided on page level
   
 = How to use =
 
