@@ -1,22 +1,75 @@
 #summary Description of the framework
 
+=== This is a working draft. The framework is not released yet ===
+
 = Introduction =
 
-Over time I have created this framework which helps you to easily setup a flash website. The framework makes use of SWFAddress for deeplinking and TweenLite for transitions. 
+Over time I have created this mini-framework which helps you to easily setup a flash website. The framework makes use of SWFAddress for deeplinking and TweenLite for transitions. When you need to create small/medium websites with deeplinking and page transitions, this mini-framework could help you develop faster. I mostly used it for custom projects like viral websites. The best of this mini-framework is the simplicity (no need to learn hard design-patterns, just straight-forward) and I believe you just develop faster because you don't have to develop about a page setup or start from scratch, but keeps freedom to build the site which satisfies your needs.
 
 = Features =
 
 These are the features of the framework
-  * Global page creation + linking
-  * Deeplinking enabled
-  * Page class with overridable states
-  * Navigation system
-  * Global event system
+  * Global page creation
+  * Deeplinking made easy: it's included and no need to worry about it anymore.
+  * Page class with overridable states. 
+  * Alternative navigation (button) system
+    * Easy linking
+  * Global EventListener
   * Automatic Event removal system   
-  * Transition between pages
+  * Transition between pages 
+    * Full custom transitions are possible by implementing ITransition. This keeps your freedom of expression and makes it usable for every custom project.
   * Global page settings
-   * Transition in/out between page
-   * Easing/time customizable
-   * Alignment options
-  * Settings can be overrided on page level
-  * Custom transitions are possible by implementing ITransition
+    * Transition in/out between page
+    * Easing/time customizable
+    * Alignment options
+    * Settings can be overrided on page level
+  
+= How to use =
+
+Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, export as SWC), and use an external AS editor for ultimate coding-fun. 
+
+= Tutorial =
+
+Just to start, create a new flash file. Save it and place the framework files next to the flash, or create your own setup where the framework is included. Now we need to design some pages. Create a MovieClip called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the MovieClip in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class. Create 2 other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
+
+Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a AS-only project, mark this file as 'always compile'.
+
+This is the most simple usage of the framework
+{{{
+package
+{
+	public class Main extends Sprite 
+	{		
+		private var pageFactory:PageFactory;
+		private var pageHolder:Sprite = new Sprite();
+		
+		public function Main():void 
+		{
+			pageFactory = new PageFactory();
+						
+			// add your pages here
+			pageFactory.add( "/home", HomePageVC );
+			pageFactory.add( "/contact", ContactPageVC );
+			pageFactory.add( "/info", InfoPageVC );
+			
+			addChild( pageFactory.view = pageHolder );
+						
+			// load intropage
+			pageFactory.init();
+		}
+	}
+}
+}}}
+
+It would be better to create a `Pages.as` file, which contains constants with all paths. This is very useful when pointing at multiple places to the same page.
+{{{
+package nl.website.pages
+{
+	public class Pages
+	{
+		public static const HOME_PAGE:String = "/home";
+		public static const CONTACT_PAGE:String = "/contact";
+		public static const INFO_PAGE:String = "/info";
+	}
+}
+}}}
