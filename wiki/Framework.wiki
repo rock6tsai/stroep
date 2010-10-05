@@ -14,7 +14,7 @@ These are the features of the framework
   * Page class with overridable states. 
   * Alternative navigation (button) system
     * Easy linking
-  * Global EventListener
+  * Global Event dispatching+listening system
   * Automatic Event removal system   
   * Transition between pages 
     * Xustom transitions are possible. This keeps your freedom of expression and makes it usable for every custom project. Just implement ITransition.
