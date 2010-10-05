@@ -135,7 +135,7 @@ package
 Run the movie; you should have a clickable+working "website" with navigation and deeplinking. If you don't want to use the NavigationButton from the framework you can also call `PageFactory.gotoPage(Pages.HOME_PAGE)` from any point inside your application.
 
 === Step 5: Customize settings + add Transitions ===
-Lets manipulate the default settings and add a Slide transition (fading in from left). The animation-in effect should have an Elastic easeOut and should take 1 second. The animation-out effect should be an Strong EaseIn and should take 0.7 seconds. Note the easing functions are used from the TweenLite.
+Lets manipulate the default settings and add a Slide transition (fading in from left). The animation-in effect should have an `Elastic.easeOut` and should take 1 second. The animation-out effect should be an `Strong.EaseIn` and should take 0.7 seconds. Note the easing functions are used from `TweenLite`.
 
 {{{
 package
@@ -191,14 +191,16 @@ package
 }
 }}}
 
-If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (BlurTransition, FadeTransition, SlideTransition, WeirdTransition), and some of them have some customizable options (see autocompletion / online docs). 
+If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
 
 ----
 
-= Navigation Button options =
+= Navigation Button =
+
+The framework includes a `NavigationButton` class. This is a semi-intelligent MovieClip. 
 
 === Smart states ===
-The framework includes a `NavigationButton` class. This is a semi-intelligent MovieClip. You can add framelabels called _'out', 'over', 'down' and/or 'active'_. The button will automatically add the needed events for that, and `gotoAndPlay()` to that framelabel. If you extend the class, you can basically add your button-state-animation and it should work Do not forget to set a `stop()` commando at the end of each button-state-animation. 
+You can add framelabels called _'out', 'over', 'down' and/or 'active'_. The button will automatically add the needed events for that, and `gotoAndPlay()` to that framelabel. If you extend the class, you can basically add your button-state-animation and it should work Do not forget to set a `stop()` commando at the end of each button-state-animation. 
 
 === Grouping ===
 If you have multiple buttons, you can group them, to create an active state. Just pass a name (String) of the group to all buttons using the `group`-property. If you click on one member of the group, it will `gotoAndPlay()` to framelabel '_active_' if exist. This should make it easy to create simple buttons with cool states.
