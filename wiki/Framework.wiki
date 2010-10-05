@@ -24,17 +24,23 @@ These are the features of the framework
     * Alignment options
     * All settings can be overrided on page level
   
-= How to use =
+= Tutorial =
+
+=== How to use ===
 
 Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, export as SWC), and use an external AS editor for ultimate coding-fun. 
 
-= Tutorial =
+=== Step 1: Create flashfile  ===
 
-Just to start, create a new flash file. Save it and place the framework files next to the flash, or create your own setup where the framework is included. Make sure you include TweenLite and SWFAddress too. Now we need to design some pages. Create a MovieClip called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the MovieClip in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class. Create 2 other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
+Just to start, create a new flash file. Save it and place the framework files next to the flash, or create your own setup where the framework is included. Make sure you include TweenLite and SWFAddress too. Now we need to design some pages.
 
+=== Step 2: Create Pages ===
+ Create a MovieClip called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the MovieClip in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class. Create 2 other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
+
+=== Step 3: Create Document class ===
 Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a AS-only project, mark this file as 'always compile'.
 
-This is the most simple usage of the framework
+Note: This is the most simple usage of the framework. There are more settings available.
 {{{
 package
 {
@@ -66,7 +72,7 @@ package
 
 It would be better to create a `Pages.as` file, which contains constants with all paths. This is very useful when pointing at multiple places to the same page.
 {{{
-package nl.website.pages
+package
 {
 	public class Pages
 	{
@@ -76,6 +82,9 @@ package nl.website.pages
 	}
 }
 }}}
+
+=== Step 4: Create simple navigation ===
+
 Now you have 3 pages ready to be used. You need some navigation buttons to navigate through the pages. Create 3 buttons for each page (home, contact, info). Find the buttons in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_ input you should enter `HomePageButtonVC` and the base class should be `nl.stroep.framework.navigation.NavigationButton`. Apply this rule for all buttons, they should all extend `nl.stroep.framework.navigation.NavigationButton`. Place the buttons in the root, on the stage and give them the _instance names_ 'buttonHome', 'buttonInfo', 'buttonContact'.
 
 Go to your `Main.as`. Replace all code to this code:
@@ -125,6 +134,7 @@ package
 }}}
 Run the movie; you should have a clickable+working "website" with navigation and deeplinking. If you don't want to use the NavigationButton from the framework you can also call `PageFactory.gotoPage(Pages.HOME_PAGE)` from any point inside your application.
 
+=== Step 5: Customize settings + add Transitions ===
 Lets manipulate the default settings and add a Slide transition (fading in from left). The animation-in effect should have an Elastic easeOut and should take 1 second. The animation-out effect should be an Strong EaseIn and should take 0.7 seconds. Note the easing functions are used from the TweenLite.
 
 {{{
@@ -183,12 +193,17 @@ package
 
 If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (BlurTransition, FadeTransition, SlideTransition, WeirdTransition), and some of them have some customizable options (see autocompletion / online docs). 
 
+----
+
 = Navigation Button options =
 
+=== Smart states ===
 The framework includes a `NavigationButton` class. This is a semi-intelligent MovieClip. You can add framelabels called _'out', 'over', 'down' and/or 'active'_. The button will automatically add the needed events for that, and `gotoAndPlay()` to that framelabel. If you extend the class, you can basically add your button-state-animation and it should work Do not forget to set a `stop()` commando at the end of each button-state-animation. 
 
+=== Grouping ===
 If you have multiple buttons, you can group them, to create an active state. Just pass a name (String) of the group to all buttons using the `group`-property. If you click on one member of the group, it will `gotoAndPlay()` to framelabel '_active_' if exist. This should make it easy to create simple buttons with cool states.
 
+=== Click functions ===
 But that is not it. The `NavigationButton` class is very easy to configure. There is a `click` function, which should basically cover all types of button-click-functions you would ever create. See code below for the divers navigation button possibilities.
 {{{
 import nl.stroep.framework.navigation.NavigationButton;
