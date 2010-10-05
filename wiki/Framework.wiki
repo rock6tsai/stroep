@@ -247,7 +247,7 @@ EventCenter.getInstance().addEventListener(MyCustomEvent.SAY_HELLO, onSayHello);
 function onSayHello( e:MyCustomEvent ):void { trace('Hello' + e.firstName) }
 
 // example custom event: MyCustomEvent.as
-package nl.website.navigation 
+package 
 {
 	import flash.events.Event;
 	public class MyCustomEvent extends Event 
