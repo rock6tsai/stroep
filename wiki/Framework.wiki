@@ -4,7 +4,7 @@
 
 = Introduction =
 
-Over time I have created this mini-framework which helps you to easily setup a flash website. The framework makes use of SWFAddress for deeplinking and TweenLite for transitions. When you need to create small/medium websites with deeplinking and page transitions, this mini-framework could help you develop faster. I mostly used it for custom projects like viral websites. The best of this mini-framework is the simplicity (no need to learn hard design-patterns, just straight-forward) and I believe you just develop faster because you don't have to develop about a page setup or start from scratch, but keeps freedom to build the site which satisfies your needs.
+Over time I have created this mini-framework which helps you to easily setup a flash website. The framework makes use of `SWFAddress` for deeplinking and `TweenLite` for transitions. When you need to create small/medium websites with deeplinking and page transitions, this mini-framework could help you develop faster. I mostly used it for custom projects like viral websites. The best of this mini-framework is the simplicity (no need to learn hard design-patterns, just straight-forward) and I believe you just develop faster because you don't have to develop about a page setup or start from scratch, but keeps freedom to build the site which satisfies your needs.
 
 = Features =
 
@@ -35,7 +35,7 @@ Before starting, you should know a few things: how to create link classes to Mov
 Just to start, create a new flash file. Save it and place the framework files next to the flash, or create your own setup where the framework is included. Make sure you include TweenLite and SWFAddress too. Now we need to design some pages.
 
 === Step 2: Create Pages ===
- Create a MovieClip called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the MovieClip in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class. Create 2 other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
+ Create a MovieClip called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the `MovieClip` in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class. Create 2 other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
 
 === Step 3: Create Document class ===
 Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a AS-only project, mark this file as 'always compile'.
