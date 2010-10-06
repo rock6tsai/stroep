@@ -273,18 +273,23 @@ function sayHelloTo( firstName:String, lastName:String ){
 It is even possible to dispatch global events. You can use the `EventCenter.getInstance()` to listen to them. Note; inside the `Page`-classes there is already an reference to the EventCenter Singleton, it is named `eventcenter`.
 {{{
 // OPTION 1. dispatch event without parameters (type only, thats always required)
-myButton.click(MyCustomEvent, ButtonTypes.GLOBAL_EVENT, "SAY_HELLO");
-
-// anywhere else inside the application you could receive the event
-EventCenter.addEventListener(MyCustomEvent.SAY_HELLO, onSayHello);
-function onSayHello( e:MyCustomEvent ):void { trace('say hello') }
+myButton.click(MyCustomEvent, ButtonTypes.EVENT, "say_hello");
 
 // OPTION 2. dispatch event with parameters
-myButton.click(MyCustomEvent, ButtonTypes.GLOBAL_EVENT, "SAY_HELLO", "Mark");
+myButton.click(MyCustomEvent, ButtonTypes.EVENT, "say_hello_to", "Mark");
+
 
 // Anywhere else inside the application you could receive the event
 EventCenter.getInstance().addEventListener(MyCustomEvent.SAY_HELLO, onSayHello);
-function onSayHello( e:MyCustomEvent ):void { trace('Hello' + e.firstName) }
+function onSayHello( e:MyCustomEvent ):void { 
+  trace('Say hello') 
+}
+
+EventCenter.getInstance().addEventListener(MyCustomEvent.SAY_HELLO_TO, onSayHelloTo);
+function onSayHelloTo( e:MyCustomEvent ):void { 
+  trace('Hello ' + e.firstName) 
+}
+
 
 // example custom event: MyCustomEvent.as
 package 
@@ -292,7 +297,8 @@ package
 	import flash.events.Event;
 	public class MyCustomEvent extends Event 
 	{
-		public static const SAY_HELLO:String = "SAY_HELLO";
+		public static const SAY_HELLO:String = "say_hello";
+		public static const SAY_HELLO_TO:String = "say_hello_to";
 		
 		private var _firstName:String;
 		
