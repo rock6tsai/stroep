@@ -196,25 +196,6 @@ package
 
 If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
 
-=== Troubleshooting checklist ===
-  * If you use an external code editor which compiles the code, don't forget to build your assets first. 
-  * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
-  * Always disable 'Automatically declare stage instances' when using a code centered project
-  * Make sure `TweenLite` is included. See online docs.
-  * Make sure `SWFAddress` is included. When running from browser, the javaScript file should be added too. See online docs.
-  * Events are automatically removed from the Page class. This excludes child objects; they could extend `EventManagedSprite` too or you have to remove the listeners manually.
-  * When using `EventCenter.getInstance().addEventListener` on a not-`EventManagedSprite`, you should call the `EventCenter.getInstance().removeListeners(this)` on `Event.REMOVED_FROM_STAGE`, since the `EventCenter` is a global object and keeps existing forever. Otherwise you have references to removed objects, which could cause strange behaviors.
-{{{
-EventCenter.getInstance().addListener(this, MyCustomEvent.SAY_HELLO, onSayHello);
-
-// listen when clip is removed from the stage
-this.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
-function onRemovedFromStage(e:Event):void
-{
-   EventCenter.getInstance().removeListeners(this);
-}
-
-}}}
 
 ----
 
@@ -310,4 +291,25 @@ package
 		public function get firstName():String { return _firstName; }
 	}
 }
+}}}
+
+
+= Troubleshooting checklist =
+  * If you use an external code editor which compiles the code, don't forget to build your assets first. 
+  * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
+  * Always disable 'Automatically declare stage instances' when using a code centered project
+  * Make sure `TweenLite` is included. See online docs.
+  * Make sure `SWFAddress` is included. When running from browser, the javaScript file should be added too. See online docs.
+  * Events are automatically removed from the Page class. This excludes child objects; they could extend `EventManagedSprite` too or you have to remove the listeners manually.
+  * When using `EventCenter.getInstance().addEventListener` on a not-`EventManagedSprite`, you should call the `EventCenter.getInstance().removeListeners(this)` on `Event.REMOVED_FROM_STAGE`, since the `EventCenter` is a global object and keeps existing forever. Otherwise you have references to removed objects, which could cause strange behaviors.
+{{{
+EventCenter.getInstance().addListener(this, MyCustomEvent.SAY_HELLO, onSayHello);
+
+// listen when clip is removed from the stage
+this.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+function onRemovedFromStage(e:Event):void
+{
+   EventCenter.getInstance().removeListeners(this);
+}
+
 }}}
