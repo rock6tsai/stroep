@@ -4,7 +4,7 @@
 
 = Introduction =
 
-Over time I have created this mini-framework which helps you to easily setup a flash website. The framework makes use of `SWFAddress` for deeplinking and `TweenLite` for transitions. When you need to create small/medium websites with deeplinking and page transitions, this mini-framework could help you develop faster. I mostly used it for custom projects like viral websites. The best of this mini-framework is the simplicity (no need to learn hard design-patterns, just straight-forward) and I believe you just develop faster because you don't have to develop about a page setup or start from scratch, but keeps freedom to build the site which satisfies your needs.
+Over time I have created this mini-framework which helps you to easily setup a flash website. The framework makes use of `SWFAddress` for deeplinking and `TweenLite` for transitions. When you need to create small/medium websites with deeplinking and basic transitions, this mini-framework could help you develop faster. I mostly used it for custom projects like viral websites. The best of this mini-framework is the simplicity (no need to learn hard design-patterns, it is really straight-forward if you know the basics). You don't have to develop a page setup or start from scratch, but keep the freedom to build the site in your style.
 
 = Features =
 
@@ -38,12 +38,12 @@ Just to start, create a new flash file. Save it and place the framework files ne
 
 === Step 2: Create Pages ===
 
-Create a `MovieClip` called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the `MovieClip` in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class. Create 2 other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
+Create a `MovieClip` called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the `MovieClip` in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class from the framework. Create two other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
 
 === Step 3: Create Document class ===
-Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a AS-only project, mark this file as 'always compile'.
+Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a project from external code editor, mark this file as 'always compile' or compile starting point.
 
-Note: This is the most simple usage of the framework. There are more settings available.
+Note: This is the most simple usage of the framework. Ofcourse there are more settings available.
 {{{
 package
 {
@@ -195,6 +195,26 @@ package
 }}}
 
 If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
+
+=== Troubleshooting checklist ===
+  * If you use an external code editor which compiles the code, don't forget to build your assets first. 
+  * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
+  * Always disable 'Automatically declare stage instances' when using a code centered project
+  * Make sure `TweenLite` is included. See online docs.
+  * Make sure `SWFAddress` is included. When running from browser, the javaScript file should be added too. See online docs.
+  * Events are automatically removed from the Page class. This excludes child objects; they could extend `EventManagedSprite` too or you have to remove the listeners manually.
+  * When using `EventCenter.getInstance().addEventListener` on a not-`EventManagedSprite`, you should call the `EventCenter.getInstance().removeListeners(this)` on `Event.REMOVED_FROM_STAGE`, since the `EventCenter` is a global object and keeps existing forever. Otherwise you have references to removed objects, which could cause strange behaviors.
+{{{
+EventCenter.getInstance().addListener(this, MyCustomEvent.SAY_HELLO, onSayHello);
+
+// listen when clip is removed from the stage
+this.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+function onRemovedFromStage(e:Event):void
+{
+   EventCenter.getInstance().removeListeners(this);
+}
+
+}}}
 
 ----
 
