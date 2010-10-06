@@ -1,6 +1,8 @@
 #summary Description of the framework
 
-=== This is a working draft. The framework is not released yet ===
+=== This is a working draft. The framework is not official released yet ===
+
+_Sources are available here in the repository_
 
 = Introduction =
 
