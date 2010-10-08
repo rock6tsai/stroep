@@ -53,6 +53,7 @@ package nl.stroep.framework.utils
                    
                     eventObject.listener = null;
                     eventObject = null; 
+					events.splice(i, 1);
                 }
                 
                 delete eventsList[type];

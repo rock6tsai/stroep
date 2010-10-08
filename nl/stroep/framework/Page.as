@@ -49,7 +49,7 @@ package nl.stroep.framework
 			
 		}
 		
-		/// Starts transition-in animation and dispatches global event PageEvent.SHOW_START. Cannot be overrided. Listen to PageEvent.SHOW_START instead.
+		/// Starts transition-in animation and dispatches global event PageEvent.SHOW_START. Cannot be overridden. Listen to PageEvent.SHOW_START instead.
 		final public function show():void
 		{
 			settings.transition.animateIn(this, settings.transitionInSpeed, settings.easingInFunc);
@@ -57,7 +57,7 @@ package nl.stroep.framework
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_START, pageName ) );
 		}
 		
-		/// Starts transition-out animation and dispatches global event PageEvent.HIDE_START. Cannot be overrided. Listen to PageEvent.HIDE_START instead.
+		/// Starts transition-out animation and dispatches global event PageEvent.HIDE_START. Cannot be overridden. Listen to PageEvent.HIDE_START instead.
 		final public function hide():void
 		{			
 			settings.transition.animateOut(this, settings.transitionOutSpeed, settings.easingOutFunc);
@@ -67,7 +67,7 @@ package nl.stroep.framework
 			freeze();
 		}
 		
-		/// Dispatches global event PageEvent.SHOW_COMPLETE after completing transition-in animation. Cannot be overrided. Listen to PageEvent.SHOW_COMPLETE instead.
+		/// Dispatches global event PageEvent.SHOW_COMPLETE after completing transition-in animation. Cannot be overridden. Listen to PageEvent.SHOW_COMPLETE instead.
 		final public function onShowComplete():void
 		{			
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_COMPLETE, pageName ) );
@@ -77,7 +77,7 @@ package nl.stroep.framework
 			unfreeze();
 		}
 		
-		/// Dispatches global event PageEvent.HIDE_COMPLETE after completing transition-out animation. Cannot be overrided. Listen to PageEvent.HIDE_COMPLETE instead.
+		/// Dispatches global event PageEvent.HIDE_COMPLETE after completing transition-out animation. Cannot be overridden. Listen to PageEvent.HIDE_COMPLETE instead.
 		final public function onHideComplete():void
 		{
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.HIDE_COMPLETE, pageName ) );
