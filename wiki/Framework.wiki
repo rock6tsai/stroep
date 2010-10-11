@@ -295,6 +295,95 @@ package
 }
 }}}
 
+= Documentation =
+== PageFactory ==
+
+  * `cleanupDelay:uint`
+    Milliseconds after automatic call of `System.GC();`. Default value 5000 ms.
+  * `titlePrefix:String`
+    Default prefix title string. The pageFactory will set the title like this: _titlePrefix - pageTitle_
+  * `view`
+    All pages will be added to this `Sprite`. Don't forget to `addChild` 'em in your main document.
+  * `defaultPageName`
+    You can use this value to automaticly jump to this page.
+  * `defaultSettings`
+    `PageSettings` class which will be applied on every `Page`. These settings can be overridden in the `Page` Class itself.
+  * `add(pageName:String, classReference:Class, title:String = "", wildcard:Boolean = false):void`
+     Registers a page reference with optional title to the pageFactory. The name reflects the deeplink url. These should start with a forwardslash "/". 
+    You can (optional) pass a title too, this title will be displayed in your browser-title.
+    Normally an url represents one page (because the exact pageName links to a classReference). It is possible to add a wildcard to the url, which means you can add optional directories, without have declare them all (mostly on dynamic pages). This (optional) feature is still under construction.
+  * `remove(pageName:String):void`
+    Unregisters a page reference from the pageFactory
+  * `init()`
+    Start the factory, opens first page
+  * `dispose()`
+    Removes + cleans pageFactory data
+  * `PageFactory.gotoPage(pageName:String):void`
+    Static function. Navigate to new page
+
+== Page ==
+
+  * `onAddedToStage(e:Event):void `
+    Protected. Overridable method to detect if page is added from stage
+		
+
+		
+  * `onRemovedFromStage(e:Event):void `
+    Protected. Overridable method to detect if page is removed from stage
+		
+
+  * `onPageReady():void `
+    Protected. Overridable method to detect if page is ready (ready means after completing transition-in animation)
+		
+
+  * `show():void`
+    Final. Starts transition-in animation and dispatches global event `PageEvent.SHOW_START`. Cannot be overrided. Listen to `PageEvent.SHOW_START` instead.
+	
+  * `hide():void`
+    Final. Starts transition-out animation and dispatches global event `PageEvent.HIDE_START`. Cannot be overrided. Listen to `PageEvent.HIDE_START` instead.
+		
+  * `onShowComplete():void`
+    protected. Dispatches global event `PageEvent.SHOW_COMPLETE` after completing transition-in animation. Cannot be overrided. Listen to `PageEvent.SHOW_COMPLETE` instead.
+		
+  * `onHideComplete():void`
+    Protected. Dispatches global event `PageEvent.HIDE_COMPLETE` after completing transition-out animation. Cannot be overrided. Listen to `PageEvent.HIDE_COMPLETE` instead.
+		
+  * `freeze():void `  
+    Protected. Disable page interactions
+		
+  * `unfreeze():void  `
+    Protected. Enable page interactions
+
+== PageSettings ==
+
+  * `transition:ITransition`
+  Transition (interface) which will be applied on the page when navigating from/to it, which includes the following functions. 
+    * `function animateIn(page:Page, speed:Number, easing:Function):void`
+    * `function animateOut(page:Page, speed:Number, easing:Function):void`
+   There are already 4 transitions available in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
+  * `easingInFunc:Function`
+  This is the easing function which will be applied on the transitionIn animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
+  * `easingOutFunc:Function`
+  This is the easing function which will be applied on the transitionOut animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
+  * `transitionInSpeed:Number` 
+  This is the easing speed which will be applied on the transitionIn animation, which represents the duration of the transitionIn animation. This should not be negative.
+  * `transitionOutSpeed:Number`
+  This is the easing speed which will be applied on the transitionOut animation, which represents the duration of the transitionOut animation. This should not be negative.
+  * `pageAlignment:String`
+  Alignment of the page to the stage. You can use the `Alignment` class for this settings: 
+    * `Alignment.TOP_LEFT:String = "top_left";`
+    * `Alignment.TOP_CENTER:String = "top_center";`
+    * `Alignment.TOP_RIGHT:String = "top_right";`
+    * `Alignment.MIDDLE_LEFT:String = "middle_left";`
+    * `Alignment.MIDDLE_CENTER:String = "middle_center";`
+    * `Alignment.MIDDLE_RIGHT:String = "middle_right";`
+    * `Alignment.BOTTOM_LEFT:String = "bottom_left";`
+    * `Alignment.BOTTOM_CENTER:String = "bottom_center";`
+    * `Alignment.BOTTOM_RIGHT:String = "bottom_right";`
+  (default value: "top_left")
+  * `clipAlignment:String`
+  Alignment of the centerpoint inside the page. Normally you should place the centerpoint to the upperleft, You can use the `Alignment` class for this settings. 
+  (default value: "top_left")
 
 = Troubleshooting checklist =
   * If you use an external code editor which compiles the code, don't forget to build your assets first. 
