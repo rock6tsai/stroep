@@ -74,12 +74,13 @@ package nl.stroep.framework.navigation
 			addEventListener(MouseEvent.ROLL_OVER, onRollOver);
 			addEventListener(MouseEvent.ROLL_OUT, onRollOut);
 			
-			eventcenter.addEventListener(NavigationButtonEvent.BUTTON_SELECTED, onButtonSelected);
+			eventcenter.addListener(this, NavigationButtonEvent.BUTTON_SELECTED, onButtonSelected);
 		}
 		
 		private function onRemovedFromStage(e:Event):void 
 		{
 			path = null;
+			parameters = null;
 		}
 		
 		private function onButtonSelected(e:NavigationButtonEvent):void 
@@ -156,7 +157,7 @@ package nl.stroep.framework.navigation
 		
 		private function onButtonClick(e:MouseEvent):void 
 		{
-			trace("onButtonClick", this, path, type);
+			// trace("onButtonClick", this, path, type);
 			
 			if (!path) { trace("Error: Property NavigationButton path undefined"); return }
 			
@@ -217,7 +218,7 @@ package nl.stroep.framework.navigation
 			if (!isActive)
 			{
 				if (hasOutLabel) gotoAndPlay(OUT);
-				TweenLite.to(this, 0.2, { alpha: 1, colorTransform: { exposure:1 }, ease: Strong.easeOut } );
+				//TweenLite.to(this, 0.2, { alpha: 1, colorTransform: { exposure:1 }, ease: Strong.easeOut } );
 			}
 		}
 		
@@ -226,7 +227,7 @@ package nl.stroep.framework.navigation
 			if (!isActive)
 			{
 				if (hasOverLabel) gotoAndPlay(OVER);
-				TweenLite.to(this, 0.3, { alpha: 1, colorTransform: { exposure:1.05 }, ease: Strong.easeIn } );
+				//TweenLite.to(this, 0.3, { alpha: 1, colorTransform: { exposure:1.05 }, ease: Strong.easeIn } );
 			}
 		}
 		

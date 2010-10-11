@@ -1,5 +1,7 @@
 package nl.stroep.framework.transitions 
 {
+	import com.greensock.plugins.AutoAlphaPlugin;
+	import com.greensock.plugins.TweenPlugin;
 	import com.greensock.TweenLite;
 	import flash.display.DisplayObject;
 	import flash.display.DisplayObjectContainer;
@@ -18,7 +20,9 @@ package nl.stroep.framework.transitions
 		public function WeirdTransition(impact:int = 200, levels:int=1) 
 		{
 			this.impact = impact;
-			this.levels= levels;
+			this.levels = levels;
+			
+			TweenPlugin.activate([AutoAlphaPlugin]);
 		}
 		
 		private function rnd(val:Number = 1):Number

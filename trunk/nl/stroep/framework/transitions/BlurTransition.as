@@ -1,5 +1,7 @@
 package nl.stroep.framework.transitions 
 {
+	import com.greensock.plugins.AutoAlphaPlugin;
+	import com.greensock.plugins.TweenPlugin;
 	import com.greensock.TweenLite;
 	import nl.stroep.framework.Page;
 	import nl.stroep.framework.transitions.interfaces.ITransition;
@@ -16,6 +18,8 @@ package nl.stroep.framework.transitions
 		{
 			this.quality = quality;
 			this.blurAmount = blurAmount;
+			
+			TweenPlugin.activate([AutoAlphaPlugin]);
 		}
 		
 		/* INTERFACE nl.stroep.framework.transitions.interfaces.ITransition */
@@ -24,12 +28,12 @@ package nl.stroep.framework.transitions
 		{
 			page.alpha = 0;
 			TweenLite.to( page, 0, { autoAlpha: 0, blurFilter: { blurX:0, blurY:0, quality:this.quality, remove:false } });
-			TweenLite.to( page, speed, { delay:0.01, overwrite:false,autoAlpha: 1, blurFilter: { blurX:0, blurY:0, quality:this.quality, remove:true}, onComplete: page.onShowComplete, ease: easing } );
+			TweenLite.to( page, speed, { delay:0.01, overwrite:false, autoAlpha: 1, blurFilter: { blurX:0, blurY:0, quality:this.quality, remove:true }, onComplete: page.onShowComplete, ease: easing } );
 		}
 		
 		public function animateOut(page:Page, speed:Number, easing:Function):void
 		{
-			TweenLite.to( page,  speed, { autoAlpha: 0, blurFilter: { blurX:blurAmount, blurY:blurAmount, quality:this.quality, remove:false}, onComplete: page.onHideComplete, ease: easing } );
+			TweenLite.to( page,  speed, { autoAlpha: 0, blurFilter: { blurX:blurAmount, blurY:blurAmount, quality:this.quality, remove:false }, onComplete: page.onHideComplete, ease: easing } );
 		}
 	}
 

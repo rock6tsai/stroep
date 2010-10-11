@@ -1,5 +1,7 @@
 package nl.stroep.framework.transitions 
 {
+	import com.greensock.plugins.AutoAlphaPlugin;
+	import com.greensock.plugins.TweenPlugin;
 	import com.greensock.TweenLite;
 	import nl.stroep.framework.Page;
 	import nl.stroep.framework.transitions.interfaces.ITransition;
@@ -25,6 +27,8 @@ package nl.stroep.framework.transitions
 			this.type = type;
 			this.distance = distance;
 			this.fadeEnabled = fadeEnabled;
+			
+			TweenPlugin.activate([AutoAlphaPlugin]);
 		}
 		/* INTERFACE nl.stroep.framework.transitions.interfaces.ITransition */
 		
