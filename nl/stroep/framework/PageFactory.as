@@ -16,49 +16,44 @@ package nl.stroep.framework
 	 */
 	public class PageFactory
 	{
-		public static var cleanupDelay:int = 5000;
+		public var cleanupDelay:uint = 5000;
 		public var titlePrefix:String = "";
 		
-		public var defaultPageReference:Class;
+		public var defaultPageName:String;
 		public var view:Sprite;
-		public var timeoutID:int;
 		public var defaultSettings:PageSettings;
 		
 		private var currentPageName:String;
 		private var eventcenter:EventCenter;
-		private var wildcardPageList:Dictionary;
-		private var pageList:Dictionary;
+		private var pageDataList:Dictionary;
 		private var page:Page;
+		private var timeoutID:int;
 		
 		public function PageFactory() 
 		{	
 			eventcenter = EventCenter.getInstance();
 			
-			pageList = new Dictionary();
-			wildcardPageList = new Dictionary();
+			pageDataList = new Dictionary();
 		}
 		
-		/// add a class reference
-		public function add(pageName:String, classReference:Class, wildcard:Boolean = false):void
+		/// Registers a page reference with optional title to the pageFactory. The name reflects the deeplink url
+		public function add(pageName:String, classReference:Class, title:String = "", wildcard:Boolean = false):void
 		{
-			pageList[ pageName ] = classReference;
-			if (wildcard) wildcardPageList[ pageName ] = classReference;
+			pageDataList[ pageName ] = new PageData( pageName, classReference, title, wildcard);
+			if (!defaultPageName) defaultPageName = pageName;
 		}
 		
-		/// remove page reference from 
+		/// Unregisters a page reference from the pageFactory
 		public function remove(pageName:String):void
 		{
-			pageList[ pageName ] = null;
-			delete pageList[ pageName ];
-			delete wildcardPageList[ pageName ];
+			pageDataList[ pageName ] = null;
+			delete pageDataList[ pageName ];
 		}
 		
 		/// Start the factory, opens first page
 		public function init():void
 		{
-			if (!defaultPageReference) defaultPageReference = pageList[0];
 			if (!view) view = new Sprite();
-			
 			initListeners();
 		}
 		
@@ -68,7 +63,7 @@ package nl.stroep.framework
 			EventCenter.getInstance().dispatchEvent( new PageEvent( PageEvent.NEW_PAGE, pageName) );
 		}
 		
-		/// Remove private data
+		/// Removes + cleans pageFactory data
 		public function dispose():void
 		{
 			clearTimeout(timeoutID);
@@ -79,7 +74,7 @@ package nl.stroep.framework
 			
 			SWFAddress.removeEventListener(SWFAddressEvent.CHANGE, handleSWFAddress);
 			
-			pageList = null;
+			pageDataList = null;
 		}
 		
 		private function initListeners():void
@@ -94,11 +89,13 @@ package nl.stroep.framework
 		
 		private function onPageShowComplete(e:PageEvent):void 
 		{
+			trace("onPageShowComplete");
 			timeoutID = setTimeout(cleanup, cleanupDelay);
 		}
 		
 		private function cleanup():void
 		{
+			trace("GC called");
 			System.gc();
 		}
 		
@@ -121,6 +118,7 @@ package nl.stroep.framework
 		{
 			destroyPage();
 			
+			//SWFAddress.setTitle( titlePrefix );
 			SWFAddress.setValue( currentPageName );
 		}
 		
@@ -135,7 +133,11 @@ package nl.stroep.framework
 			
 			if (name && name.length > 0)
 			{
-				var PageReference:Class = pageList[name] as Class;
+				var pageData:PageData = pageDataList[name] as PageData;
+				
+				var PageReference:Class;
+				
+				if (pageData) PageReference = pageData.classReference as Class;
 				
 				if (PageReference != null)
 				{
@@ -143,21 +145,11 @@ package nl.stroep.framework
 				}
 				else
 				{
-					for each (var pageName:String in wildcardPageList)
-					{
-						if (name.indexOf( pageName ) > -1)
-						{
-							PageReference = wildcardPageList[pageName] as Class;
-							
-							page = new PageReference() as Page;
-							
-							break;
-						}
-					}
+					page = findWildCardPage(name);
 					
 					if (page == null)
 					{
-						page = new defaultPageReference() as Page;
+						page = findDefaultPage();
 					}
 				}
 			}
@@ -170,11 +162,33 @@ package nl.stroep.framework
 			}
 		}
 		
+		private function findDefaultPage():Page 
+		{
+			var pageData:PageData = pageDataList[defaultPageName] as PageData;
+			var PageReference:Class
+			if (pageData) PageReference = pageData.classReference as Class;
+			return new PageReference();
+		}
+		
+		private function findWildCardPage(name:String):Page 
+		{
+			for each (var pageData:PageData in pageDataList)
+			{
+				if (pageData.wildcard && name.indexOf( pageData.pageName ) > -1)
+				{
+					var PageReference:Class = pageData.classReference as Class;
+					
+					return new PageReference() as Page;
+				}
+			}
+			return null;
+		}
+		
 		private function destroyPage():void
 		{
 			while (view.numChildren > 0)
 			{
-				var page:DisplayObject = view.getChildAt(0) as DisplayObject;
+				var page:Page = view.getChildAt(0) as Page;
 				view.removeChild(page);
 				page = null;
 			}
@@ -182,4 +196,21 @@ package nl.stroep.framework
 		
 	}
 
+}
+
+final internal class PageData
+{
+	public var pageName:String;
+	public var classReference:Class;
+	public var pageTitle:String;
+	public var wildcard:Boolean;
+	
+	public function PageData(pageName:String, classReference:Class, pageTitle:String, wildcard:Boolean) 
+	{
+		this.pageName = pageName;
+		this.classReference = classReference;
+		this.pageTitle = pageTitle;
+		this.wildcard = wildcard;
+	}
+ 
 }

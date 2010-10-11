@@ -16,6 +16,7 @@ package nl.stroep.framework
 	public class Page extends EventManagedSprite
 	{		
 		public var pageName:String;
+		public var pageTitle:String;
 		public var settings:PageSettings = new PageSettings();
 		
 		public function Page():void
@@ -40,7 +41,10 @@ package nl.stroep.framework
 		/// Overridable method to detect if page is removed from stage
 		protected function onRemovedFromStage(e:Event):void 
 		{
-			
+			settings.easingInFunc = null;
+			settings.easingOutFunc = null;
+			settings.transition = null;
+			settings = null;
 		}
 		
 		/// Overridable method to detect if page is ready (ready means after completing transition-in animation)

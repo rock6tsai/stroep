@@ -10,7 +10,7 @@ package nl.stroep.framework.utils
 	 * Global eventdispatching singleton class 
 	 * @author Mark Knol
 	 */
-	public class EventCenter extends EventDispatcher implements IEventDispatcher
+	public class EventCenter 
 	{
 		private var eventsList:Object = {};
 		
@@ -18,13 +18,16 @@ package nl.stroep.framework.utils
 		private static var allowInstantiation:Boolean = false;
 		
 		private var dispatcher:EventDispatcher;
+		private var eventRemover:EventRemover;
 		
 		public static function getInstance():EventCenter
 		{
 			if ( instance == null )
 			{
 				allowInstantiation = true;
+				
 				instance = new EventCenter();
+				
 				allowInstantiation = false;
 			}
 			return instance;
@@ -36,64 +39,53 @@ package nl.stroep.framework.utils
 			{
 				throw new Error("Error: Instantiation failed: Use EventCenter.getInstance() instead of new.");
 			}
-		}
-		
-		public function addListener(scope:Object, type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void 
-		{
-			super.addEventListener(type, listener, useCapture, priority, useWeakReference);
-			
-			trace("scope addListener:",scope)
-			if (!eventsList[ scope ])
-			{
-				eventsList[ scope ] = [ new EventObject( type, listener, useCapture ) ];
-			}
 			else
 			{
-				eventsList[ scope ].push( new EventObject( type, listener, useCapture ) );
+				dispatcher = new EventDispatcher();
+				eventRemover = new EventRemover(dispatcher);
 			}
 		}
 		
-		public function removeListeners(scope:Object):void 
+		public function dispatchEvent( event:Event ):void
 		{
-			var events:Array = eventsList[scope] as Array;
+			//trace("eventcenter dispatched ", event.type);
+			dispatcher.dispatchEvent( event );
+		}
+		
+		/// Add global listener
+		public function addListener(scope:*, type:String, listener:Function, useCapture:Boolean = false):void
+		{
+			dispatcher.addEventListener(type, listener, useCapture);
 			
-			trace("scope onRemove:", scope)
-			if (events && events.length > 0)
+			try 
+			{ 
+				eventRemover.addEventListener(type, listener, useCapture, scope); 
+			} 
+			catch (e:Error) 
 			{
-				for (var i:int = 0; i < events.length; i++) 
-				{
-					var eventObject:EventObject = events[i];
-					removeEventListener( eventObject.type, eventObject.listener, eventObject.useCapture );
-					
-					trace("Auto removed listener ", eventObject.type, eventObject.listener, "from", scope);
-					
-					eventObject.listener = null;
-					eventObject = null;
-					
-					if (events.length == 0) 
-						delete eventsList[scope];
-				}
-			}
-			else
-			{
-				trace("no events found?")
+				trace("failed to add eventRemover to ", this, type)
 			}
 		}
 		
-	}
-	
-}
-
-final internal class EventObject
-{
-	public var type:String
-	public var listener:Function
-	public var useCapture:Boolean
-	
-	public final function EventObject ( type:String, listener:Function, useCapture:Boolean ):void
-	{
-		this.type = type;
-		this.listener = listener;
-		this.useCapture = useCapture;
+		/// Manually remove global listener
+		public function removeListener(type:String, listener:Function, useCapture:Boolean = false):void
+		{
+			dispatcher.removeEventListener(type, listener, useCapture);
+			
+			try 
+			{ 
+				eventRemover.removeEventListener(type, listener, useCapture); 
+			} 
+			catch (e:Error) 
+			{
+				trace("failed to remove eventRemover to ", this, type)
+			}
+		}
+		
+		/// remove listeners from scope
+		public function removeListeners(scope:*):void 
+		{
+			eventRemover.removeListenersByScope(scope);
+		}
 	}
 }
