@@ -10,14 +10,12 @@ package nl.stroep.framework.display
 	 */
 	public class EventManagedMovieClip extends MovieClip
 	{
-		private var eventRemover:EventRemover;
+		private var _eventRemover:EventRemover;
 		protected var eventcenter:EventCenter = EventCenter.getInstance();
 		
 		public function EventManagedMovieClip() 
 		{			
 			super();
-			
-			eventRemover = new EventRemover(this);
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 		}
 		
@@ -25,8 +23,8 @@ package nl.stroep.framework.display
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			
-			eventRemover.removeListeners();
-			eventcenter.removeListeners(this);
+			eventRemover.destroy();
+			eventcenter.removeListener(this);
 		}
 
 		public override function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
@@ -55,6 +53,12 @@ package nl.stroep.framework.display
 			{
 				trace("failed to remove eventRemover to ", this, type)
 			}
+		}
+		
+		public function get eventRemover():EventRemover 
+		{ 
+			if ( !_eventRemover ) _eventRemover = new EventRemover(this);
+			return _eventRemover; 
 		}
 
 	}

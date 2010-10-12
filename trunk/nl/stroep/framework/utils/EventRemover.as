@@ -24,7 +24,7 @@ package nl.stroep.framework.utils
             }
 		}
 
-		/// Removes all listeners, disposes EventRemover
+		/// Removes all listeners
 		public function removeListeners():void
         {
             for each ( var eventObject:EventObject in eventsList)
@@ -33,9 +33,15 @@ package nl.stroep.framework.utils
 				eventObject = null;
                 eventsList.splice( eventsList.indexOf(eventObject), 1);
             }  
+        }
+		
+		/// Removes Listeners, clears references
+		public function destroy():void
+		{
+			removeListeners();
 			eventsList = null;
 			dispatcher = null;
-        }
+		}
 		
 		/// Remove all listeners with specific type
 		public function removeListenersByType(type:String):void
