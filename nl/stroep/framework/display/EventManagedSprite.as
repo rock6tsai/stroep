@@ -11,7 +11,7 @@ package nl.stroep.framework.display
 	 */
 	public class EventManagedSprite extends Sprite
 	{
-		protected var eventRemover:EventRemover;
+		protected var _eventRemover:EventRemover;
 		
 		/// global event center
 		protected var eventcenter:EventCenter = EventCenter.getInstance();
@@ -20,7 +20,6 @@ package nl.stroep.framework.display
 		{			
 			super();
 			
-			eventRemover = new EventRemover(this);
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 		}
 		
@@ -28,7 +27,7 @@ package nl.stroep.framework.display
 		{
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			
-			eventRemover.removeListeners();
+			eventRemover.destroy();
 			eventcenter.removeListeners(this);
 		}
 
@@ -58,6 +57,12 @@ package nl.stroep.framework.display
 			{
 				trace("failed to remove eventRemover to ", this, type)
 			}
+		}
+		
+		public function get eventRemover():EventRemover 
+		{ 
+			if ( !_eventRemover ) _eventRemover = new EventRemover(this);
+			return _eventRemover; 
 		}
 
 	}

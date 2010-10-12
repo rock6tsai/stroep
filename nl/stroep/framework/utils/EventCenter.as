@@ -18,7 +18,7 @@ package nl.stroep.framework.utils
 		private static var allowInstantiation:Boolean = false;
 		
 		private var dispatcher:EventDispatcher;
-		private var eventRemover:EventRemover;
+		private var _eventRemover:EventRemover;
 		
 		public static function getInstance():EventCenter
 		{
@@ -42,7 +42,6 @@ package nl.stroep.framework.utils
 			else
 			{
 				dispatcher = new EventDispatcher();
-				eventRemover = new EventRemover(dispatcher);
 			}
 		}
 		
@@ -86,6 +85,12 @@ package nl.stroep.framework.utils
 		public function removeListeners(scope:*):void 
 		{
 			eventRemover.removeListenersByScope(scope);
+		}
+		
+		public function get eventRemover():EventRemover 
+		{ 
+			if ( !_eventRemover ) _eventRemover = new EventRemover(dispatcher);
+			return _eventRemover; 
 		}
 	}
 }
