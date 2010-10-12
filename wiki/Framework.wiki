@@ -388,6 +388,7 @@ package
 = Troubleshooting checklist =
   * If you use an external code editor which compiles the code, don't forget to build your assets first. 
   * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
+  * The `Page` class should call the `show` function when it is ready. Make sure its being called inside your class.
   * Always disable 'Automatically declare stage instances' when using a code centered project
   * Make sure `TweenLite` is included. See online docs.
   * Make sure `SWFAddress` is included. When running from browser, the javaScript file should be added too. See online docs.
