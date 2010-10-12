@@ -9,7 +9,7 @@ package nl.stroep.framework.utils
 	 */
 	public class EventRemover
 	{ 
-		private var eventsList:Object = {};
+		private var eventsList:Array = [];
 		private var dispatcher:IEventDispatcher;
 
 		public function EventRemover(dispatcher:IEventDispatcher) 
@@ -22,66 +22,83 @@ package nl.stroep.framework.utils
             {
                 throw new Error("ERROR: Cannot pass in a null dispatcher into new EventRemover()'");
             }
-		} 
-		
-		public function onRemovedFromStage(e:Event = null):void
-        {
-            this.removeAllListeners();
-        }
+		}
 
-		public function removeAllListeners():void
+		/// Removes all listeners, disposes EventRemover
+		public function removeListeners():void
         {
-            for (var type:String in eventsList)
+            for each ( var eventObject:EventObject in eventsList)
             {
-                this.removeListenerByType(type);
-            }        
+				//trace( "automaticly removed listener (all) ", eventObject.type, "from", dispatcher);
+				eventObject = null;
+                eventsList.splice( eventsList.indexOf(eventObject), 1);
+            }  
+			eventsList = null;
+			dispatcher = null;
         }
 		
-		public function removeListenerByType(type:String):void
+		/// Remove all listeners with specific type
+		public function removeListenersByType(type:String):void
         {
-            var events:Array = eventsList[type] as Array;
-            
-            //Just in case you weren't listening to that event, this if will prevent #1009 errors
-            if (events)
+            for each ( var eventObject:EventObject in eventsList)
             {
-                for (var i:int = 0; i < events.length; i++)
-                {
-                    var eventObject:EventObject = events[i];
-                    dispatcher.removeEventListener( type, eventObject.listener, eventObject.useCapture );
-                   
-                    // trace("Auto removed listener ", type, eventObject.listener, "from", this, dispatcher);
-                   
-                    eventObject.listener = null;
-                    eventObject = null; 
-					events.splice(i, 1);
-                }
-                
-                delete eventsList[type];
+				if (eventObject.type == type)
+				{
+					//trace( "automaticly removed listener (by type)", eventObject.type, "from", dispatcher);
+					eventObject = null;
+					eventsList.splice( eventsList.indexOf(eventObject), 1);
+				}
             }
         }
-       
-        public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
+		
+		/// Remove all listeners from specific scope
+		public function removeListenersByScope(scope:*):void
         {
-            if (!eventsList[ type ])
+            for each ( var eventObject:EventObject in eventsList)
             {
-                eventsList[ type ] = [ new EventObject( listener, useCapture ) ];
+				if (eventObject.scope == scope)
+				{
+					//trace( "automaticly removed listener (by scope)", eventObject.type, "from", dispatcher);
+					eventObject = null;
+					eventsList.splice( eventsList.indexOf(eventObject), 1);
+				}
             }
-            else
-            {
-                eventsList[ type ].push( new EventObject( listener, useCapture ) );
-            }
+        }
+		
+		/// store listener in EventRemover
+        public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, scope:* = null):void
+        {
+            eventsList.push( new EventObject( type, listener, useCapture, scope ) );
+        }
+		
+		/// remove specific listener
+        public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void
+        {
+			for each ( var eventObject:EventObject in eventsList)
+			{
+				if (eventObject.type == type && eventObject.listener == eventObject.listener && eventObject.useCapture == useCapture)
+				{
+					//trace( "manually removed listener", eventObject.type, "from", dispatcher);
+					eventObject = null;
+					eventsList.splice( eventsList.indexOf(eventObject), 1);
+				}
+			}
         }
     }
 }
 
 final internal class EventObject
 {
-    public var listener:Function
-    public var useCapture:Boolean
+    public var type:String;
+    public var listener:Function;
+    public var useCapture:Boolean;
+    public var scope:*;
    
-    public final function EventObject ( listener:Function, useCapture:Boolean = false ):void
+    public final function EventObject ( type:String, listener:Function, useCapture:Boolean = false, scope:* = null ):void
     {
+        this.type = type;
         this.listener = listener;
         this.useCapture = useCapture;
+        this.scope = scope;
     }
 }
