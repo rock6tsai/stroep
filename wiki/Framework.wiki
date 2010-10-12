@@ -337,16 +337,16 @@ package
 		
 
   * `show():void`
-    Final. Starts transition-in animation and dispatches global event `PageEvent.SHOW_START`. Cannot be overrided. Listen to `PageEvent.SHOW_START` instead.
+    Final. Starts transition-in animation and dispatches global event `PageEvent.SHOW_START`. Cannot be overridden. Listen to `PageEvent.SHOW_START` instead.
 	
   * `hide():void`
-    Final. Starts transition-out animation and dispatches global event `PageEvent.HIDE_START`. Cannot be overrided. Listen to `PageEvent.HIDE_START` instead.
+    Final. Starts transition-out animation and dispatches global event `PageEvent.HIDE_START`. Cannot be overridden. Listen to `PageEvent.HIDE_START` instead.
 		
   * `onShowComplete():void`
-    protected. Dispatches global event `PageEvent.SHOW_COMPLETE` after completing transition-in animation. Cannot be overrided. Listen to `PageEvent.SHOW_COMPLETE` instead.
+    protected. Dispatches global event `PageEvent.SHOW_COMPLETE` after completing transition-in animation. Cannot be overridden. Listen to `PageEvent.SHOW_COMPLETE` instead.
 		
   * `onHideComplete():void`
-    Protected. Dispatches global event `PageEvent.HIDE_COMPLETE` after completing transition-out animation. Cannot be overrided. Listen to `PageEvent.HIDE_COMPLETE` instead.
+    Protected. Dispatches global event `PageEvent.HIDE_COMPLETE` after completing transition-out animation. Cannot be overridden. Listen to `PageEvent.HIDE_COMPLETE` instead.
 		
   * `freeze():void `  
     Protected. Disable page interactions
