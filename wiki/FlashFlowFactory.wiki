@@ -56,7 +56,6 @@ package
 	public class Main extends Sprite 
 	{		
 		private var pageFactory:PageFactory;
-		private var pageHolder:Sprite = new Sprite();
 		
 		public function Main():void 
 		{
@@ -67,7 +66,7 @@ package
 			pageFactory.add( "/contact", ContactPageVC );
 			pageFactory.add( "/info", InfoPageVC );
 			
-			addChild( pageFactory.view = pageHolder );
+			addChild( pageFactory.view );
 						
 			// load intropage
 			pageFactory.init();
@@ -105,7 +104,6 @@ package
 	public class Main extends Sprite 
 	{		
 		private var pageFactory:PageFactory;
-		private var pageHolder:Sprite = new Sprite();
 		// stage instances
 		public var buttonHome:NavigationButton;
 		public var buttonInfo:NavigationButton;
@@ -120,10 +118,10 @@ package
 			pageFactory.add( Pages.CONTACT_PAGE, ContactPageVC );
 			pageFactory.add( Pages.INFO_PAGE, InfoPageVC );			
 			
-			// add page holder to stage, link it to pageFactory
-			addChild( pageFactory.view = pageHolder );
+			// add page holder to stage
+			addChild( pageFactory.view );
 						
-			// load fist page
+			// load first page
 			pageFactory.init();
 
 			initButtons();
@@ -156,7 +154,6 @@ package
 	public class Main extends Sprite 
 	{		
 		private var pageFactory:PageFactory;
-		private var pageHolder:Sprite = new Sprite();
 		// stage instances
 		public var buttonHome:NavigationButton;
 		public var buttonInfo:NavigationButton;
@@ -178,10 +175,10 @@ package
 					1,
 					0.7
 				);
-			// add page holder to stage, link it to pageFactory
-			addChild( pageFactory.view = pageHolder );
+			// add page holder to stage
+			addChild( pageFactory.view );
 						
-			// load fist page
+			// load first page
 			pageFactory.init();
 
 			initButtons();
