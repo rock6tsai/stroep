@@ -1,0 +1,408 @@
+#summary Description of flashflowfactory
+
+=== This is a working draft. The framework is not official released yet ===
+
+_Sources are available here in the repository_
+
+= Introduction =
+
+Over time I have created this mini-framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress` for deeplinking and `TweenLite` for transitions. When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. I mostly used it for custom projects like viral websites. The best of flashflowfactory is its simplicity (no need to learn hard design-patterns, it is really straight-forward if you know the basics). You don't have to develop a page setup or start from scratch, but keep the freedom to build the site in your style.
+
+= Flashflowfactory Features =
+
+These are the features of flashflowfactory
+  * Global page creation
+  * Deeplinking made easy: it's included and no need to worry about it anymore.
+  * Page class with overridable states. 
+  * Alternative navigation (button) system
+    * Easy linking
+  * Global Event dispatching+listening system
+  * Automatic Event removal system   
+  * Transition between pages 
+    * Custom transitions are possible. This keeps your freedom of expression and makes it usable for every custom project. Just implement ITransition.
+  * Global page settings
+    * Transition in/out between page
+    * Easing/time customizable
+    * Alignment options
+    * All settings can be overrided on page level
+  
+----
+
+= Flashflowfactory Tutorial =
+
+=== How to use ===
+
+Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, export as SWC), and use an external AS editor for ultimate coding-fun. 
+All classes related to the framework are inside package `nl.stroep.flashflowfactory`
+
+=== Step 1: Create flashfile  ===
+
+Just to start, create a new flash file. Save it and place the framework files next to the flash, or create your own setup where the framework is included. Make sure you include TweenLite and SWFAddress too. Now we need to design some pages.
+
+=== Step 2: Create Pages ===
+
+Create a `MovieClip` called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the `MovieClip` in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.flashflowfactory.Page`. You are now extending the Page class from the framework. Create two other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.flashflowfactory.Page`. You now have 3 pages, ready to be used.
+
+=== Step 3: Create Document class ===
+Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a project from external code editor, mark this file as 'always compile' or compile starting point.
+
+Note: This is the most simple usage of the framework. Ofcourse there are more settings available.
+{{{
+package
+{
+	import flash.display.Sprite;
+	import nl.stroep.flashflowfactory.PageFactory;
+
+	public class Main extends Sprite 
+	{		
+		private var pageFactory:PageFactory;
+		private var pageHolder:Sprite = new Sprite();
+		
+		public function Main():void 
+		{
+			pageFactory = new PageFactory();
+						
+			// add your pages here
+			pageFactory.add( "/home", HomePageVC );
+			pageFactory.add( "/contact", ContactPageVC );
+			pageFactory.add( "/info", InfoPageVC );
+			
+			addChild( pageFactory.view = pageHolder );
+						
+			// load intropage
+			pageFactory.init();
+		}
+	}
+}
+}}}
+
+It would be better to create a `Pages.as` file, which contains constants with all paths. This is very useful when pointing at multiple places to the same page.
+{{{
+package
+{
+	public class Pages
+	{
+		public static const HOME_PAGE:String = "/home";
+		public static const CONTACT_PAGE:String = "/contact";
+		public static const INFO_PAGE:String = "/info";
+	}
+}
+}}}
+
+=== Step 4: Create simple navigation ===
+
+Now you have 3 pages ready to be used. You need some navigation buttons to navigate through the pages. Create 3 buttons for each page (home, contact, info). Find the buttons in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_ input you should enter `HomePageButtonVC` and the base class should be `nl.stroep.flashflowfactory.navigation.NavigationButton`. Apply this rule for all buttons, they should all extend `nl.stroep.flashflowfactory.navigation.NavigationButton`. Place the buttons in the root, on the stage and give them the _instance names_ 'buttonHome', 'buttonInfo', 'buttonContact'.
+
+Go to your `Main.as`. Replace all code to this code:
+
+{{{
+package
+{
+	import flash.display.Sprite;
+	import nl.stroep.flashflowfactory.PageFactory;
+	import nl.stroep.flashflowfactory.navigation.NavigationButton;
+
+	public class Main extends Sprite 
+	{		
+		private var pageFactory:PageFactory;
+		private var pageHolder:Sprite = new Sprite();
+		// stage instances
+		public var buttonHome:NavigationButton;
+		public var buttonInfo:NavigationButton;
+		public var buttonContact:NavigationButton;
+
+		public function Main():void 
+		{
+			pageFactory = new PageFactory();
+						
+			// add your pages here
+			pageFactory.add( Pages.HOME_PAGE, HomePageVC );
+			pageFactory.add( Pages.CONTACT_PAGE, ContactPageVC );
+			pageFactory.add( Pages.INFO_PAGE, InfoPageVC );			
+			
+			// add page holder to stage, link it to pageFactory
+			addChild( pageFactory.view = pageHolder );
+						
+			// load fist page
+			pageFactory.init();
+
+			initButtons();
+		}
+
+		private function initButtons():void 
+		{
+			buttonHome.click(Pages.HOME_PAGE);
+			buttonInfo.click(Pages.INFO_PAGE);
+			buttonContact.click(Pages.CONTACT_PAGE);
+		}
+	}
+}
+}}}
+Run the movie; you should have a clickable+working "website" with navigation and deeplinking. If you don't want to use the NavigationButton from the framework you can also call `PageFactory.gotoPage(Pages.HOME_PAGE)` from any point inside your application.
+
+=== Step 5: Customize settings + add Transitions ===
+Lets manipulate the default settings and add a Slide transition (fading in from left). The animation-in effect should have an `Elastic.easeOut` and should take 1 second. The animation-out effect should be an `Strong.EaseIn` and should take 0.7 seconds. Note the easing functions are used from `TweenLite`.
+
+{{{
+package
+{
+	import flash.display.Sprite;
+	import com.greensock.easing.Elastic;
+	import com.greensock.easing.Strong;
+	import nl.stroep.flashflowfactory.PageFactory;
+	import nl.stroep.flashflowfactory.PageSettings;
+	import nl.stroep.flashflowfactory.navigation.NavigationButton;
+
+	public class Main extends Sprite 
+	{		
+		private var pageFactory:PageFactory;
+		private var pageHolder:Sprite = new Sprite();
+		// stage instances
+		public var buttonHome:NavigationButton;
+		public var buttonInfo:NavigationButton;
+		public var buttonContact:NavigationButton;
+
+		public function Main():void 
+		{
+			pageFactory = new PageFactory();
+						
+			// add your pages here
+			pageFactory.add( Pages.HOME_PAGE, HomePageVC );
+			pageFactory.add( Pages.CONTACT_PAGE, ContactPageVC );
+			pageFactory.add( Pages.INFO_PAGE, InfoPageVC );			
+			
+			pageFactory.defaultSettings = new PageSettings( 
+					new SlideTransition(), 
+					Elastic.easeOut, 
+					Strong.easeIn, 
+					1,
+					0.7
+				);
+			// add page holder to stage, link it to pageFactory
+			addChild( pageFactory.view = pageHolder );
+						
+			// load fist page
+			pageFactory.init();
+
+			initButtons();
+		}
+
+		private function initButtons():void 
+		{
+			buttonHome.click(Pages.HOME_PAGE);
+			buttonInfo.click(Pages.INFO_PAGE);
+			buttonContact.click(Pages.CONTACT_PAGE);
+		}
+	}
+}
+}}}
+
+If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
+
+
+----
+
+= Navigation Button =
+
+The framework includes a `NavigationButton` class. This is a semi-intelligent MovieClip. 
+
+=== Smart states ===
+You can add framelabels called _'out', 'over', 'down' and/or 'active'_. The button will automatically add the needed events for that, and `gotoAndPlay()` to that framelabel. If you extend the class, you can basically add your button-state-animation and it should work Do not forget to set a `stop()` commando at the end of each button-state-animation. 
+
+=== Grouping ===
+If you have multiple buttons, you can group them, to create an active state. Just pass a name (String) of the group to all buttons using the `group`-property. If you click on one member of the group, it will `gotoAndPlay()` to framelabel '_active_' if exist. This should make it easy to create simple buttons with cool states.
+
+=== Click functions ===
+But that is not it. The `NavigationButton` class is very easy to configure. There is a `click` function, which should basically cover all types of button-click-functions you would ever create. See code below for the divers navigation button possibilities.
+{{{
+import nl.stroep.flashflowfactory.navigation.NavigationButton;
+import nl.stroep.flashflowfactory.navigation.ButtonTypes;
+
+// link to normal page inside application
+myButton.click(Pages.HOME_PAGE);
+
+// link to normal page inside application (equivalent)
+myButton.click(Pages.HOME_PAGE, ButtonTypes.INTERNAL);
+
+// link to external url outside the flash application. default target='_blank'
+myButton.click("http://www.google.nl/", ButtonTypes.EXTERNAL);
+
+// link to external url outside the flash application, with other target
+myButton.click("http://www.google.nl/", ButtonTypes.EXTERNAL, "_self");
+
+// link to javascript function (it's using ExternalInterface)
+myButton.click("myJavascriptFunc", ButtonTypes.JAVASCRIPT);
+
+// link to javascript function with parameters
+myButton.click("alert", ButtonTypes.JAVASCRIPT, "Works like a charm");
+
+// link to javascript function with multiple parameters
+myButton.click("myJavascriptFunc", ButtonTypes.JAVASCRIPT, "param 1", "param 2", "param 3");
+
+// link to function 'sayHello' inside flashapplication
+myButton.click(sayHello, ButtonTypes.FUNCTION);
+
+function sayHello(){ 
+  trace("Hello!") 
+}
+
+// link to function 'sayHelloTo' inside flashapplication with parameters
+myButton.click(sayHelloTo, ButtonTypes.FUNCTION, "Mark", "Knol");
+
+function sayHelloTo( firstName:String, lastName:String ){ 
+  trace("Hello " + firstName + " " + lastName );
+}
+
+}}}
+It is even possible to dispatch global events. You can use the `EventCenter.getInstance()` to listen to them. Note; inside the `Page`-classes there is already an reference to the EventCenter Singleton, it is named `eventcenter`.
+{{{
+// OPTION 1. dispatch event without parameters (type only, thats always required)
+myButton.click(MyCustomEvent, ButtonTypes.EVENT, "say_hello");
+
+// OPTION 2. dispatch event with parameters
+myButton.click(MyCustomEvent, ButtonTypes.EVENT, "say_hello_to", "Mark");
+
+
+// Anywhere else inside the application you could receive the event
+EventCenter.getInstance().addEventListener(MyCustomEvent.SAY_HELLO, onSayHello);
+function onSayHello( e:MyCustomEvent ):void { 
+  trace('Say hello') 
+}
+
+EventCenter.getInstance().addEventListener(MyCustomEvent.SAY_HELLO_TO, onSayHelloTo);
+function onSayHelloTo( e:MyCustomEvent ):void { 
+  trace('Hello ' + e.firstName) 
+}
+
+
+// example custom event: MyCustomEvent.as
+package 
+{
+	import flash.events.Event;
+	public class MyCustomEvent extends Event 
+	{
+		public static const SAY_HELLO:String = "say_hello";
+		public static const SAY_HELLO_TO:String = "say_hello_to";
+		
+		private var _firstName:String;
+		
+		public function MyCustomEvent(type:String, firstname:String, bubbles:Boolean=false, cancelable:Boolean=false) 
+		{ 
+			super(type, bubbles, cancelable);
+			this._firstName = firstname;
+		} 
+		public function get firstName():String { return _firstName; }
+	}
+}
+}}}
+
+= Documentation =
+== PageFactory ==
+
+  * `cleanupDelay:uint`
+    Milliseconds after automatic call of `System.GC();`. Default value 5000 ms.
+  * `titlePrefix:String`
+    Default prefix title string. The pageFactory will set the title like this: _titlePrefix - pageTitle_
+  * `view`
+    All pages will be added to this `Sprite`. Don't forget to `addChild` 'em in your main document.
+  * `defaultPageName`
+    You can use this value to automaticly jump to this page.
+  * `defaultSettings`
+    `PageSettings` class which will be applied on every `Page`. These settings can be overridden in the `Page` Class itself.
+  * `add(pageName:String, classReference:Class, title:String = "", wildcard:Boolean = false):void`
+     Registers a page reference with optional title to the pageFactory. The name reflects the deeplink url. These should start with a forwardslash "/". 
+    You can (optional) pass a title too, this title will be displayed in your browser-title.
+    Normally an url represents one page (because the exact pageName links to a classReference). It is possible to add a wildcard to the url, which means you can add optional directories, without have declare them all (mostly on dynamic pages). This (optional) feature is still under construction.
+  * `remove(pageName:String):void`
+    Unregisters a page reference from the pageFactory
+  * `init()`
+    Start the factory, opens first page
+  * `dispose()`
+    Removes + cleans pageFactory data
+  * `PageFactory.gotoPage(pageName:String):void`
+    Static function. Navigate to new page
+
+== Page ==
+
+  * `onAddedToStage(e:Event):void `
+    Protected. Overridable method to detect if page is added from stage
+		
+
+		
+  * `onRemovedFromStage(e:Event):void `
+    Protected. Overridable method to detect if page is removed from stage
+		
+
+  * `onPageReady():void `
+    Protected. Overridable method to detect if page is ready (ready means after completing transition-in animation)
+		
+
+  * `show():void`
+    Final. Starts transition-in animation and dispatches global event `PageEvent.SHOW_START`. Cannot be overridden. Listen to `PageEvent.SHOW_START` instead.
+	
+  * `hide():void`
+    Final. Starts transition-out animation and dispatches global event `PageEvent.HIDE_START`. Cannot be overridden. Listen to `PageEvent.HIDE_START` instead.
+		
+  * `onShowComplete():void`
+    protected. Dispatches global event `PageEvent.SHOW_COMPLETE` after completing transition-in animation. Cannot be overridden. Listen to `PageEvent.SHOW_COMPLETE` instead.
+		
+  * `onHideComplete():void`
+    Protected. Dispatches global event `PageEvent.HIDE_COMPLETE` after completing transition-out animation. Cannot be overridden. Listen to `PageEvent.HIDE_COMPLETE` instead.
+		
+  * `freeze():void `  
+    Protected. Disable page interactions
+		
+  * `unfreeze():void  `
+    Protected. Enable page interactions
+
+== PageSettings ==
+
+  * `transition:ITransition`
+  Transition (interface) which will be applied on the page when navigating from/to it, which includes the following functions. 
+    * `function animateIn(page:Page, speed:Number, easing:Function):void`
+    * `function animateOut(page:Page, speed:Number, easing:Function):void`
+   There are already 4 transitions available in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
+  * `easingInFunc:Function`
+  This is the easing function which will be applied on the transitionIn animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
+  * `easingOutFunc:Function`
+  This is the easing function which will be applied on the transitionOut animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
+  * `transitionInSpeed:Number` 
+  This is the easing speed which will be applied on the transitionIn animation, which represents the duration of the transitionIn animation. This should not be negative.
+  * `transitionOutSpeed:Number`
+  This is the easing speed which will be applied on the transitionOut animation, which represents the duration of the transitionOut animation. This should not be negative.
+  * `pageAlignment:String`
+  Alignment of the page to the stage. You can use the `Alignment` class for this settings: 
+    * `Alignment.TOP_LEFT:String = "top_left";`
+    * `Alignment.TOP_CENTER:String = "top_center";`
+    * `Alignment.TOP_RIGHT:String = "top_right";`
+    * `Alignment.MIDDLE_LEFT:String = "middle_left";`
+    * `Alignment.MIDDLE_CENTER:String = "middle_center";`
+    * `Alignment.MIDDLE_RIGHT:String = "middle_right";`
+    * `Alignment.BOTTOM_LEFT:String = "bottom_left";`
+    * `Alignment.BOTTOM_CENTER:String = "bottom_center";`
+    * `Alignment.BOTTOM_RIGHT:String = "bottom_right";`
+  (default value: "top_left")
+  * `clipAlignment:String`
+  Alignment of the centerpoint inside the page. Normally you should place the centerpoint to the upperleft, You can use the `Alignment` class for this settings. 
+  (default value: "top_left")
+
+= Troubleshooting checklist =
+  * If you use an external code editor which compiles the code, don't forget to build your assets first. 
+  * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
+  * The `Page` class should call the `show` function when it is ready. Make sure its being called inside your class.
+  * Always disable 'Automatically declare stage instances' when using a code centered project
+  * Make sure `TweenLite` is included. See online docs.
+  * Make sure `SWFAddress` is included. When running from browser, the javaScript file should be added too. See online docs.
+  * Events are automatically removed from the Page class. This excludes child objects; they could extend `EventManagedSprite` too or you have to remove the listeners manually.
+  * When using `EventCenter.getInstance().addEventListener` on a not-`EventManagedSprite`, you should call the `EventCenter.getInstance().removeListeners(this)` on `Event.REMOVED_FROM_STAGE`, since the `EventCenter` is a global object and keeps existing forever. Otherwise you have references to removed objects, which could cause strange behaviors.
+{{{
+EventCenter.getInstance().addListener(this, MyCustomEvent.SAY_HELLO, onSayHello);
+
+// listen when clip is removed from the stage
+this.addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
+function onRemovedFromStage(e:Event):void
+{
+   EventCenter.getInstance().removeListeners(this);
+}
+
+}}}
