@@ -1,0 +1,171 @@
+#summary flashflowfactory starters guide
+
+= flashflowfactory starters guide =
+
+=== How to use ===
+
+Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, export as SWC), and use an external AS editor for ultimate coding-fun. 
+
+=== Step 1: Create flashfile  ===
+
+Just to start, create a new flash file. Save it and place the framework files next to the flash, or create your own setup where the framework is included. Make sure you include TweenLite and SWFAddress too. Now we need to design some pages.
+
+=== Step 2: Create Pages ===
+
+Create a `MovieClip` called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the `MovieClip` in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class from the framework. Create two other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
+
+=== Step 3: Create Document class ===
+Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a project from external code editor, mark this file as 'always compile' or compile starting point.
+
+Note: This is the most simple usage of the framework. Ofcourse there are more settings available.
+{{{
+package
+{
+	import flash.display.Sprite;
+	import nl.stroep.framework.PageFactory;
+
+	public class Main extends Sprite 
+	{		
+		private var pageFactory:PageFactory;
+		private var pageHolder:Sprite = new Sprite();
+		
+		public function Main():void 
+		{
+			pageFactory = new PageFactory();
+						
+			// add your pages here
+			pageFactory.add( "/home", HomePageVC );
+			pageFactory.add( "/contact", ContactPageVC );
+			pageFactory.add( "/info", InfoPageVC );
+			
+			addChild( pageFactory.view = pageHolder );
+						
+			// load intropage
+			pageFactory.init();
+		}
+	}
+}
+}}}
+
+It would be better to create a `Pages.as` file, which contains constants with all paths. This is very useful when pointing at multiple places to the same page.
+{{{
+package
+{
+	public class Pages
+	{
+		public static const HOME_PAGE:String = "/home";
+		public static const CONTACT_PAGE:String = "/contact";
+		public static const INFO_PAGE:String = "/info";
+	}
+}
+}}}
+
+=== Step 4: Create simple navigation ===
+
+Now you have 3 pages ready to be used. You need some navigation buttons to navigate through the pages. Create 3 buttons for each page (home, contact, info). Find the buttons in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_ input you should enter `HomePageButtonVC` and the base class should be `nl.stroep.framework.navigation.NavigationButton`. Apply this rule for all buttons, they should all extend `nl.stroep.framework.navigation.NavigationButton`. Place the buttons in the root, on the stage and give them the _instance names_ 'buttonHome', 'buttonInfo', 'buttonContact'.
+
+Go to your `Main.as`. Replace all code to this code:
+
+{{{
+package
+{
+	import flash.display.Sprite;
+	import nl.stroep.framework.PageFactory;
+	import nl.stroep.framework.navigation.NavigationButton;
+
+	public class Main extends Sprite 
+	{		
+		private var pageFactory:PageFactory;
+		private var pageHolder:Sprite = new Sprite();
+		// stage instances
+		public var buttonHome:NavigationButton;
+		public var buttonInfo:NavigationButton;
+		public var buttonContact:NavigationButton;
+
+		public function Main():void 
+		{
+			pageFactory = new PageFactory();
+						
+			// add your pages here
+			pageFactory.add( Pages.HOME_PAGE, HomePageVC );
+			pageFactory.add( Pages.CONTACT_PAGE, ContactPageVC );
+			pageFactory.add( Pages.INFO_PAGE, InfoPageVC );			
+			
+			// add page holder to stage, link it to pageFactory
+			addChild( pageFactory.view = pageHolder );
+						
+			// load fist page
+			pageFactory.init();
+
+			initButtons();
+		}
+
+		private function initButtons():void 
+		{
+			buttonHome.click(Pages.HOME_PAGE);
+			buttonInfo.click(Pages.INFO_PAGE);
+			buttonContact.click(Pages.CONTACT_PAGE);
+		}
+	}
+}
+}}}
+Run the movie; you should have a clickable+working "website" with navigation and deeplinking. If you don't want to use the NavigationButton from the framework you can also call `PageFactory.gotoPage(Pages.HOME_PAGE)` from any point inside your application.
+
+=== Step 5: Customize settings + add Transitions ===
+Lets manipulate the default settings and add a Slide transition (fading in from left). The animation-in effect should have an `Elastic.easeOut` and should take 1 second. The animation-out effect should be an `Strong.EaseIn` and should take 0.7 seconds. Note the easing functions are used from `TweenLite`.
+
+{{{
+package
+{
+	import flash.display.Sprite;
+	import com.greensock.easing.Elastic;
+	import com.greensock.easing.Strong;
+	import nl.stroep.framework.PageFactory;
+	import nl.stroep.framework.PageSettings;
+	import nl.stroep.framework.navigation.NavigationButton;
+
+	public class Main extends Sprite 
+	{		
+		private var pageFactory:PageFactory;
+		private var pageHolder:Sprite = new Sprite();
+		// stage instances
+		public var buttonHome:NavigationButton;
+		public var buttonInfo:NavigationButton;
+		public var buttonContact:NavigationButton;
+
+		public function Main():void 
+		{
+			pageFactory = new PageFactory();
+						
+			// add your pages here
+			pageFactory.add( Pages.HOME_PAGE, HomePageVC );
+			pageFactory.add( Pages.CONTACT_PAGE, ContactPageVC );
+			pageFactory.add( Pages.INFO_PAGE, InfoPageVC );			
+			
+			pageFactory.defaultSettings = new PageSettings( 
+					new SlideTransition(), 
+					Elastic.easeOut, 
+					Strong.easeIn, 
+					1,
+					0.7
+				);
+			// add page holder to stage, link it to pageFactory
+			addChild( pageFactory.view = pageHolder );
+						
+			// load fist page
+			pageFactory.init();
+
+			initButtons();
+		}
+
+		private function initButtons():void 
+		{
+			buttonHome.click(Pages.HOME_PAGE);
+			buttonInfo.click(Pages.INFO_PAGE);
+			buttonContact.click(Pages.CONTACT_PAGE);
+		}
+	}
+}
+}}}
+
+If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
