@@ -1,4 +1,4 @@
-#summary Description of the framework
+#summary Description of flashflowfactory
 
 === This is a working draft. The framework is not official released yet ===
 
@@ -6,11 +6,11 @@ _Sources are available here in the repository_
 
 = Introduction =
 
-Over time I have created this mini-framework which helps you to easily setup a flash website. The framework makes use of `SWFAddress` for deeplinking and `TweenLite` for transitions. When you need to create small/medium websites with deeplinking and basic transitions, this mini-framework could help you develop faster. I mostly used it for custom projects like viral websites. The best of this mini-framework is the simplicity (no need to learn hard design-patterns, it is really straight-forward if you know the basics). You don't have to develop a page setup or start from scratch, but keep the freedom to build the site in your style.
+Over time I have created this mini-framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress` for deeplinking and `TweenLite` for transitions. When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. I mostly used it for custom projects like viral websites. The best of flashflowfactory is its simplicity (no need to learn hard design-patterns, it is really straight-forward if you know the basics). You don't have to develop a page setup or start from scratch, but keep the freedom to build the site in your style.
 
-= Features =
+= Flashflowfactory Features =
 
-These are the features of the framework
+These are the features of flashflowfactory
   * Global page creation
   * Deeplinking made easy: it's included and no need to worry about it anymore.
   * Page class with overridable states. 
@@ -28,11 +28,12 @@ These are the features of the framework
   
 ----
 
-= Tutorial =
+= Flashflowfactory Tutorial =
 
 === How to use ===
 
 Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, export as SWC), and use an external AS editor for ultimate coding-fun. 
+All classes related to the framework are inside package `nl.stroep.flashflowfactory`
 
 === Step 1: Create flashfile  ===
 
@@ -40,7 +41,7 @@ Just to start, create a new flash file. Save it and place the framework files ne
 
 === Step 2: Create Pages ===
 
-Create a `MovieClip` called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the `MovieClip` in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.framework.Page`. You are now extending the Page class from the framework. Create two other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.framework.Page`. You now have 3 pages, ready to be used.
+Create a `MovieClip` called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the `MovieClip` in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.flashflowfactory.Page`. You are now extending the Page class from the framework. Create two other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.flashflowfactory.Page`. You now have 3 pages, ready to be used.
 
 === Step 3: Create Document class ===
 Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a project from external code editor, mark this file as 'always compile' or compile starting point.
@@ -50,7 +51,7 @@ Note: This is the most simple usage of the framework. Ofcourse there are more se
 package
 {
 	import flash.display.Sprite;
-	import nl.stroep.framework.PageFactory;
+	import nl.stroep.flashflowfactory.PageFactory;
 
 	public class Main extends Sprite 
 	{		
@@ -90,7 +91,7 @@ package
 
 === Step 4: Create simple navigation ===
 
-Now you have 3 pages ready to be used. You need some navigation buttons to navigate through the pages. Create 3 buttons for each page (home, contact, info). Find the buttons in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_ input you should enter `HomePageButtonVC` and the base class should be `nl.stroep.framework.navigation.NavigationButton`. Apply this rule for all buttons, they should all extend `nl.stroep.framework.navigation.NavigationButton`. Place the buttons in the root, on the stage and give them the _instance names_ 'buttonHome', 'buttonInfo', 'buttonContact'.
+Now you have 3 pages ready to be used. You need some navigation buttons to navigate through the pages. Create 3 buttons for each page (home, contact, info). Find the buttons in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_ input you should enter `HomePageButtonVC` and the base class should be `nl.stroep.flashflowfactory.navigation.NavigationButton`. Apply this rule for all buttons, they should all extend `nl.stroep.flashflowfactory.navigation.NavigationButton`. Place the buttons in the root, on the stage and give them the _instance names_ 'buttonHome', 'buttonInfo', 'buttonContact'.
 
 Go to your `Main.as`. Replace all code to this code:
 
@@ -98,8 +99,8 @@ Go to your `Main.as`. Replace all code to this code:
 package
 {
 	import flash.display.Sprite;
-	import nl.stroep.framework.PageFactory;
-	import nl.stroep.framework.navigation.NavigationButton;
+	import nl.stroep.flashflowfactory.PageFactory;
+	import nl.stroep.flashflowfactory.navigation.NavigationButton;
 
 	public class Main extends Sprite 
 	{		
@@ -148,9 +149,9 @@ package
 	import flash.display.Sprite;
 	import com.greensock.easing.Elastic;
 	import com.greensock.easing.Strong;
-	import nl.stroep.framework.PageFactory;
-	import nl.stroep.framework.PageSettings;
-	import nl.stroep.framework.navigation.NavigationButton;
+	import nl.stroep.flashflowfactory.PageFactory;
+	import nl.stroep.flashflowfactory.PageSettings;
+	import nl.stroep.flashflowfactory.navigation.NavigationButton;
 
 	public class Main extends Sprite 
 	{		
@@ -214,8 +215,8 @@ If you have multiple buttons, you can group them, to create an active state. Jus
 === Click functions ===
 But that is not it. The `NavigationButton` class is very easy to configure. There is a `click` function, which should basically cover all types of button-click-functions you would ever create. See code below for the divers navigation button possibilities.
 {{{
-import nl.stroep.framework.navigation.NavigationButton;
-import nl.stroep.framework.navigation.ButtonTypes;
+import nl.stroep.flashflowfactory.navigation.NavigationButton;
+import nl.stroep.flashflowfactory.navigation.ButtonTypes;
 
 // link to normal page inside application
 myButton.click(Pages.HOME_PAGE);
