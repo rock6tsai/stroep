@@ -196,7 +196,7 @@ package
 }
 }}}
 
-If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
+If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions]). 
 
 
 ----
