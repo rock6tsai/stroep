@@ -385,6 +385,33 @@ package
   Alignment of the centerpoint inside the page. Normally you should place the centerpoint to the upperleft, You can use the `Alignment` class for this settings. 
   (default value: "top_left")
 
+= Flashflowfactory Transitions =
+
+  * `NoTransition()` 
+  Default transition, without options. If you define a speed-value higher than 0, it will use a delay.
+
+  * `SlideTransition( type:String = "from_left", distance:uint = 300, fadeEnabled:Boolean = true )` 
+  Transition which slides from a specified distance to a direction
+  `type` options:
+    * `SlideTransition.FROM_TOP:String = "from_top";`
+    * `SlideTransition.FROM_RIGHT:String = "from_right";`
+    * `SlideTransition.FROM_BOTTOM:String = "from_bottom";`
+    * `SlideTransition.FROM_LEFT:String = "from_left";`
+    * `SlideTransition.FROM_RANDOM:String = "from_random";`
+  `distance` the offset/distance (in pixels) to slide from and to.
+  `fadeEnabled` Enable alpha fade while sliding (default enabled)
+
+  * `BlurTransition(quality:uint = 2, blurAmount:Number = 10)` 
+  Transition which blurs the page with a specified blur quality and blur amount. Keep in mind blurring could be a CPU heavy task.
+
+  * `FadeTransition()` 
+  Transition which fades the page. Without options.
+
+  * `WeirdTransition(impact:int = 200, levels:int=1)` 
+  Transition which explodes the children of the page to random positions. Created for fun.
+  `impact` distance from each child.
+  `levels` levels which indicates how much 'children of children' the effect will apply.
+
 = Troubleshooting checklist =
   * If you use an external code editor which compiles the code, don't forget to build your assets first. 
   * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
