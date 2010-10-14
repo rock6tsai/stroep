@@ -66,6 +66,7 @@ package
 			pageFactory.add( "/contact", ContactPageVC );
 			pageFactory.add( "/info", InfoPageVC );
 			
+			// add page holder to stage
 			addChild( pageFactory.view );
 						
 			// load intropage
@@ -112,16 +113,13 @@ package
 		public function Main():void 
 		{
 			pageFactory = new PageFactory();
-						
-			// add your pages here
+
 			pageFactory.add( Pages.HOME_PAGE, HomePageVC );
 			pageFactory.add( Pages.CONTACT_PAGE, ContactPageVC );
 			pageFactory.add( Pages.INFO_PAGE, InfoPageVC );			
 			
-			// add page holder to stage
 			addChild( pageFactory.view );
 						
-			// load first page
 			pageFactory.init();
 
 			initButtons();
@@ -129,8 +127,11 @@ package
 
 		private function initButtons():void 
 		{
+			// set button home to go to "/home" on click
 			buttonHome.click(Pages.HOME_PAGE);
+			// set button home to go to "/info" on click
 			buttonInfo.click(Pages.INFO_PAGE);
+			// set button home to go to "/contact" on click
 			buttonContact.click(Pages.CONTACT_PAGE);
 		}
 	}
@@ -163,22 +164,23 @@ package
 		{
 			pageFactory = new PageFactory();
 						
-			// add your pages here
 			pageFactory.add( Pages.HOME_PAGE, HomePageVC );
 			pageFactory.add( Pages.CONTACT_PAGE, ContactPageVC );
 			pageFactory.add( Pages.INFO_PAGE, InfoPageVC );			
 			
+			// add default page settings, can also be overridden from the Page class
 			pageFactory.defaultSettings = new PageSettings( 
-					new SlideTransition(), 
-					Elastic.easeOut, 
-					Strong.easeIn, 
-					1,
-					0.7
-				);
-			// add page holder to stage
+			    new SlideTransition(),   // transition (there are more default transitions, but you can create your own easily
+			    Elastic.easeOut,         // easing of the in-transition 
+			    Strong.easeIn,           // easing of the out-transition 
+			    1,                       // duration of the in-transition 
+			    0.7,                     // duration of the out-transition 
+			    Alignment.CENTER_MIDDLE, // alignment of the page on the stage
+			    Alignment.TOP_LEFT       // centerpoint position of the page
+			);
+
 			addChild( pageFactory.view );
-						
-			// load first page
+
 			pageFactory.init();
 
 			initButtons();
