@@ -54,6 +54,9 @@ package nl.stroep.flashflowfactory
 		{
 			if (!view) view = new Sprite();
 			initListeners();
+			
+			var pageData:PageData = findPageData(defaultPageName);
+			SWFAddress.setTitle( titlePrefix + pageData.pageTitle );
 		}
 		
 		/// Navigate to new page
@@ -117,7 +120,8 @@ package nl.stroep.flashflowfactory
 		{
 			destroyPage();
 			
-			//SWFAddress.setTitle( titlePrefix );
+			var pageData:PageData = findPageData(currentPageName);
+			SWFAddress.setTitle( titlePrefix + pageData.pageTitle );
 			SWFAddress.setValue( currentPageName );
 		}
 		
@@ -126,45 +130,50 @@ package nl.stroep.flashflowfactory
 			createPage(e.value);
 		}
 		
-		private function createPage(name:String):void
+		private function createPage(pageName:String):void
 		{
 			destroyPage();
 			
-			if (name && name.length > 0)
+			var pageData:PageData = findPageData(pageName);
+			var PageReference:Class = pageData.classReference;
+			page = new PageReference() as Page;
+			
+			if (page != null)
 			{
-				var pageData:PageData = pageDataList[name] as PageData;
+				if (defaultSettings) page.settings = defaultSettings.clone();
+				page.pageName = pageName;
+				view.addChild(page);
+			}
+		}
+		
+		private function findPageData(pageName:String):PageData
+		{
+			if (pageName && pageName.length > 0)
+			{
+				var pageData:PageData = pageDataList[pageName] as PageData;
 				
 				var PageReference:Class;
 				
 				if (pageData)
 				{
-					PageReference = pageData.classReference;
-					page = new PageReference() as Page;
+					return pageData;
 				}
 				else
 				{
-					pageData = findWildCardPageData(name);
+					pageData = findWildCardPageData(pageName);
 					
 					if (pageData)
 					{
-						PageReference = pageData.classReference;
+						return pageData;
 					}
 					else
 					{
 						pageData = findDefaultPage();
-						PageReference = pageData.classReference;
+						return pageData;
 					}
-					
-					page = new PageReference() as Page;
 				}
 			}
-			
-			if (page != null)
-			{
-				if (defaultSettings) page.settings = defaultSettings.clone();
-				page.pageName = name;
-				view.addChild(page);
-			}
+			return null;
 		}
 		
 		private function findDefaultPage():PageData
