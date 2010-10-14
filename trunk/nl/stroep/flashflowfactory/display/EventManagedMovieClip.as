@@ -24,7 +24,7 @@ package nl.stroep.flashflowfactory.display
 			removeEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 			
 			eventRemover.destroy();
-			eventcenter.removeListener(this);
+			eventcenter.removeListeners(this);
 		}
 
 		public override function addEventListener(type:String, listener:Function, useCapture:Boolean = false, priority:int = 0, useWeakReference:Boolean = false):void
