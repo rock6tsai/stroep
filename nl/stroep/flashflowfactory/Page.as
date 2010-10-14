@@ -2,13 +2,10 @@ package nl.stroep.flashflowfactory
 {
 	import com.greensock.easing.*;
 	import flash.display.BlendMode;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import nl.stroep.flashflowfactory.display.EventManagedSprite;
-	import nl.stroep.flashflowfactory.utils.EventCenter;
 	import nl.stroep.flashflowfactory.enum.Alignment;
 	import nl.stroep.flashflowfactory.events.PageEvent;
-	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
 	 * Standard page class. This class should be extended.
 	 * @author Mark Knol

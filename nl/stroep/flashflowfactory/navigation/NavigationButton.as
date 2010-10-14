@@ -1,7 +1,5 @@
 package nl.stroep.flashflowfactory.navigation
 {
-	import com.greensock.easing.Strong;
-	import com.greensock.motionPaths.PathFollower;
 	import com.greensock.TweenLite;
 	import flash.display.BlendMode;
 	import flash.display.FrameLabel;

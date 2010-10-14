@@ -2,14 +2,13 @@ package nl.stroep.flashflowfactory
 {
 	import com.usual.SWFAddress;
 	import com.usual.SWFAddressEvent;
-	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.system.System;
 	import flash.utils.clearTimeout;
 	import flash.utils.Dictionary;
 	import flash.utils.setTimeout;
-	import nl.stroep.flashflowfactory.utils.EventCenter;
 	import nl.stroep.flashflowfactory.events.PageEvent;
+	import nl.stroep.flashflowfactory.utils.EventCenter;
 	/**
 	 * Page system - Custom factory design pattern
 	 * @author Mark Knol
@@ -20,7 +19,7 @@ package nl.stroep.flashflowfactory
 		public var titlePrefix:String = "";
 		
 		public var defaultPageName:String;
-		public var view:Sprite;
+		private var _view:Sprite;
 		public var defaultSettings:PageSettings;
 		
 		private var currentPageName:String;
@@ -137,20 +136,26 @@ package nl.stroep.flashflowfactory
 				
 				var PageReference:Class;
 				
-				if (pageData) PageReference = pageData.classReference as Class;
-				
-				if (PageReference != null)
+				if (pageData)
 				{
+					PageReference = pageData.classReference;
 					page = new PageReference() as Page;
 				}
 				else
 				{
-					page = findWildCardPage(name);
+					pageData = findWildCardPageData(name);
 					
-					if (page == null)
+					if (pageData)
 					{
-						page = findDefaultPage();
+						PageReference = pageData.classReference;
 					}
+					else
+					{
+						pageData = findDefaultPage();
+						PageReference = pageData.classReference;
+					}
+					
+					page = new PageReference() as Page;
 				}
 			}
 			
@@ -162,23 +167,19 @@ package nl.stroep.flashflowfactory
 			}
 		}
 		
-		private function findDefaultPage():Page 
+		private function findDefaultPage():PageData
 		{
 			var pageData:PageData = pageDataList[defaultPageName] as PageData;
-			var PageReference:Class
-			if (pageData) PageReference = pageData.classReference as Class;
-			return new PageReference();
+			return pageData;
 		}
 		
-		private function findWildCardPage(name:String):Page 
+		private function findWildCardPageData(name:String):PageData
 		{
 			for each (var pageData:PageData in pageDataList)
 			{
 				if (pageData.wildcard && name.indexOf( pageData.pageName ) > -1)
 				{
-					var PageReference:Class = pageData.classReference as Class;
-					
-					return new PageReference() as Page;
+					return pageData;
 				}
 			}
 			return null;
@@ -192,6 +193,17 @@ package nl.stroep.flashflowfactory
 				view.removeChild(page);
 				page = null;
 			}
+		}
+		
+		public function get view():Sprite 
+		{ 
+			if (!_view) _view = new Sprite();
+			return _view; 
+		}
+		
+		public function set view(value:Sprite):void 
+		{
+			_view = value;
 		}
 		
 	}

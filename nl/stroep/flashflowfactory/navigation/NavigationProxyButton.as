@@ -2,9 +2,7 @@ package nl.stroep.flashflowfactory.navigation
 {
 	import flash.display.Sprite;
 	import flash.events.Event;
-	import flash.events.MouseEvent;
 	import flash.text.TextField;
-	import nl.website.data.ProjectData;
 	/**
 	 * Custom button class - Virtual proxy 
 	 * @author Mark Knol

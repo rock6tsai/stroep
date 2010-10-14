@@ -1,6 +1,5 @@
 package nl.stroep.flashflowfactory.display 
 {
-	import flash.display.MovieClip;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import nl.stroep.flashflowfactory.utils.EventCenter;

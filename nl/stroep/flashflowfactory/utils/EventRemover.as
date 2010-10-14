@@ -1,8 +1,6 @@
 package nl.stroep.flashflowfactory.utils 
 {
-	import flash.events.Event;
 	import flash.events.IEventDispatcher;
-	import flash.utils.Dictionary;
 	/**
 	 * Automatic event remover util. Removes events when displayobject is removed from stage
 	 * @author Mark Knol

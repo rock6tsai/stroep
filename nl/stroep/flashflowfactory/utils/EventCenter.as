@@ -1,10 +1,7 @@
 package nl.stroep.flashflowfactory.utils
 {
-	import flash.display.DisplayObject;
 	import flash.events.Event;
-	import flash.events.IEventDispatcher;
 	import flash.events.EventDispatcher;
-	import flash.utils.Dictionary;
 	
 	/**
 	 * Global eventdispatching singleton class 
