@@ -28,7 +28,7 @@ package nl.stroep.flashflowfactory.utils
         {
             eventsListLength = eventsList.length;
 		   
-			for (var i:uint = 0; i < eventsListLength; ++i) 
+			for ( var i:int = eventsListLength - 1; i >= 0; i -- )
 			{
 				var eventObject:EventObject = eventsList[i];
 				
@@ -52,7 +52,7 @@ package nl.stroep.flashflowfactory.utils
         {
             eventsListLength = eventsList.length;
 			
-			for (var i:uint = 0; i < eventsListLength; ++i) 
+			for ( var i:int = eventsListLength - 1; i >= 0; i -- )
 			{
 				var eventObject:EventObject = eventsList[i];
 				
@@ -70,7 +70,7 @@ package nl.stroep.flashflowfactory.utils
         {
             eventsListLength = eventsList.length;
 			
-			for (var i:uint = 0; i < eventsListLength; ++i) 
+			for ( var i:int = eventsListLength - 1; i >= 0; i -- )
 			{
 				var eventObject:EventObject = eventsList[i];
 				
@@ -95,7 +95,7 @@ package nl.stroep.flashflowfactory.utils
         {
 			eventsListLength = eventsList.length;
 			
-			for (var i:uint = 0; i < eventsListLength; ++i) 
+			for ( var i:int = eventsListLength - 1; i >= 0; i -- )
 			{
 				var eventObject:EventObject = eventsList[i];
 				
