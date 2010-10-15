@@ -7,6 +7,7 @@ package nl.stroep.flashflowfactory.utils
 	 */
 	public class EventRemover
 	{ 
+		private var eventsListLength:int;
 		private var eventsList:Array = [];
 		private var dispatcher:IEventDispatcher;
 
@@ -25,11 +26,15 @@ package nl.stroep.flashflowfactory.utils
 		/// Removes all listeners
 		public function removeListeners():void
         {
-            for each ( var eventObject:EventObject in eventsList)
-            {
+            eventsListLength = eventsList.length;
+		   
+			for (var i:uint = 0; i < eventsListLength; ++i) 
+			{
+				var eventObject:EventObject = eventsList[i];
+				
 				//trace( "automaticly removed listener (all) ", eventObject.type, "from", dispatcher);
 				eventObject = null;
-                eventsList.splice( eventsList.indexOf(eventObject), 1);
+                eventsList.splice( i, 1);
             }  
         }
 		
@@ -37,6 +42,7 @@ package nl.stroep.flashflowfactory.utils
 		public function destroy():void
 		{
 			removeListeners();
+			eventsList = [];
 			eventsList = null;
 			dispatcher = null;
 		}
@@ -44,13 +50,17 @@ package nl.stroep.flashflowfactory.utils
 		/// Remove all listeners with specific type
 		public function removeListenersByType(type:String):void
         {
-            for each ( var eventObject:EventObject in eventsList)
-            {
+            eventsListLength = eventsList.length;
+			
+			for (var i:uint = 0; i < eventsListLength; ++i) 
+			{
+				var eventObject:EventObject = eventsList[i];
+				
 				if (eventObject.type == type)
 				{
 					//trace( "automaticly removed listener (by type)", eventObject.type, "from", dispatcher);
 					eventObject = null;
-					eventsList.splice( eventsList.indexOf(eventObject), 1);
+					eventsList.splice( i, 1);
 				}
             }
         }
@@ -58,33 +68,42 @@ package nl.stroep.flashflowfactory.utils
 		/// Remove all listeners from specific scope
 		public function removeListenersByScope(scope:*):void
         {
-            for each ( var eventObject:EventObject in eventsList)
-            {
+            eventsListLength = eventsList.length;
+			
+			for (var i:uint = 0; i < eventsListLength; ++i) 
+			{
+				var eventObject:EventObject = eventsList[i];
+				
 				if (eventObject.scope == scope)
 				{
 					//trace( "automaticly removed listener (by scope)", eventObject.type, "from", dispatcher);
 					eventObject = null;
-					eventsList.splice( eventsList.indexOf(eventObject), 1);
+					eventsList.splice( i, 1);
+					eventsListLength--
 				}
             }
         }
 		
-		/// store listener in EventRemover
+		/// Store listener in EventRemover
         public function addEventListener(type:String, listener:Function, useCapture:Boolean = false, scope:* = null):void
         {
             eventsList.push( new EventObject( type, listener, useCapture, scope ) );
         }
 		
-		/// remove specific listener
+		/// Remove specific listener
         public function removeEventListener(type:String, listener:Function, useCapture:Boolean = false):void
         {
-			for each ( var eventObject:EventObject in eventsList)
+			eventsListLength = eventsList.length;
+			
+			for (var i:uint = 0; i < eventsListLength; ++i) 
 			{
+				var eventObject:EventObject = eventsList[i];
+				
 				if (eventObject.type == type && eventObject.listener == eventObject.listener && eventObject.useCapture == useCapture)
 				{
 					//trace( "manually removed listener", eventObject.type, "from", dispatcher);
 					eventObject = null;
-					eventsList.splice( eventsList.indexOf(eventObject), 1);
+					eventsList.splice( i, 1);
 				}
 			}
         }

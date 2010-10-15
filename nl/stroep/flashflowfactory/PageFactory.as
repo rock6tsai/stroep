@@ -52,7 +52,6 @@ package nl.stroep.flashflowfactory
 		/// Start the factory, opens first page
 		public function init():void
 		{
-			if (!view) view = new Sprite();
 			initListeners();
 			
 			var pageData:PageData = findPageData(defaultPageName);
