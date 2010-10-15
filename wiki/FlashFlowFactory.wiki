@@ -12,19 +12,22 @@ Over time I have created this mini-framework which helps you to easily setup a f
 
 These are the features of flashflowfactory
   * Global page creation
-  * Deeplinking made easy: it's included and no need to worry about it anymore.
-  * Page class with overridable states. 
-  * Alternative navigation (button) system
-    * Easy linking
-  * Global Event dispatching+listening system
-  * Automatic Event removal system   
-  * Transition between pages 
-    * Custom transitions are possible. This keeps your freedom of expression and makes it usable for every custom project. Just implement ITransition.
-  * Global page settings
+  * Deeplinking made easy: it's included and no need to worry about it anymore
+  * Page class with transition settings and states
+  * Transitions between pages 
+    * Currently 4 transitions included
+    * Creating your own transitions is possible. This keeps your freedom of expression and makes it usable for every custom project.
+  * Global page settings and these settings can be overrided on page level
     * Transition in/out between page
     * Easing/time customizable
     * Alignment options
-    * All settings can be overrided on page level
+  * Alternative navigation (button) system
+    * Really easy linking
+    * Automatic states
+    * Grouping aka easy active state
+  * Global Event system 
+    * Listen to event from any point in your application
+  * Automatic Event removal system   
   
 ----
 
@@ -196,7 +199,7 @@ package
 }
 }}}
 
-If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions]). 
+If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `ExplosionTransition`), and some of them have some customizable options (see [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions]). 
 
 
 ----
@@ -360,7 +363,7 @@ package
   Transition (interface) which will be applied on the page when navigating from/to it, which includes the following functions. 
     * `function animateIn(page:Page, speed:Number, easing:Function):void`
     * `function animateOut(page:Page, speed:Number, easing:Function):void`
-   There are already 4 transitions available in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `WeirdTransition`), and some of them have some customizable options (see auto-completion / online docs). 
+   There are already 4 transitions available in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `ExplosionTransition`), and some of them have some customizable options (see auto-completion / online docs). 
   * `easingInFunc:Function`
   This is the easing function which will be applied on the transitionIn animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
   * `easingOutFunc:Function`
@@ -407,7 +410,7 @@ package
   * `FadeTransition()` 
   Transition which fades the page. Without options.
 
-  * `WeirdTransition(impact:int = 200, levels:int=1)` 
+  * `ExplosionTransition(impact:int = 200, levels:int=1)` 
   Transition which explodes the children of the page to random positions. Created for fun.
   `impact` distance from each child.
   `levels` levels which indicates how much 'children of children' the effect will apply.
