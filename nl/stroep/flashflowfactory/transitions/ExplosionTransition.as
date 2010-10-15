@@ -12,12 +12,12 @@ package nl.stroep.flashflowfactory.transitions
 	 * Randomly moves children from page away. Can be intensive when having lots of them
 	 * @author Mark Knol
 	 */
-	public class WeirdTransition implements ITransition
+	public class ExplosionTransition implements ITransition
 	{
 		private var impact:int;
 		private var levels:int;
 		
-		public function WeirdTransition(impact:int = 200, levels:int=1) 
+		public function ExplosionTransition(impact:int = 200, levels:int=1) 
 		{
 			this.impact = impact;
 			this.levels = levels;
