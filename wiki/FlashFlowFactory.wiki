@@ -178,7 +178,7 @@ package
 			    Strong.easeIn,           // easing of the out-transition 
 			    1,                       // duration of the in-transition 
 			    0.7,                     // duration of the out-transition 
-			    Alignment.CENTER_MIDDLE, // alignment of the page on the stage
+			    Alignment.MIDDLE_CENTER, // alignment of the page on the stage
 			    Alignment.TOP_LEFT       // centerpoint position of the page
 			);
 
