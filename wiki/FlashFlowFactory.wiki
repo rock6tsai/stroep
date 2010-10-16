@@ -154,6 +154,8 @@ package
 	import nl.stroep.flashflowfactory.PageFactory;
 	import nl.stroep.flashflowfactory.PageSettings;
 	import nl.stroep.flashflowfactory.navigation.NavigationButton;
+	import nl.stroep.flashflowfactory.enum.Alignment;
+	import nl.stroep.flashflowfactory.transitions.*;
 
 	public class Main extends Sprite 
 	{		
