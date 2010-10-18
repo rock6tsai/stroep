@@ -33,17 +33,17 @@ package nl.stroep.flashflowfactory.enum
 				else if (clipAlignment.indexOf("right") > -1) { displayObject.x = clipWidth; }
 				else { displayObject.x = 0; }
 			}
-			else if (pageAlignment.indexOf("center"))
+			else if (pageAlignment.indexOf("center") > -1)
 			{
-				if (clipAlignment.indexOf("left") > -1) { displayObject.x = stageWidth * 0.5  - clipWidth * 0.5; }
+				if (clipAlignment.indexOf("left") > -1) { displayObject.x = stageWidth * 0.5 - clipWidth * 0.5; }
 				else if (clipAlignment.indexOf("right") > -1) { displayObject.x = stageWidth * 0.5 - clipWidth * 0.5; }
 				else { displayObject.x = stageWidth * 0.5; }
 			}
 			else if (pageAlignment.indexOf("right") > -1) 
 			{
-				if (clipAlignment.indexOf("center") > -1) { displayObject.x = stageWidth - clipWidth - clipWidth * 0.5; }
-				else if (clipAlignment.indexOf("left") > -1) { displayObject.x = stageWidth - clipWidth - clipWidth; }
-				else { displayObject.x = stageWidth - clipWidth; }
+				if (clipAlignment.indexOf("center") > -1) { displayObject.x = stageWidth - clipWidth * 0.5; }
+				else if (clipAlignment.indexOf("left") > -1) { displayObject.x = stageWidth - clipWidth; }
+				else { displayObject.x = stageWidth - clipWidth - clipWidth; }
 			}
 			
 			if (pageAlignment.indexOf("top") > -1) 
@@ -65,7 +65,7 @@ package nl.stroep.flashflowfactory.enum
 				else { displayObject.y = stageHeight - clipHeight; }
 			}
 			
-			// trace("pageAlignment", pageAlignment, ", clipAlignment", clipAlignment, " : ", displayObject.x, displayObject.y);
+			trace("pageAlignment", pageAlignment, ", clipAlignment", clipAlignment, " : ", displayObject.x, displayObject.y);
 		}
 	}
 

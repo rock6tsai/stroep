@@ -6,7 +6,7 @@ package nl.stroep.flashflowfactory.transitions
 	import nl.stroep.flashflowfactory.Page;
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
-	 * Blur + fading page transition
+	 * Transition which blurs the page with a specified blur quality and blur amount. Keep in mind blurring could be a CPU heavy task. 
 	 * @author Mark Knol
 	 */
 	public class BlurTransition implements ITransition

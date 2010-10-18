@@ -11,10 +11,15 @@ package nl.stroep.flashflowfactory
 	 * @author Mark Knol
 	 */
 	public class Page extends EventManagedSprite
-	{		
+	{
+		/// When enabled, the `show()` function is called onAddedToStage, otherwise you can call `show()` yourself (Useful when you want to load something before showing the page). Default `true`
+		public var autoShow:Boolean = true;
+		/// Internal page name, auto filled by the PageFactory. The pageName reflects the deeplink url, which is set using SWFAddress. There is no need to modify this value.
 		public var pageName:String;
+		/// Page title, auto filled by the PageFactory. The pageTitle reflects the browser title, which is set using SWFAddress. There is no need to modify this value.
 		public var pageTitle:String;
-		public var settings:PageSettings = new PageSettings();
+		/// Settings from the page. auto filled by the PageFactory. All values from these settings can be overwritten. 
+		public var settings:PageSettings;
 		
 		public function Page():void
 		{
@@ -24,17 +29,24 @@ package nl.stroep.flashflowfactory
 			addEventListener(Event.REMOVED_FROM_STAGE, onRemovedFromStage);
 		}
 		
-		/// Overridable method to detect if page is added from stage
-		protected function onAddedToStage(e:Event):void 
+		/**
+		 * Overridable method to detect if page is added from stage
+		 * @param	event	Callback Event
+		 */
+		protected function onAddedToStage(event:Event):void 
 		{
-			freeze();
-			
 			/// Default blendmode
 			this.blendMode = BlendMode.LAYER;
+			
+			if (autoShow) show();
+			trace("onAddedToStage", width, height)
 		}
 		
-		/// Overridable method to detect if page is removed from stage
-		protected function onRemovedFromStage(e:Event):void 
+		/**
+		 * Overridable method to detect if page is removed from stage
+		 * @param	event	Callback Event	
+		 */
+		protected function onRemovedFromStage(event:Event):void 
 		{
 			settings.easingInFunc = null;
 			settings.easingOutFunc = null;
@@ -42,13 +54,17 @@ package nl.stroep.flashflowfactory
 			settings = null;
 		}
 		
-		/// Overridable method to detect if page is ready (ready means after completing transition-in animation)
+		/**
+		 * Overridable method to detect if page is ready (ready means after completing transition-in animation)
+		 */
 		protected function onPageReady():void 
 		{
 			
 		}
 		
-		/// Starts transition-in animation and dispatches global event PageEvent.SHOW_START. Cannot be overridden. Listen to PageEvent.SHOW_START instead.
+		/**
+		 * Starts transition-in animation and dispatches global event PageEvent.SHOW_START. Cannot be overridden. Listen to PageEvent.SHOW_START instead.
+		 */
 		final public function show():void
 		{
 			Alignment.setAlignment( this, settings.pageAlignment, settings.clipAlignment );
@@ -56,9 +72,13 @@ package nl.stroep.flashflowfactory
 			settings.transition.animateIn(this, settings.transitionInSpeed, settings.easingInFunc);
 			
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_START, pageName ) );
+			
+			freeze();
 		}
 		
-		/// Starts transition-out animation and dispatches global event PageEvent.HIDE_START. Cannot be overridden. Listen to PageEvent.HIDE_START instead.
+		/**
+		 * Starts transition-out animation and dispatches global event PageEvent.HIDE_START. Cannot be overridden. Listen to PageEvent.HIDE_START instead.
+		 */
 		final public function hide():void
 		{			
 			settings.transition.animateOut(this, settings.transitionOutSpeed, settings.easingOutFunc);
@@ -68,7 +88,9 @@ package nl.stroep.flashflowfactory
 			freeze();
 		}
 		
-		/// Dispatches global event PageEvent.SHOW_COMPLETE after completing transition-in animation. Cannot be overridden. Listen to PageEvent.SHOW_COMPLETE instead.
+		/**
+		 * Dispatches global event PageEvent.SHOW_COMPLETE after completing transition-in animation. Cannot be overridden. Listen to PageEvent.SHOW_COMPLETE instead.
+		 */
 		final public function onShowComplete():void
 		{			
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_COMPLETE, pageName ) );
@@ -78,13 +100,17 @@ package nl.stroep.flashflowfactory
 			unfreeze();
 		}
 		
-		/// Dispatches global event PageEvent.HIDE_COMPLETE after completing transition-out animation. Cannot be overridden. Listen to PageEvent.HIDE_COMPLETE instead.
+		/**
+		 * Dispatches global event PageEvent.HIDE_COMPLETE after completing transition-out animation. Cannot be overridden. Listen to PageEvent.HIDE_COMPLETE instead.
+		 */
 		final public function onHideComplete():void
 		{
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.HIDE_COMPLETE, pageName ) );
 		}
 		
-		/// Disable page interactions
+		/**
+		 * Disable page interactions
+		 */
 		protected function freeze():void   
 		{
 			tabEnabled = false;
@@ -92,7 +118,9 @@ package nl.stroep.flashflowfactory
 			mouseEnabled = false;
 		}
 		
-		/// Enable page interactions
+		/**
+		 * Enable page interactions
+		 */
 		protected function unfreeze():void   
 		{
 			tabEnabled = true;
