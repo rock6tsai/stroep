@@ -15,13 +15,16 @@ package nl.stroep.flashflowfactory
 	 */
 	public class PageFactory
 	{
+		/// Milliseconds after automatic call of System.GC();. Default value 5000 ms.
 		public var cleanupDelay:uint = 5000;
+		/// Default prefix title for all pages. The PageFactory will set the browser title like this: 'titlePrefix pageTitle'
 		public var titlePrefix:String = "";
-		
+		/// You can use this value to start on this page, after you call init()
 		public var defaultPageName:String;
-		private var _view:Sprite;
+		///`PageSettings` class which will be applied on every `Page`. These settings can be overridden in the `Page` Class itself.
 		public var defaultSettings:PageSettings;
 		
+		private var _view:Sprite;
 		private var currentPageName:String;
 		private var eventcenter:EventCenter;
 		private var pageDataList:Dictionary;
@@ -35,21 +38,32 @@ package nl.stroep.flashflowfactory
 			pageDataList = new Dictionary();
 		}
 		
-		/// Registers a page reference with optional title to the pageFactory. The name reflects the deeplink url
+		/**
+		 * Registers a page reference with optional title to the pageFactory. 
+		 * @param	pageName			The pageName reflects the deeplink url, and should start with forward-slash.
+		 * @param	classReference		Reference to a class, which should extend the Page class
+		 * @param	title				Optional. Title which is showed as browser title
+		 * @param	wildcard			Optional. Normally an url represents one page (because the exact pageName links to a classReference). It is possible to add a wildcard to the url, which means you can add optional directories after the pageName (mostly on dynamic pages). 
+		 */
 		public function add(pageName:String, classReference:Class, title:String = "", wildcard:Boolean = false):void
 		{
 			pageDataList[ pageName ] = new PageData( pageName, classReference, title, wildcard);
 			if (!defaultPageName) defaultPageName = pageName;
 		}
 		
-		/// Unregisters a page reference from the pageFactory
+		/**
+		 * Unregisters a page reference from the pageFactory
+		 * @param	pageName	The pageName which should be unregistered from the PageFactory
+		 */
 		public function remove(pageName:String):void
 		{
 			pageDataList[ pageName ] = null;
 			delete pageDataList[ pageName ];
 		}
 		
-		/// Start the factory, opens first page
+		/**
+		 * Start the factory, opens the first page
+		 */
 		public function init():void
 		{
 			initListeners();
@@ -58,13 +72,18 @@ package nl.stroep.flashflowfactory
 			SWFAddress.setTitle( titlePrefix + pageData.pageTitle );
 		}
 		
-		/// Navigate to new page
+		/**
+		 * Navigate to new page
+		 * @param	pageName	The pageName reflects the deeplink url, and should start with forward-slash.
+		 */
 		public static function gotoPage(pageName:String):void
 		{
 			EventCenter.getInstance().dispatchEvent( new PageEvent( PageEvent.NEW_PAGE, pageName) );
 		}
 		
-		/// Removes + cleans pageFactory data
+		/**
+		 * Removes + cleans pageFactory data
+		 */
 		public function dispose():void
 		{
 			clearTimeout(timeoutID);
@@ -90,13 +109,11 @@ package nl.stroep.flashflowfactory
 		
 		private function onPageShowComplete(e:PageEvent):void 
 		{
-			trace("onPageShowComplete");
 			timeoutID = setTimeout(cleanup, cleanupDelay);
 		}
 		
 		private function cleanup():void
 		{
-			trace("GC called");
 			System.gc();
 		}
 		
@@ -139,8 +156,9 @@ package nl.stroep.flashflowfactory
 			
 			if (page != null)
 			{
-				if (defaultSettings) page.settings = defaultSettings.clone();
+				page.settings = (defaultSettings) ? defaultSettings.clone() : new PageSettings();
 				page.pageName = pageName;
+				page.pageTitle = pageData.pageTitle;
 				view.addChild(page);
 			}
 		}
@@ -203,6 +221,9 @@ package nl.stroep.flashflowfactory
 			}
 		}
 		
+		/**
+		 * All pages will be added to this Sprite. Don't forget to addChild 'em in your main document.
+		 */
 		public function get view():Sprite 
 		{ 
 			if (!_view) _view = new Sprite();

@@ -6,10 +6,10 @@ package nl.stroep.flashflowfactory.transitions
 	import nl.stroep.flashflowfactory.Page;
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
-	 * Transition which slides from a specified distance to a direction type options.
+	 * Transition which slides from a specified distance to a direction type options (only usable if you compile as FlashPlayer 10)
 	 * @author Mark Knol
 	 */
-	public class SlideTransition implements ITransition
+	public class Slide3DTransition implements ITransition
 	{
 		public static const FROM_TOP:String = "from_top";
 		public static const FROM_RIGHT:String = "from_right";
@@ -22,7 +22,7 @@ package nl.stroep.flashflowfactory.transitions
 		public var fadeEnabled:Boolean;
 		
 		
-		public function SlideTransition( type:String = "from_left", distance:uint = 300, fadeEnabled:Boolean = true ) 
+		public function Slide3DTransition( type:String = "from_left", distance:uint = 700, fadeEnabled:Boolean = true ) 
 		{
 			this.type = type;
 			this.distance = distance;
@@ -45,18 +45,22 @@ package nl.stroep.flashflowfactory.transitions
 			switch (currentType) 
 			{
 				case FROM_TOP:
+					vars.rotationX = int(-90).toString();
 					vars.y = (-distance).toString();
 					break;
 			
 				case FROM_RIGHT: 
+					vars.rotationY = int(90).toString();
 					vars.x = (distance).toString();
 					break;
 				
 				case FROM_BOTTOM: 
+					vars.rotationX = int(90).toString();
 					vars.y = (distance).toString();
 					break;
 					
 				case FROM_LEFT: 
+					vars.rotationY = int(-90).toString();
 					vars.x = (-distance).toString();
 					break;
 					
@@ -90,18 +94,22 @@ package nl.stroep.flashflowfactory.transitions
 			switch (currentType) 
 			{
 				case FROM_TOP:
+					vars.rotationX = int(90).toString();
 					vars.y = (distance).toString();
 					break;
 			
 				case FROM_RIGHT: 
+					vars.rotationY = int(-90).toString();
 					vars.x = (-distance).toString();
 					break;
 				
 				case FROM_BOTTOM: 
+					vars.rotationX = int(-90).toString();
 					vars.y = (-distance).toString();
 					break;
 					
 				case FROM_LEFT: 
+					vars.rotationY = int(90).toString();
 					vars.x = (distance).toString();
 					break;
 					
@@ -111,8 +119,6 @@ package nl.stroep.flashflowfactory.transitions
 			
 			TweenLite.to( page, speed, vars );
 		}
-		
-		
 		
 	}
 
