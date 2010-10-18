@@ -1,6 +1,7 @@
 package nl.stroep.flashflowfactory.transitions 
 {
 	import com.greensock.plugins.AutoAlphaPlugin;
+	import com.greensock.plugins.BlurFilterPlugin;
 	import com.greensock.plugins.TweenPlugin;
 	import com.greensock.TweenLite;
 	import nl.stroep.flashflowfactory.Page;
@@ -21,7 +22,7 @@ package nl.stroep.flashflowfactory.transitions
 			this.quality = quality;
 			this.blurAmount = blurAmount;
 			
-			TweenPlugin.activate([AutoAlphaPlugin]);
+			TweenPlugin.activate([AutoAlphaPlugin, BlurFilterPlugin]);
 		}
 		
 		/* INTERFACE nl.stroep.flashflowfactory.transitions.interfaces.ITransition */
