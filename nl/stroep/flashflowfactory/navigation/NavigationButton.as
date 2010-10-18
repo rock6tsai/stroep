@@ -1,6 +1,5 @@
 package nl.stroep.flashflowfactory.navigation
 {
-	import com.greensock.TweenLite;
 	import flash.display.BlendMode;
 	import flash.display.FrameLabel;
 	import flash.display.Sprite;
@@ -119,7 +118,6 @@ package nl.stroep.flashflowfactory.navigation
 		
 		public function setEnabled(value:Boolean = false):void 
 		{
-			TweenLite.killTweensOf(this);
 			enabled = value;
 			
 			if (value)
@@ -141,10 +139,28 @@ package nl.stroep.flashflowfactory.navigation
 			for (var i:uint = 0; i < currentLabels.length; i++) 
 			{
 				var label:FrameLabel = currentLabels[i];
-				if (label.name == OUT) hasOutLabel = true;
-				if (label.name == OVER) hasOverLabel = true;
-				if (label.name == ACTIVE) hasActiveLabel = true;
-				if (label.name == DOWN) { hasDownLabel = true; addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown); }
+				
+				switch (label.name) 
+				{
+					case OUT:
+						hasOutLabel = true;
+						break;
+				
+					case OVER:
+						hasOverLabel = true;
+						break;
+				
+					case ACTIVE:
+						hasActiveLabel = true
+						break;
+					
+					case DOWN:
+						hasDownLabel = true; 
+						addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+						break;
+						
+					default:
+				}
 			}
 		}
 		
@@ -216,7 +232,6 @@ package nl.stroep.flashflowfactory.navigation
 			if (!isActive)
 			{
 				if (hasOutLabel) gotoAndPlay(OUT);
-				//TweenLite.to(this, 0.2, { alpha: 1, colorTransform: { exposure:1 }, ease: Strong.easeOut } );
 			}
 		}
 		
@@ -225,7 +240,6 @@ package nl.stroep.flashflowfactory.navigation
 			if (!isActive)
 			{
 				if (hasOverLabel) gotoAndPlay(OVER);
-				//TweenLite.to(this, 0.3, { alpha: 1, colorTransform: { exposure:1.05 }, ease: Strong.easeIn } );
 			}
 		}
 		
