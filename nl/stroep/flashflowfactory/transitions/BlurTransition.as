@@ -7,6 +7,8 @@ package nl.stroep.flashflowfactory.transitions
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
 	 * Transition which blurs the page with a specified blur quality and blur amount. Keep in mind blurring could be a CPU heavy task. 
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class BlurTransition implements ITransition

@@ -5,6 +5,8 @@ package nl.stroep.flashflowfactory.utils
 	
 	/**
 	 * Global eventdispatching singleton class 
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class EventCenter 

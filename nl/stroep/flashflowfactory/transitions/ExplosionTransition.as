@@ -9,7 +9,9 @@ package nl.stroep.flashflowfactory.transitions
 	import nl.stroep.flashflowfactory.Page;
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
-	 * Randomly moves children from page away. Can be intensive when having lots of them
+	 * Randomly moves children from page away. Can be intensive when having lots of them.
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class ExplosionTransition implements ITransition

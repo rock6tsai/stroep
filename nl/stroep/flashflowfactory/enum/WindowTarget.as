@@ -2,6 +2,8 @@ package nl.stroep.flashflowfactory.enum
 {
 	/**
 	 * Static enums for window targets
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class WindowTarget

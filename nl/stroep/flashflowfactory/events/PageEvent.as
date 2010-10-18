@@ -3,7 +3,9 @@ package nl.stroep.flashflowfactory.events
 	import flash.events.Event;
 	
 	/**
-	 * Page event
+	 * Page/PageFactory internal Event
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class PageEvent extends Event 

@@ -6,6 +6,8 @@ package nl.stroep.flashflowfactory.display
 	import nl.stroep.flashflowfactory.utils.EventRemover;
 	/**
 	 * Simple event managing MovieClip (with eventcenter) which automatically removes eventlisteners when the sprite is removed from stage. This class should be extended.
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class EventManagedMovieClip extends MovieClip

@@ -13,7 +13,9 @@ package nl.stroep.flashflowfactory.navigation
 	import nl.stroep.flashflowfactory.navigation.events.NavigationButtonEvent;
 	import nl.stroep.flashflowfactory.PageFactory;
 	/**
-	 * ...
+	 * Navigation Button class with smart states, grouping and an easy click function
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class NavigationButton extends EventManagedMovieClip

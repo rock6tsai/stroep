@@ -11,6 +11,8 @@ package nl.stroep.flashflowfactory
 	import nl.stroep.flashflowfactory.utils.EventCenter;
 	/**
 	 * Page system - Custom factory design pattern
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class PageFactory
