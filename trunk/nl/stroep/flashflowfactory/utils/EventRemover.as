@@ -3,6 +3,8 @@ package nl.stroep.flashflowfactory.utils
 	import flash.events.IEventDispatcher;
 	/**
 	 * Automatic event remover util. Removes events when displayobject is removed from stage
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class EventRemover

@@ -8,6 +8,8 @@ package nl.stroep.flashflowfactory
 	import nl.stroep.flashflowfactory.events.PageEvent;
 	/**
 	 * Standard page class. This class should be extended.
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class Page extends EventManagedSprite

@@ -3,6 +3,8 @@ package nl.stroep.flashflowfactory.enum
 	import flash.display.DisplayObject;
 	/**
 	 * Alignment util class with static enums 
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class Alignment

@@ -5,6 +5,8 @@ package nl.stroep.flashflowfactory
 	import nl.stroep.flashflowfactory.transitions.NoTransition;
 	/**
 	 * Page settings value object. 
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public final class PageSettings

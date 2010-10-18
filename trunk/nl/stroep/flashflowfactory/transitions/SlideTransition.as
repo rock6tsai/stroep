@@ -7,6 +7,8 @@ package nl.stroep.flashflowfactory.transitions
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
 	 * Transition which slides from a specified distance to a direction type options.
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class SlideTransition implements ITransition

@@ -5,6 +5,8 @@ package nl.stroep.flashflowfactory.navigation
 	import flash.text.TextField;
 	/**
 	 * Custom button class - Virtual proxy 
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class NavigationProxyButton extends Sprite

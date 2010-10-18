@@ -6,7 +6,9 @@ package nl.stroep.flashflowfactory.transitions
 	import nl.stroep.flashflowfactory.Page;
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
-	 * Fading page transition
+	 * Transition which fades the page. Without options.
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class FadeTransition implements ITransition

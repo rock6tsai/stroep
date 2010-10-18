@@ -4,7 +4,9 @@ package nl.stroep.flashflowfactory.transitions
 	import nl.stroep.flashflowfactory.Page;
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
-	 * No page transition.
+	 * Default transition, without options. If you define a speed-value higher than 0, it will use a delay.
+	 * 
+	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
 	public class NoTransition implements ITransition
