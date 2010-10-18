@@ -41,7 +41,6 @@ package nl.stroep.flashflowfactory
 			this.blendMode = BlendMode.LAYER;
 			
 			if (autoShow) show();
-			trace("onAddedToStage", width, height)
 		}
 		
 		/**
