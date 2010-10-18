@@ -180,8 +180,8 @@ package
 			    Strong.easeIn,           // easing of the out-transition 
 			    1,                       // duration of the in-transition 
 			    0.7,                     // duration of the out-transition 
-			    Alignment.MIDDLE_CENTER, // alignment of the page on the stage
-			    Alignment.TOP_LEFT       // centerpoint position of the page
+			    Alignment.CENTER_MIDDLE, // alignment of the page on the stage
+			    Alignment.LEFT_TOP       // centerpoint position of the page
 			);
 
 			addChild( pageFactory.view );
@@ -376,16 +376,16 @@ package
   This is the easing speed which will be applied on the transitionOut animation, which represents the duration of the transitionOut animation. This should not be negative.
   * `pageAlignment:String`
   Alignment of the page to the stage. You can use the `Alignment` class for this settings: 
-    * `Alignment.TOP_LEFT:String = "top_left";`
-    * `Alignment.TOP_CENTER:String = "top_center";`
-    * `Alignment.TOP_RIGHT:String = "top_right";`
-    * `Alignment.MIDDLE_LEFT:String = "middle_left";`
-    * `Alignment.MIDDLE_CENTER:String = "middle_center";`
-    * `Alignment.MIDDLE_RIGHT:String = "middle_right";`
-    * `Alignment.BOTTOM_LEFT:String = "bottom_left";`
-    * `Alignment.BOTTOM_CENTER:String = "bottom_center";`
-    * `Alignment.BOTTOM_RIGHT:String = "bottom_right";`
-  (default value: "top_left")
+    * `Alignment.LEFT_TOP:String = "left_top";`
+    * `Alignment.CENTER_TOP:String = "center_top";`
+    * `Alignment.RIGHT_TOP:String = "right_top";`
+    * `Alignment.LEFT_MIDDLE:String = "left_middle";`
+    * `Alignment.CENTER_MIDDLE:String = "center_middle";`
+    * `Alignment.RIGHT_MIDDLE:String = "right_middle";`
+    * `Alignment.LEFT_BOTTOM:String = "left_bottom";`
+    * `Alignment.CENTER_BOTTOM:String = "center_bottom";`
+    * `Alignment.RIGHT_BOTTOM:String = "right_bottom";`
+  (default value: "left_top")
   * `clipAlignment:String`
   Alignment of the centerpoint inside the page. Normally you should place the centerpoint to the upperleft, You can use the `Alignment` class for this settings. 
   (default value: "top_left")
