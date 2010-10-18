@@ -15,7 +15,7 @@ These are the features of flashflowfactory
   * Deeplinking made easy: it's included and no need to worry about it anymore
   * Page class with transition settings and states
   * Transitions between pages 
-    * Currently 4 transitions included
+    * There are cool+useful [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions] included
     * Creating your own transitions is possible. This keeps your freedom of expression and makes it usable for every custom project.
   * Global page settings and these settings can be overrided on page level
     * Transition in/out between page
@@ -201,7 +201,7 @@ package
 }
 }}}
 
-If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `ExplosionTransition`), and some of them have some customizable options (see [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions]). 
+If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition`, `Slide3DTransition` and `ExplosionTransition`), and some of them have some customizable options (see [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions]). 
 
 
 ----
@@ -329,16 +329,16 @@ package
 == Page ==
 
   * `autoShow:Boolean`
-  When enabled, the `show()` function is called onAddedToStage, otherwise you can call `show()` yourself (Useful when you want to load something before showing the page). Default `true`
+    When enabled, the `show()` function is called onAddedToStage, otherwise you can call `show()` yourself (Useful when you want to load something before showing the page). Default `true`
 		
   * `pageName:String`
-  Internal page name, auto filled by the `PageFactory`. The pageName reflects the deeplink url, which is set using `SWFAddress`. There is no need to modify this value.
+    Internal page name, auto filled by the `PageFactory`. The pageName reflects the deeplink url, which is set using `SWFAddress`. There is no need to modify this value.
 		
   * `pageTitle:String;
-  Page title, auto filled by the `PageFactory`. The pageTitle reflects the browser title, which is set using `SWFAddress`. There is no need to modify this value.
+    Page title, auto filled by the `PageFactory`. The pageTitle reflects the browser title, which is set using `SWFAddress`. There is no need to modify this value.
 
   * `settings:PageSettings`
-  Settings from the page. auto filled by the `PageFactory`. All values from these settings can be overwritten. 
+    Settings from the page. auto filled by the `PageFactory`. All values from these settings can be overwritten. 
 
   * `onAddedToStage(e:Event):void `
     Protected. Overridable method to detect if page is added from stage
@@ -370,23 +370,50 @@ package
   * `unfreeze():void  `
     Protected. Enable page interactions
 
+=== Overwriting default page settings ===
+
+Sometimes default settings aren't enough. It is possible to overwrite the settings of all pages. This should be done inside a custom class which extends `Page`, see this example:
+{{{
+package  
+{
+	import flash.events.Event;
+	import nl.stroep.flashflowfactory.enum.Alignment;
+	import nl.stroep.flashflowfactory.Page;
+	
+	public class MyCustomPage extends Page
+	{
+		override protected function onAddedToStage(e:Event):void 
+		{
+			// overwrite your settings here
+			settings.clipAlignment = Alignment.CENTER_TOP;
+ 			
+			// call super to show page
+			super.onAddedToStage(e);
+		}
+	}
+}
+
+}}}
+
+When `autoShow` is `false` (not default) you are a bit more free where to place the custom settings, as long as it is before calling the `show()` function
+
 == PageSettings ==
 
   * `transition:ITransition`
-  Transition (interface) which will be applied on the page when navigating from/to it, which includes the following functions. 
+    Transition (interface) which will be applied on the page when navigating from/to it, which includes the following functions. 
     * `function animateIn(page:Page, speed:Number, easing:Function):void`
     * `function animateOut(page:Page, speed:Number, easing:Function):void`
-   There are already 4 transitions available in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `ExplosionTransition`), and some of them have some customizable options (see auto-completion / online docs). 
+    There are already 4 transitions available in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition` and `ExplosionTransition`), and some of them have some customizable options (see auto-completion / online docs). 
   * `easingInFunc:Function`
-  This is the easing function which will be applied on the transitionIn animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
+    This is the easing function which will be applied on the transitionIn animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
   * `easingOutFunc:Function`
-  This is the easing function which will be applied on the transitionOut animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
+    This is the easing function which will be applied on the transitionOut animation. You should pass a easing equation from `TweenLite` (like `Strong.easeInOut` or `Elastic.EaseOut`).
   * `transitionInSpeed:Number` 
-  This is the easing speed which will be applied on the transitionIn animation, which represents the duration of the transitionIn animation. This should not be negative.
+    This is the easing speed which will be applied on the transitionIn animation, which represents the duration of the transitionIn animation. This should not be negative.
   * `transitionOutSpeed:Number`
-  This is the easing speed which will be applied on the transitionOut animation, which represents the duration of the transitionOut animation. This should not be negative.
+    This is the easing speed which will be applied on the transitionOut animation, which represents the duration of the transitionOut animation. This should not be negative.
   * `pageAlignment:String`
-  Alignment of the page to the stage. You can use the `Alignment` class for this settings: 
+    Alignment of the page to the stage. You can use the `Alignment` class for this settings: 
     * `Alignment.LEFT_TOP:String = "left_top";`
     * `Alignment.CENTER_TOP:String = "center_top";`
     * `Alignment.RIGHT_TOP:String = "right_top";`
@@ -396,45 +423,55 @@ package
     * `Alignment.LEFT_BOTTOM:String = "left_bottom";`
     * `Alignment.CENTER_BOTTOM:String = "center_bottom";`
     * `Alignment.RIGHT_BOTTOM:String = "right_bottom";`
-  (default value: "left_top")
+    Default value: "left_top"
   * `clipAlignment:String`
-  Alignment of the centerpoint inside the page. Normally you should place the centerpoint to the upperleft, You can use the `Alignment` class for this settings. 
-  (default value: "top_left")
+    Alignment of the centerpoint inside the page. Normally you should place the centerpoint to the upperleft, You can use the `Alignment` class for this settings. 
+    Default value: "left_top"
 
 = Flashflowfactory Transitions =
 
   * `NoTransition()` 
-  Default transition, without options. If you define a speed-value higher than 0, it will use a delay.
+    Default transition, without options. If you define a speed-value higher than 0, it will use a delay.
 
   * `SlideTransition( type:String = "from_left", distance:uint = 300, fadeEnabled:Boolean = true )` 
-  Transition which slides from a specified distance to a direction
+    Transition which slides from a specified distance to a direction
   `type` options:
     * `SlideTransition.FROM_TOP:String = "from_top";`
     * `SlideTransition.FROM_RIGHT:String = "from_right";`
     * `SlideTransition.FROM_BOTTOM:String = "from_bottom";`
     * `SlideTransition.FROM_LEFT:String = "from_left";`
     * `SlideTransition.FROM_RANDOM:String = "from_random";`
-  `distance` the offset/distance (in pixels) to slide from and to.
-  `fadeEnabled` Enable alpha fade while sliding (default enabled)
+    `distance` the offset/distance (in pixels) to slide from and to.
+    `fadeEnabled` Enable alpha fade while sliding (default enabled)
+
+  * `Slide3DTransition( type:String = "from_left", distance:uint = 300, fadeEnabled:Boolean = true )` 
+   Transition which slides from a specified distance to a direction. Only available if you target FlashPlayer 10 or higher.
+  `type` options:
+    * `Slide3DTransition.FROM_TOP:String = "from_top";`
+    * `Slide3DTransition.FROM_RIGHT:String = "from_right";`
+    * `Slide3DTransition.FROM_BOTTOM:String = "from_bottom";`
+    * `Slide3DTransition.FROM_LEFT:String = "from_left";`
+    * `Slide3DTransition.FROM_RANDOM:String = "from_random";`
+    `distance` the offset/distance (in pixels) to slide from and to.
+    `fadeEnabled` Enable alpha fade while sliding (default enabled)
 
   * `BlurTransition(quality:uint = 2, blurAmount:Number = 10)` 
-  Transition which blurs the page with a specified blur quality and blur amount. Keep in mind blurring could be a CPU heavy task.
+    Transition which blurs the page with a specified blur quality and blur amount. Keep in mind blurring could be a CPU heavy task.
 
   * `FadeTransition()` 
-  Transition which fades the page. Without options.
+    Transition which fades the page. Without options.
 
   * `ExplosionTransition(impact:int = 200, levels:int=1)` 
-  Transition which explodes the children of the page to random positions. Created for fun.
-  `impact` distance from each child.
-  `levels` levels which indicates how much 'children of children' the effect will apply.
+    Transition which explodes the children of the page to random positions. Created for fun.
+    `impact` distance from each child.
+    `levels` levels which indicates how much 'children of children' the effect will apply.
 
 = Troubleshooting checklist =
   * If you use an external code editor which compiles the code, don't forget to build your assets first. 
   * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
-  * The `Page` class should call the `show` function when it is ready. Make sure its being called inside your class.
   * Always disable 'Automatically declare stage instances' when using a code centered project
-  * Make sure `TweenLite` is included. See online docs.
-  * Make sure `SWFAddress` is included. When running from browser, the javaScript file should be added too. See online docs.
+  * Make sure `TweenLite` is included and linked. See online docs. http://www.greensock.com/tweenlite/
+  * Make sure `SWFAddress` is included and linked. When running from browser, the javascript file should be added too. See online docs. http://www.asual.com/swfaddress/
   * Events are automatically removed from the Page class. This excludes child objects; they could extend `EventManagedSprite` too or you have to remove the listeners manually.
   * When using `EventCenter.getInstance().addEventListener` on a not-`EventManagedSprite`, you should call the `EventCenter.getInstance().removeListeners(this)` on `Event.REMOVED_FROM_STAGE`, since the `EventCenter` is a global object and keeps existing forever. Otherwise you have references to removed objects, which could cause strange behaviors.
 {{{
