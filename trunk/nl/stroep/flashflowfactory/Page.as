@@ -27,8 +27,6 @@ package nl.stroep.flashflowfactory
 		/// Overridable method to detect if page is added from stage
 		protected function onAddedToStage(e:Event):void 
 		{
-			Alignment.setAlignment( this, settings.pageAlignment, settings.clipAlignment );
-			
 			freeze();
 			
 			/// Default blendmode
@@ -53,6 +51,8 @@ package nl.stroep.flashflowfactory
 		/// Starts transition-in animation and dispatches global event PageEvent.SHOW_START. Cannot be overridden. Listen to PageEvent.SHOW_START instead.
 		final public function show():void
 		{
+			Alignment.setAlignment( this, settings.pageAlignment, settings.clipAlignment );
+			
 			settings.transition.animateIn(this, settings.transitionInSpeed, settings.easingInFunc);
 			
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_START, pageName ) );
