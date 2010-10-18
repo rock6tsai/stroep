@@ -67,7 +67,7 @@ package nl.stroep.flashflowfactory.enum
 				else { displayObject.y = stageHeight - clipHeight; }
 			}
 			
-			trace("pageAlignment", pageAlignment, ", clipAlignment", clipAlignment, " : ", displayObject.x, displayObject.y);
+			// trace("pageAlignment", pageAlignment, ", clipAlignment", clipAlignment, " : ", displayObject.x, displayObject.y);
 		}
 	}
 
