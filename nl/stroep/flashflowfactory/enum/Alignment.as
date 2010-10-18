@@ -19,7 +19,7 @@ package nl.stroep.flashflowfactory.enum
 		public static const CENTER_BOTTOM:String = "center_bottom";
 		public static const RIGHT_BOTTOM:String = "right_bottom";
 		
-		public static function setAlignment(displayObject:DisplayObject, pageAlignment:String = "top_left", clipAlignment:String = "top_left"):void
+		public static function setAlignment(displayObject:DisplayObject, pageAlignment:String = "left_top", clipAlignment:String = "left_top"):void
 		{
 			const clipWidth:Number = displayObject.width;
 			const clipHeight:Number = displayObject.height;
