@@ -306,11 +306,11 @@ package
   * `cleanupDelay:uint`
     Milliseconds after automatic call of `System.GC();`. Default value 5000 ms.
   * `titlePrefix:String`
-    Default prefix title string. The pageFactory will set the title like this: _titlePrefix - pageTitle_
+    Default prefix title for all pages. The `PageFactory` will set the browser title like this: _'titlePrefix pageTitle'_
   * `view`
     All pages will be added to this `Sprite`. Don't forget to `addChild` 'em in your main document.
   * `defaultPageName`
-    You can use this value to automaticly jump to this page.
+    You can use this value to start on this page, after you call `init()`
   * `defaultSettings`
     `PageSettings` class which will be applied on every `Page`. These settings can be overridden in the `Page` Class itself.
   * `add(pageName:String, classReference:Class, title:String = "", wildcard:Boolean = false):void`
@@ -324,7 +324,7 @@ package
   * `dispose()`
     Removes + cleans pageFactory data
   * `PageFactory.gotoPage(pageName:String):void`
-    Static function. Navigate to new page
+    Static function. Easy way to navigate to a new page.
 
 == Page ==
 
