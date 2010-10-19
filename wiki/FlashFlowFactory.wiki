@@ -208,7 +208,7 @@ If you now run the flashfile, you should have a website with buttons, transition
 
 = Navigation Button =
 
-The framework includes a `NavigationButton` class. This is a semi-intelligent MovieClip. 
+The framework includes a `NavigationButton` class. This is a semi-intelligent MovieClip.  Just extend NavigationButton and the features below are enabled.
 
 === Smart states ===
 You can add framelabels called _'out', 'over', 'down' and/or 'active'_. The button will automatically add the needed events for that, and `gotoAndPlay()` to that framelabel. If you extend the class, you can basically add your button-state-animation and it should work Do not forget to set a `stop()` commando at the end of each button-state-animation. 
