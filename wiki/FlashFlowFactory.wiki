@@ -175,7 +175,7 @@ package
 			
 			// add default page settings, can also be overridden from the Page class
 			pageFactory.defaultSettings = new PageSettings( 
-			    new SlideTransition(),   // transition (there are more default transitions, but you can create your own easily
+			    new SlideTransition(),   // transition (there are more transitions + you can easily create your own)
 			    Elastic.easeOut,         // easing of the in-transition 
 			    Strong.easeIn,           // easing of the out-transition 
 			    1,                       // duration of the in-transition 
