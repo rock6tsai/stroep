@@ -5,9 +5,9 @@
 
 _Sources are available here in the repository_
 
-= Table of contents =
+= Overview =
 
-<wiki:toc max_depth="3" />
+<wiki:toc max_depth="5" />
 
 = Introduction =
 
@@ -20,8 +20,8 @@ These are the features of flashflowfactory
   * Deeplinking made easy: it's included and no need to worry about it anymore
   * Page class with transition settings and states
   * Transitions between pages 
-    * There are cool+useful [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions] included
-    * Creating your own transitions is possible. This keeps your freedom of expression and makes it usable for every custom project.
+    * There are cool+useful [FlashFlowFactory#Flashflowfactory_Transitions Transitions] included
+    *  [FlashFlowFactory#How_to_create_your_own_transition Creating your own transitions] is possible. This keeps your freedom of expression and makes it usable for every custom project.
   * Global page settings and these settings can be overrided on page level
     * Transition in/out between page
     * Easing/time customizable
@@ -321,7 +321,7 @@ This is the Page system which creates/destroys pages and takes care of SWFAddres
   * `titlePrefix:String`
     Default prefix title for all pages. The `PageFactory` will set the browser title like this: _'titlePrefix pageTitle'_
   * `view`
-    All pages will be added to this `Sprite`. Don't forget to `addChild` 'em in your main document.
+    All pages will be added to this `Sprite`. Don't forget to `addChild` 'em in your main document. If you want to use another view instead of this one; It is possible to assign another `Sprite` as `view`.
   * `defaultPageName`
     You can use this value to start on this page, after you call `init()`
   * `defaultSettings`
@@ -349,7 +349,7 @@ Standard page class. This class should be extended.
   * `pageName:String`
     Internal page name, auto filled by the `PageFactory`. The pageName reflects the deeplink url, which is set using `SWFAddress`. There is no need to modify this value.
 		
-  * `pageTitle:String;
+  * `pageTitle:String`
     Page title, auto filled by the `PageFactory`. The pageTitle reflects the browser title, which is set using `SWFAddress`. There is no need to modify this value.
 
   * `settings:PageSettings`
@@ -490,7 +490,11 @@ When you want to create your own transition, you have to Implement ITransition, 
   * `animateOut(page:Page, speed:Number, easing:Function):void`
     You can build your own out-animation here. This is the animation when you are leaving the page. When the animation is done, you should call `page.onHideComplete`. 
 
-Take a look at a simple transition, called FadeTransition. This one is already included in the framework. This should give a clear example of how to setup an own transition:
+Creating a transition is a bit abstract because you don't have to set the time or easing (just pass the function parameters), but I think this makes it very powerful and dynamic. Think of the `SlideTransition`, you can make it bounce or just slide it in/out very fast with same transition, only with other settings, which are editable on every `Page`.
+
+=== Example ===
+
+Take a look at a simple transition, called `FadeTransition`. This one is already included in the framework. This should give a clear example of how to setup an own transition:
 
 {{{
 package nl.stroep.flashflowfactory.transitions 
