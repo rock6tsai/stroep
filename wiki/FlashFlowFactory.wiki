@@ -450,8 +450,8 @@ When `autoShow` is `false` (not default) you are a bit more free where to place 
     Default transition, without options. If you define a speed-value higher than 0, it will use a delay.
 
   * `SlideTransition( type:String = "from_left", distance:uint = 300, fadeEnabled:Boolean = true )` 
-    Transition which slides from a specified distance to a direction
-  `type` options:
+    Transition which slides from a specified distance to a direction.
+   `type` options:
     * `SlideTransition.FROM_TOP:String = "from_top";`
     * `SlideTransition.FROM_RIGHT:String = "from_right";`
     * `SlideTransition.FROM_BOTTOM:String = "from_bottom";`
@@ -461,8 +461,8 @@ When `autoShow` is `false` (not default) you are a bit more free where to place 
     `fadeEnabled` Enable alpha fade while sliding (default enabled)
 
   * `Slide3DTransition( type:String = "from_left", distance:uint = 300, fadeEnabled:Boolean = true )` 
-   Transition which slides from a specified distance to a direction. Only available if you target FlashPlayer 10 or higher.
-  `type` options:
+    Transition which slides from a specified distance to a direction. Only available if you target FlashPlayer 10 or higher.
+   `type` options:
     * `Slide3DTransition.FROM_TOP:String = "from_top";`
     * `Slide3DTransition.FROM_RIGHT:String = "from_right";`
     * `Slide3DTransition.FROM_BOTTOM:String = "from_bottom";`
