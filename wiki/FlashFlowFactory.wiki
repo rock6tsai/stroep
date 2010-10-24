@@ -1,10 +1,10 @@
 #summary Description of flashflowfactory
 
-<img src='http://blog.stroep.nl/wp-content/flashflowfactory1.png' align='right' alt='flash flow factory' title='flashflowfactory' />
+
 <h2><font color='red'>This is a working draft. The framework is not official released yet</font></h2>
 
 _Sources are available here in the repository_
-
+<img src='http://blog.stroep.nl/wp-content/flashflowfactory1.png' align='right' alt='flash flow factory' title='flashflowfactory' width='250' />
 = Overview =
 
 <wiki:toc max_depth="5" />
