@@ -1,6 +1,7 @@
 #summary Description of flashflowfactory
 
-=== This is a working draft. The framework is not official released yet ===
+<img src='http://blog.stroep.nl/wp-content/flashflowfactory1.png' align='right' alt='flash flow factory' title='flashflowfactory' />
+=== <font color='red'>This is a working draft. The framework is not official released yet</font> ===
 
 _Sources are available here in the repository_
 
