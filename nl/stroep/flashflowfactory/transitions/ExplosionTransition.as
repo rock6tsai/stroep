@@ -42,7 +42,7 @@ package nl.stroep.flashflowfactory.transitions
 		
 		private function moveChildrenIn(clip:DisplayObjectContainer, level:int, maxLevels:int, speed:Number, easing:Function):void
 		{
-			if ( level <= maxLevels)
+			if ( level <= maxLevels )
 			{
 				for (var i:int = 0; i < clip.numChildren; i++) 
 				{
@@ -68,7 +68,7 @@ package nl.stroep.flashflowfactory.transitions
 		
 		private function moveChildrenOut(clip:DisplayObjectContainer, level:int, maxLevels:int, speed:Number, easing:Function):void
 		{
-			if ( level <= maxLevels)
+			if ( level <= maxLevels )
 			{
 				for (var i:int = 0; i < clip.numChildren; i++) 
 				{

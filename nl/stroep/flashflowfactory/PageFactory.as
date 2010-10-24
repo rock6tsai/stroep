@@ -10,7 +10,7 @@ package nl.stroep.flashflowfactory
 	import nl.stroep.flashflowfactory.events.PageEvent;
 	import nl.stroep.flashflowfactory.utils.EventCenter;
 	/**
-	 * Page system - Custom factory design pattern
+	 * Page system which creates/destroys pages and takes care of SWFAddress and it's handling. It is a custom factory design pattern.
 	 * 
 	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol

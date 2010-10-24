@@ -13,6 +13,7 @@ package nl.stroep.flashflowfactory.transitions
 	 */
 	public class Slide3DTransition implements ITransition
 	{
+		private const ROTATION:int = 90;
 		public static const FROM_TOP:String = "from_top";
 		public static const FROM_RIGHT:String = "from_right";
 		public static const FROM_BOTTOM:String = "from_bottom";
@@ -47,22 +48,22 @@ package nl.stroep.flashflowfactory.transitions
 			switch (currentType) 
 			{
 				case FROM_TOP:
-					vars.rotationX = int(-90).toString();
+					vars.rotationX = int(-ROTATION).toString();
 					vars.y = (-distance).toString();
 					break;
 			
 				case FROM_RIGHT: 
-					vars.rotationY = int(90).toString();
+					vars.rotationY = int(ROTATION).toString();
 					vars.x = (distance).toString();
 					break;
 				
 				case FROM_BOTTOM: 
-					vars.rotationX = int(90).toString();
+					vars.rotationX = int(ROTATION).toString();
 					vars.y = (distance).toString();
 					break;
 					
 				case FROM_LEFT: 
-					vars.rotationY = int(-90).toString();
+					vars.rotationY = int(-ROTATION).toString();
 					vars.x = (-distance).toString();
 					break;
 					
@@ -96,22 +97,22 @@ package nl.stroep.flashflowfactory.transitions
 			switch (currentType) 
 			{
 				case FROM_TOP:
-					vars.rotationX = int(90).toString();
+					vars.rotationX = int(ROTATION).toString();
 					vars.y = (distance).toString();
 					break;
 			
 				case FROM_RIGHT: 
-					vars.rotationY = int(-90).toString();
+					vars.rotationY = int(-ROTATION).toString();
 					vars.x = (-distance).toString();
 					break;
 				
 				case FROM_BOTTOM: 
-					vars.rotationX = int(-90).toString();
+					vars.rotationX = int(-ROTATION).toString();
 					vars.y = (-distance).toString();
 					break;
 					
 				case FROM_LEFT: 
-					vars.rotationY = int(90).toString();
+					vars.rotationY = int(ROTATION).toString();
 					vars.x = (distance).toString();
 					break;
 					
