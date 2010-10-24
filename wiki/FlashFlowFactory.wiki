@@ -1,9 +1,13 @@
 #summary Description of flashflowfactory
 
 <img src='http://blog.stroep.nl/wp-content/flashflowfactory1.png' align='right' alt='flash flow factory' title='flashflowfactory' />
-=== <font color='red'>This is a working draft. The framework is not official released yet</font> ===
+<h2><font color='red'>This is a working draft. The framework is not official released yet</font></h2>
 
 _Sources are available here in the repository_
+
+= Table of contents =
+
+<wiki:toc max_depth="3" />
 
 = Introduction =
 
@@ -34,7 +38,7 @@ These are the features of flashflowfactory
 
 = Flashflowfactory Tutorial =
 
-=== How to use ===
+== How to use ==
 
 Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, export as SWC), and use an external AS editor for ultimate coding-fun. 
 All classes related to the framework are inside package `nl.stroep.flashflowfactory`
@@ -207,17 +211,20 @@ If you now run the flashfile, you should have a website with buttons, transition
 
 ----
 
-= Navigation Button =
+= Flashflowfactory Navigation Button =
 
 Flashflowframework includes a `NavigationButton` class. This is a semi-intelligent `MovieClip` with smart states and an uber-clickfunction.  Just extend `NavigationButton` and the features below are enabled.
 
-=== Smart states ===
+== Smart states ==
+
 You can add framelabels called _'out', 'over', 'down' and/or 'active'_. The button will automatically add the needed events for that, and `gotoAndPlay()` to that framelabel. If you extend the class, you can basically add your button-state-animation and it should work Do not forget to set a `stop()` commando at the end of each button-state-animation. 
 
-=== Grouping ===
+== Grouping ==
+
 If you have multiple buttons, you can group them, to create an active state. Just pass a name (String) of the group to all buttons using the `group`-property. If you click on one member of the group, it will `gotoAndPlay()` to framelabel '_active_' if exist. This should make it easy to create simple buttons with cool states.
 
-=== Click functions ===
+== Click functions ==
+
 But that is not it. The `NavigationButton` class is very easy to configure. There is a `click` function, which should basically cover all types of button-click-functions you would ever create. See code below for the divers navigation button possibilities.
 {{{
 import nl.stroep.flashflowfactory.navigation.NavigationButton;
@@ -302,7 +309,12 @@ package
 }}}
 
 = Documentation =
-== PageFactory ==
+
+You can find code documentation here.
+
+== Page Factory ==
+
+This is the Page system which creates/destroys pages and takes care of SWFAddress and it's handling. It is a custom factory design pattern.
 
   * `cleanupDelay:uint`
     Milliseconds after automatic call of `System.GC();`. Default value 5000 ms.
@@ -328,6 +340,8 @@ package
     Static function. Easy way to navigate to a new page.
 
 == Page ==
+
+Standard page class. This class should be extended.
 
   * `autoShow:Boolean`
     When enabled, the `show()` function is called onAddedToStage, otherwise you can call `show()` yourself (Useful when you want to load something before showing the page). Default `true`
@@ -371,34 +385,7 @@ package
   * `unfreeze():void  `
     Protected. Enable page interactions
 
-=== Overwriting default page settings ===
-
-Sometimes default settings aren't enough. It is possible to overwrite the settings of all pages. This should be done inside a custom class which extends `Page`, see this example:
-{{{
-package  
-{
-	import flash.events.Event;
-	import nl.stroep.flashflowfactory.enum.Alignment;
-	import nl.stroep.flashflowfactory.Page;
-	
-	public class MyCustomPage extends Page
-	{
-		override protected function onAddedToStage(e:Event):void 
-		{
-			// overwrite your settings here
-			settings.clipAlignment = Alignment.CENTER_TOP;
- 			
-			// call super to show page
-			super.onAddedToStage(e);
-		}
-	}
-}
-
-}}}
-
-When `autoShow` is `false` (not default) you are a bit more free where to place the custom settings, as long as it is before calling the `show()` function
-
-== PageSettings ==
+== Page Settings ==
 
   * `transition:ITransition`
     Transition (interface) which will be applied on the page when navigating from/to it, which includes the following functions. 
@@ -428,6 +415,34 @@ When `autoShow` is `false` (not default) you are a bit more free where to place 
   * `clipAlignment:String`
     Alignment of the centerpoint inside the page. Normally you should place the centerpoint to the upperleft, You can use the `Alignment` class for this settings. 
     Default value: "left_top"
+
+
+=== How to overwrite default page settings ===
+
+Sometimes default settings aren't enough. It is possible to overwrite the settings of all pages. This should be done inside a custom class which extends `Page`, see this example:
+{{{
+package  
+{
+	import flash.events.Event;
+	import nl.stroep.flashflowfactory.enum.Alignment;
+	import nl.stroep.flashflowfactory.Page;
+	
+	public class MyCustomPage extends Page
+	{
+		override protected function onAddedToStage(e:Event):void 
+		{
+			// overwrite your settings here
+			settings.clipAlignment = Alignment.CENTER_TOP;
+ 			
+			// call super to show page
+			super.onAddedToStage(e);
+		}
+	}
+}
+
+}}}
+
+When `autoShow` is `false` (not default) you are a bit more free where to place the custom settings, as long as it is before calling the `show()` function
 
 = Flashflowfactory Transitions =
 
@@ -466,6 +481,46 @@ When `autoShow` is `false` (not default) you are a bit more free where to place 
     Transition which explodes the children of the page to random positions. Created for fun.
     `impact` distance from each child.
     `levels` levels which indicates how much 'children of children' the effect will apply.
+
+== How to create your own transition == 
+
+When you want to create your own transition, you have to Implement ITransition, This means you have to create 2 functions:
+  * `animateIn(page:Page, speed:Number, easing:Function):void`
+    You can build your own in-animation here. This is the animation when you are entering the page. When the animation is done, you should call `page.onShowComplete`. 
+  * `animateOut(page:Page, speed:Number, easing:Function):void`
+    You can build your own out-animation here. This is the animation when you are leaving the page. When the animation is done, you should call `page.onHideComplete`. 
+
+Take a look at a simple transition, called FadeTransition. This one is already included in the framework. This should give a clear example of how to setup an own transition:
+
+{{{
+package nl.stroep.flashflowfactory.transitions 
+{
+	import com.greensock.plugins.AutoAlphaPlugin;
+	import com.greensock.plugins.TweenPlugin;
+	import com.greensock.TweenLite;
+	import nl.stroep.flashflowfactory.Page;
+	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
+
+	public class FadeTransition implements ITransition
+	{
+		public function FadeTransition() 
+		{
+			TweenPlugin.activate([AutoAlphaPlugin]);
+		}
+		
+		public function animateIn(page:Page, speed:Number, easing:Function):void
+		{
+			page.alpha = 0;
+			TweenLite.to( page, speed, { autoAlpha: 1, onComplete: page.onShowComplete, ease: easing } );
+		}
+		
+		public function animateOut(page:Page, speed:Number, easing:Function):void
+		{
+			TweenLite.to( page,  speed, { autoAlpha: 0, onComplete: page.onHideComplete, ease: easing } );
+		}
+	}
+}
+}}}
 
 = Troubleshooting checklist =
   * If you use an external code editor which compiles the code, don't forget to build your assets first. 
