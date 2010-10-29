@@ -1,6 +1,7 @@
 package nl.stroep.flashflowfactory.transitions 
 {
-	import com.greensock.TweenLite;
+	import flash.utils.clearTimeout;
+	import flash.utils.setTimeout;
 	import nl.stroep.flashflowfactory.Page;
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
@@ -11,7 +12,8 @@ package nl.stroep.flashflowfactory.transitions
 	 */
 	public class NoTransition implements ITransition
 	{
-			
+		private var timeoutID:uint;
+		
 		public function NoTransition() 
 		{
 			
@@ -28,8 +30,14 @@ package nl.stroep.flashflowfactory.transitions
 			}
 			else
 			{
-				TweenLite.delayedCall( speed, page.onShowComplete );
+				timeoutID = setTimeout(onAnimateInComplete, speed);
 			}
+		}
+		
+		private function onAnimateInComplete():void 
+		{
+			clearTimeout(timeoutID);
+			page.onShowComplete();
 		}
 		
 		public function animateOut(page:Page, speed:Number, easing:Function):void
@@ -41,8 +49,14 @@ package nl.stroep.flashflowfactory.transitions
 			}
 			else
 			{
-				TweenLite.delayedCall( speed, page.onHideComplete );
+				timeoutID = setTimeout(onAnimateOutComplete, speed);
 			}
+		}
+		
+		private function onAnimateOutComplete():void 
+		{
+			clearTimeout(timeoutID);
+			page.onHideComplete();
 		}
 	}
 
