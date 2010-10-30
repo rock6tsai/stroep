@@ -33,7 +33,7 @@
 			return -0.5 * ((k -= 2) * k * k * k - 2);
 		}
 		
-		/// Quart easeIn
+		/// Elastic easeIn
 		public static function elasticIn(k:Number = 0):Number
 		{
 			var a:Number = 1;
@@ -44,7 +44,7 @@
 			return -(a * Math.pow(2, 10 * (k -= 1)) * Math.sin( (k - s) * (2 * Math.PI) / p ));
 		}
 		
-		/// Quart easeOut
+		/// Elastic easeOut
 		public static function elasticOut(k:Number = 0):Number
 		{
 			var a:Number = 1;
@@ -56,7 +56,7 @@
 		
 		}
 		
-		/// Quart easeInOut
+		/// Elastic easeInOut
 		public static function elasticInOut(k:Number = 0):Number
 		{
 			var a:Number = 1;

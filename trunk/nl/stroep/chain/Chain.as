@@ -109,7 +109,7 @@
 		}
 
 		
-		/// Animate an object
+		/// Animate an displayobject, using a properties object with a specific duration and easing
 		public function animate(target:DisplayObject = null, properties:Object = null, duration:Number = 0, easing:Function = null):Chain
 		{
 			var tween:ChainTween = new ChainTween( target, properties, duration, easing );
@@ -121,7 +121,7 @@
 		}
 		
 		
-		/// Animate an object
+		/// Animate an displayobject, using a properties object with specific duration and easing, but with a alternative delay
 		public function animateAsync(target:DisplayObject = null, properties:Object = null , duration:Number = 0, delay:Number = 0, easing:Function = null):Chain
 		{
 			var tween:ChainTween = new ChainTween( target, properties, duration, easing );
@@ -157,7 +157,7 @@
 			}
 		}
 		
-		/// Aplly settings to an object
+		/// Applies settings to an object
 		public function apply(object:DisplayObject = null, properties:Object = null ):Chain
 		{
 			var tween:ChainTween = new ChainTween( object, properties, 0 );
