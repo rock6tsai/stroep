@@ -12,7 +12,7 @@
 		public static function linear(k:Number = 0):Number
 		{
 			return k;
-		}
+		}		
 		
 		/// Quart easeIn
 		public static function quartIn(k:Number = 0):Number 
@@ -53,7 +53,6 @@
 			if (k == 0) return 0; if (k == 1) return 1; 
 			var s:Number = p / (2 * Math.PI) * Math.asin (1 / a);
 			return (a * Math.pow(2, -10 * k) * Math.sin((k - s) * (2 * Math.PI) / p ) + 1);
-		
 		}
 		
 		/// Elastic easeInOut
