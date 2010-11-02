@@ -5,6 +5,7 @@
 	import flash.events.EventDispatcher;
 	import flash.events.TimerEvent;
 	import flash.utils.clearTimeout;
+	import flash.utils.Dictionary;
 	import flash.utils.setTimeout;
 	import flash.utils.Timer;
 	
@@ -18,58 +19,65 @@
 	 
 	final public class Chain extends EventDispatcher
 	{		
-		protected var _list:Vector.<ChainItem> = new Vector.<ChainItem>();
-		protected var _tweenList:Vector.<ChainTween> = new Vector.<ChainTween>();
+		private static const fadeInObject:Object = { alpha:1 }
+		private static const fadeOutObject:Object = { alpha:0 }
+		private var destroyOnComplete:Boolean;
 		
-		protected var _currentTweenIndex:int = 0;
-		protected var _currentIndex:int = 0;
-		protected var _currentRepeatIndex:int = 0;
-		protected var _repeatCount:int = 0;
-		protected var _intervalCompleteID:uint = 0;
+		protected var durationList:Dictionary = new Dictionary();
+		protected var list:Vector.<ChainItem> = new Vector.<ChainItem>();
+		protected var tweenList:Vector.<ChainTween> = new Vector.<ChainTween>();
 		
-		protected var _reversed:Boolean = false;
+		protected var currentTweenIndex:int = 0;
+		protected var currentIndex:int = 0;
+		protected var currentRepeatIndex:int = 0;
+		protected var repeatCount:int = 0;
+		protected var intervalCompleteID:uint = 0;
+		
+		protected var reversed:Boolean = false;
 		protected var _isPlaying:Boolean = false;
 		
-		protected var _onComplete:Function;
+		protected var onComplete:Function;
 		
-		protected var _timer:Timer;
+		protected var timer:Timer;
 		
 		
 		/// Constructor
 		public function Chain() 
 		{	
-			_timer = new Timer(0);
-			_timer.addEventListener(TimerEvent.TIMER, onTimer);
+			timer = new Timer(0);
+			timer.addEventListener(TimerEvent.TIMER, onTimer);
 		}
 		
+		/// quick way to get a new instance of Chain
+		public static function get create():Chain { return new Chain() }
 		
 		/// Stop playing, use doContinue to play futher from current point
 		public function stop():void
 		{
-			clearTimeout(_intervalCompleteID);
+			clearTimeout(intervalCompleteID);
 			
-			var length:int = _tweenList.length;
+			var length:int = tweenList.length;
 			var i:int = 0;
 			for (; i < length; ++i) 
 			{
-				_tweenList[i].stop();
+				tweenList[i].stop();
 			}
 			
-			_timer.stop();	
+			timer.stop();	
 			_isPlaying = false;
 		}
 		
 		/// Continue playing after a stop
 		public function doContinue():Chain
 		{
-			_timer.start();	
+			timer.start();	
 			_isPlaying = true;
 			
-			var length:int = _tweenList.length;
+			var length:int = tweenList.length;
 			var i:int = 0;
 			for (; i < length; ++i) 
 			{
-				_tweenList[i].doContinue();
+				tweenList[i].doContinue();
 			}
 			
 			return this;
@@ -78,24 +86,24 @@
 		/// Reset indexes, start from first point. If reversed, start at last point
 		public function reset():void
 		{
-			if (!_reversed)
+			if (!reversed)
 			{
-				_currentIndex = 0;	
-				_currentTweenIndex = 0;			
+				currentIndex = 0;	
+				currentTweenIndex = 0;			
 			}
 			else
 			{
-				_currentIndex = _list.length - 1;
-				_currentTweenIndex = _tweenList.length - 1;
+				currentIndex = list.length - 1;
+				currentTweenIndex = tweenList.length - 1;
 			}
 			
-			_currentRepeatIndex = 0;
+			currentRepeatIndex = 0;
 		}
 		
 		/// Adds a function at a specified interval (in milliseconds).
 		public function add(func:Function, delay:Number = 0):Chain
 		{
-			_list.push( new ChainItem(func, delay) );
+			list.push( new ChainItem(func, delay) );
 			
 			return this;
 		}
@@ -103,101 +111,110 @@
 		/// Have a break, take some coffee. Do nothing for a specified interval (in milliseconds).
 		public function wait(delay:Number = 0):Chain
 		{
-			_list.push( new ChainItem(null, delay) );
+			list.push( new ChainItem(null, delay) );
 			
 			return this;
 		}
-
 		
 		/// Animate an displayobject, using a properties object with a specific duration and easing
 		public function animate(target:DisplayObject = null, properties:Object = null, duration:Number = 0, easing:Function = null):Chain
 		{
-			var tween:ChainTween = new ChainTween( target, properties, duration, easing );
-			_tweenList.push(tween);
+			tweenList.push( new ChainTween( target, properties, duration, easing ) );
 			
-			_list.push( new ChainItem(playTween, duration ) );
+			addTweenChainItem(duration);
 			
 			return this;
 		}
 		
+		/// Fade in DisplayObject
+		public function show(target:DisplayObject = null, duration:Number = 0, easing:Function = null):Chain
+		{
+			tweenList.push( new ChainTween( target, fadeInObject, duration, easing ) );
+			
+			addTweenChainItem(duration);
+			
+			return this;
+		}
+		
+		/// Fade out DisplayObject
+		public function hide(target:DisplayObject = null, duration:Number = 0, easing:Function = null):Chain
+		{
+			tweenList.push( new ChainTween( target, fadeOutObject, duration, easing ) );
+			
+			addTweenChainItem(duration);
+			
+			return this;
+		}
+		
+		/// Rotates DisplayObject to specific angle (in degrees)
+		public function rotate(target:DisplayObject = null, angle:Number, duration:Number = 0, easing:Function = null):Chain
+		{
+			tweenList.push( new ChainTween( target, {shortRotation: angle}, duration, easing ) );
+			
+			addTweenChainItem(duration);
+			
+			return this;
+		}
 		
 		/// Animate an displayobject, using a properties object with specific duration and easing, but with a alternative delay
-		public function animateAsync(target:DisplayObject = null, properties:Object = null , duration:Number = 0, delay:Number = 0, easing:Function = null):Chain
+		public function animateAsync(target:DisplayObject = null, properties:Object = null, duration:Number = 0, delay:Number = 0, easing:Function = null):Chain
 		{
-			var tween:ChainTween = new ChainTween( target, properties, duration, easing );
-			_tweenList.push(tween);
+			tweenList.push( new ChainTween( target, properties, duration, easing ) );
 			
-			_list.push( new ChainItem(playTween, delay) );
+			addTweenChainItem(delay);
 			
 			return this;
-		}
-		
-		protected function playTween():void
-		{
-			_tweenList[_currentTweenIndex].start(_reversed);
-			
-			//trace("x,y",_tweenList[_currentTweenIndex].target,_tweenList[_currentTweenIndex].target.x,_tweenList[_currentTweenIndex].target.y );
-			
-			if (!_reversed)
-			{
-				_currentTweenIndex ++
-			}
-			else
-			{
-				_currentTweenIndex --
-			}
-			
-			if (!_reversed && _currentTweenIndex > _tweenList.length)
-			{
-				_currentTweenIndex = 0;
-			}
-			if (_reversed && _currentTweenIndex < 0)
-			{
-				_currentTweenIndex = _tweenList.length;
-			}
 		}
 		
 		/// Applies settings to an object
-		public function apply(object:DisplayObject = null, properties:Object = null ):Chain
+		public function apply(object:DisplayObject = null, properties:Object = null, onStart:Boolean = false ):Chain
 		{
 			var tween:ChainTween = new ChainTween( object, properties, 0 );
-			_tweenList.push(tween);
+			if (!onStart)
+			{
+				tweenList.push(tween);
+			}
+			else
+			{
+				tweenList.splice(0, 0, tween);
+			}
 			
-			_list.push( new ChainItem(playTween, 0) );
+			addTweenChainItem(0);
 			
 			return this;
 		}
 		
 		/// Start playing the sequence
-		public function play(repeatCount:int = 1, onComplete:Function = null):void
+		public function play(repeatCount:int = 1, onComplete:Function = null, destroyOnComplete:Boolean = true):void
 		{
-			this._reversed = false;
-			this._repeatCount = repeatCount;
+			this.reversed = false;
+			this.repeatCount = repeatCount;
+			this.destroyOnComplete = destroyOnComplete;
 			
-			if (_list.length > 0)
+			if (list.length > 0)
 			{
 				this.reset();
 				
 				_isPlaying = true;
-				_timer.start();
+				timer.start();
 			}
-			_onComplete = onComplete;
+			onComplete = onComplete;
 		}	
 		
 		/// Start playing the sequence reversed
 		public function playReversed(repeatCount:int = 1, onComplete:Function = null):void
 		{
-			this._reversed = true;
-			this._repeatCount = repeatCount;
+			this.reversed = true;
+			this.repeatCount = repeatCount;
 			
-			if (_list.length > 0)
+			if (list.length > 0)
 			{
 				this.reset();
 				
 				_isPlaying = true;
-				_timer.start();	
+				timer.start();	
 			}
-			_onComplete = onComplete;
+			onComplete = onComplete;
 		}	
 				
 		/// Clears sequence list. Data will be removed.
@@ -207,27 +224,28 @@
 			
 			this.reset();
 			
-			for (i = _list.length - 1; i >= 0; i--) 
+			for (i = list.length - 1; i >= 0; i--) 
 			{
-				var listItem:ChainItem = _list[i];
+				var listItem:ChainItem = list[i];
 				listItem.func = null;
 				listItem = null;
-				_list[i] = null;
-				_tweenList.splice(i, 1);
+				list[i] = null;
+				list.splice(i, 1);
 			}
 			
-			for (i = _tweenList.length - 1; i >= 0; i--) 
+			for (i = tweenList.length - 1; i >= 0; i--) 
 			{
-				var chainTween:ChainTween = _tweenList[i];
+				var chainTween:ChainTween = tweenList[i];
 				chainTween.destroy();
 				chainTween = null;
-				_tweenList[i] = null;
-				_tweenList.splice(i, 1);
+				tweenList[i] = null;
+				tweenList.splice(i, 1);
 			}
 			
-			_list.splice(0, _list.length);
-			_tweenList.splice(0, _list.length);
-			_onComplete = null;
+			list.splice(0, list.length);
+			tweenList.splice(0, list.length);
+			durationList = null;
+			onComplete = null;
 			
 			return this;
 		}
@@ -235,24 +253,64 @@
 		/// Returns the string representation of the Chain private vars.
 		public override function toString():String
 		{
-			var retval:String = "_currentRepeatIndex:" + _currentRepeatIndex + ", _currentIndex:" + _currentIndex + ", _reversed:" + _reversed + ", _repeatCount:" + _repeatCount + ", loop length:" + _list.length;
+			var retval:String = "currentRepeatIndex:" + currentRepeatIndex + ", currentIndex:" + currentIndex + ", reversed:" + reversed + ", repeatCount:" + repeatCount + ", loop length:" + list.length;
 			return retval;
+		}
+		
+		
+		private function addTweenChainItem(duration:Number = 0):void 
+		{
+			if (durationList[duration]) 
+			{ 
+				list.push(durationList[duration]);
+			}
+			else
+			{
+				var chainItem:ChainItem = new ChainItem(playTween, duration )
+				list.push( chainItem );
+				durationList[duration] = chainItem;
+			}
+		}
+		
+		protected function playTween():void
+		{
+			tweenList[currentTweenIndex].start(reversed);
+			
+			//trace("x,y",tweenList[currentTweenIndex].target,tweenList[currentTweenIndex].target.x,tweenList[currentTweenIndex].target.y );
+			
+			if (!reversed)
+			{
+				currentTweenIndex ++
+			}
+			else
+			{
+				currentTweenIndex --
+			}
+			
+			if (!reversed && currentTweenIndex > tweenList.length)
+			{
+				currentTweenIndex = 0;
+			}
+			if (reversed && currentTweenIndex < 0)
+			{
+				currentTweenIndex = tweenList.length;
+			}
 		}
 		
 		protected function execute(index:uint):void
 		{	
-			_timer.stop();
+			timer.stop();
 			
-			var obj:ChainItem = _list[index] as ChainItem;
+			var obj:ChainItem = list[index] as ChainItem;
 			if (obj.func != null)
 			{
 				obj.func();
 			}
 			if (_isPlaying)
 			{
-				_timer.delay = obj.delay;
-				_timer.repeatCount = 0;
-				_timer.start();
+				timer.delay = obj.delay;
+				timer.repeatCount = 0;
+				timer.start();
 			}
 		}	
 		
@@ -260,58 +318,64 @@
 		{	
 			var obj:ChainItem;
 			
-			if (!_reversed)
+			if (!reversed)
 			{
-				obj = _list[_list.length - 1] as ChainItem;
+				obj = list[list.length - 1] as ChainItem;
 			}
 			else
 			{
-				obj = _list[0] as ChainItem;
+				obj = list[0] as ChainItem;
 			}
 		
-			_intervalCompleteID = setTimeout( dispatchComplete, obj.delay );
+			intervalCompleteID = setTimeout( dispatchComplete, obj.delay );
 		}
 		
 		protected function dispatchComplete():void
 		{
 			dispatchEvent( new Event( Event.COMPLETE, false, false) );
 			
-			if (_onComplete != null) _onComplete();
+			if (onComplete != null) onComplete();
+			if (destroyOnComplete) destroy();
 		}
 		
-		protected function onTimer(e:TimerEvent):void 
+		protected function onTimer(e:TimerEvent = null):void 
 		{
-			if (!_reversed && _currentRepeatIndex >= _repeatCount && _currentIndex == 0 || 
-				_reversed  && _currentRepeatIndex >= _repeatCount && _currentIndex == _list.length - 1 )
+			if (!reversed && currentRepeatIndex >= repeatCount && currentIndex == 0 || 
+				reversed  && currentRepeatIndex >= repeatCount && currentIndex == list.length - 1 )
 			{		
 				this.stop();
 				this.executeOnComplete();
 			}
 			else
 			{
-				this.execute(_currentIndex);
+				this.execute(currentIndex);
 			}
 			
-			if (!_reversed)
+			if (!reversed)
 			{
-				_currentIndex ++;
+				currentIndex ++
 			}
 			else
 			{
-				_currentIndex --;
+				currentIndex --
 			}
 			
-			if (!_reversed && _currentIndex >= _list.length)
+			if (!reversed && currentIndex >= list.length)
 			{
-				_currentIndex = 0;
-				_currentRepeatIndex ++;
-				_currentTweenIndex = 0;
+				currentIndex = 0;
+				currentRepeatIndex ++;
+				currentTweenIndex = 0;
 			}
 			
-			if (_reversed && _currentIndex < 0)
+			if (reversed && currentIndex < 0)
 			{
-				_currentIndex = _list.length - 1;
-				_currentRepeatIndex ++;
+				currentIndex = list.length - 1;
+				currentRepeatIndex ++;
+			}
+			
+			if (list[currentIndex].delay == 0 ) {
+				timer.stop();
+				onTimer()
 			}
 		}
 		

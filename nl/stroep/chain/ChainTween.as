@@ -17,7 +17,7 @@
 	public class ChainTween
 	{
 		public static var UPDATE_INTERVAL:uint = 24;
-		protected var _easeFunc:Function = Easing.quartOut;
+		protected var _easeFunc:Function;
 		
 		protected var _duration:Number = 0;
 		protected var _target:DisplayObject;
@@ -27,8 +27,9 @@
 		protected var _timeoutID:uint = 0;
 		
 		protected var _propertiesList:Vector.<ChainTweenProperty>;
-		protected var _reversed:Boolean = false;
 		protected var _isPlaying:Boolean = true;
+		protected var _reversed:Boolean;
+		private var isCollected:Boolean;
 		
 		public function ChainTween(target:DisplayObject = null, properties:Object = null, duration:Number = 0, easing:Function = null)
 		{
@@ -40,14 +41,18 @@
 			{
 				_easeFunc = easing;
 			}
+			else
+			{
+				_easeFunc = Easing.quartOut;
+			}
 		}
 		
 		public function start(reversed:Boolean = false):void
-		{			
-			this._reversed = reversed;
-			
+		{
 			if (_duration > 0)
 			{
+				this._reversed = reversed;
+				
 				_startTime = getTimer();
 				collectProperties();				
 				_timeoutID = setInterval(update, UPDATE_INTERVAL);
@@ -60,21 +65,32 @@
 		
 		protected function collectProperties():void
 		{
-			var i:int = 0;
-			var name:Object;
-			var property:ChainTweenProperty;
-			
-			if ( _propertiesList == null || !_propertiesList )
+			if (!isCollected)
 			{
-				_propertiesList = new Vector.<ChainTweenProperty>();
-				
-				for ( name in _properties )
-				{ 
-					property = new ChainTweenProperty( String(name), _target[name], _properties[name] );				
-					_propertiesList[i] = property;
+				if ( _propertiesList == null || !_propertiesList )
+				{
+					_propertiesList = new Vector.<ChainTweenProperty>();
+					var name:Object;
 					
-					i++
+					for ( name in _properties )
+					{ 
+						if ( name == "scale" )
+						{
+							var endScale:Number = _properties[name];
+							_propertiesList.push( new ChainTweenProperty( "scaleX", _target["scaleX"], endScale ) );
+							_propertiesList.push( new ChainTweenProperty( "scaleY", _target["scaleY"], endScale ) );
+						}
+						else if ( name == "shortRotation" )
+						{
+							_propertiesList.push( new ChainTweenProperty( String(name), _target["rotation"],  _properties[name] ) );
+						}
+						else
+						{
+							_propertiesList.push( new ChainTweenProperty( String(name), _target[name], _properties[name] ) );
+						}
+					}
 				}
+				isCollected = true;
 			}
 		}
 		
@@ -97,26 +113,28 @@
 					if (position >= 1)
 					{
 						// on tween complete
-						if (!_reversed)
+						if (property.name == "shortRotation")
 						{
-							_target[property.name] = property.endValue;
+							_target["rotation"] = (!_reversed) ? property.endValue : property.startValue;
 						}
 						else
 						{
-							_target[property.name] = property.startValue;
-						}						
+							_target[property.name] = (!_reversed) ? property.endValue : property.startValue;
+						}
 						executeOnComplete();
 					}
 					else
 					{
 						// tweening calculation here
-						if (!_reversed)
+						var easedPosition:Number = (!_reversed) ? _easeFunc(position) : _easeFunc(1 - position);
+						
+						if (property.name == "shortRotation")
 						{
-							_target[property.name] = property.startValue + ((property.endValue - property.startValue) * _easeFunc(position));
+							_target["rotation"] = property.startValue + (((property.endValue - property.startValue + 540) % 360) - 180) * easedPosition;
 						}
 						else
 						{
-							_target[property.name] = property.startValue + ((property.endValue - property.startValue) * _easeFunc(1 - position));
+							_target[property.name] = property.startValue + (property.endValue - property.startValue) * easedPosition;
 						}
 					}
 				}				
@@ -142,15 +160,17 @@
 			clearInterval(_timeoutID);
 			
 			_properties = null;
-			
-			var i:int = _propertiesList.length - 1
-			for (; i >= 0; --i) 
+			if ( _propertiesList)
 			{
-				_propertiesList[i] = null;
-				_propertiesList.splice(i, 1);
+				var i:int = _propertiesList.length - 1
+				for (; i >= 0; --i) 
+				{
+					_propertiesList[i] = null;
+					_propertiesList.splice(i, 1);
+				}
+				
+				_propertiesList = null;		
 			}
-			
-			_propertiesList = null;			
 		}
 		
 		public function stop():void
@@ -164,7 +184,6 @@
 		}
 	}
 }
-
 internal final class ChainTweenProperty
 {
 	private var _startValue:Number;
