@@ -548,8 +548,8 @@ package nl.stroep.flashflowfactory.transitions
   * If you use an external code editor which compiles the code, don't forget to build your assets first. 
   * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
   * Always disable 'Automatically declare stage instances' when using a code centered project
-  * Make sure `TweenLite` is included and linked. See online docs. http://www.greensock.com/tweenlite/
-  * Make sure `SWFAddress` is included and linked. When running from browser, the javascript file should be added too. See online docs. http://www.asual.com/swfaddress/
+  * If you are using the `TweenLite` pack: Make sure you have downloaded the sources from greensock.com and linked it to your project. See online docs. http://www.greensock.com/tweenlite/
+  * Make sure `SWFAddress` is included and linked. When running from browser, the `swfaddress.js` javascript file should be added too. See online docs. http://www.asual.com/swfaddress/
   * Events are automatically removed from the Page class. This excludes child objects; they could extend `EventManagedSprite` too or you have to remove the listeners manually.
   * When using `EventCenter.getInstance().addEventListener` on a not-`EventManagedSprite`, you should call the `EventCenter.getInstance().removeListeners(this)` on `Event.REMOVED_FROM_STAGE`, since the `EventCenter` is a global object and keeps existing forever. Otherwise you have references to removed objects, which could cause strange behaviors.
 {{{
