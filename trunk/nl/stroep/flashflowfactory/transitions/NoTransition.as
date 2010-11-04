@@ -30,11 +30,11 @@ package nl.stroep.flashflowfactory.transitions
 			}
 			else
 			{
-				timeoutID = setTimeout(onAnimateInComplete, speed);
+				timeoutID = setTimeout(onAnimateInComplete, speed, page);
 			}
 		}
 		
-		private function onAnimateInComplete():void 
+		private function onAnimateInComplete(page:Page):void 
 		{
 			clearTimeout(timeoutID);
 			page.onShowComplete();
@@ -49,11 +49,11 @@ package nl.stroep.flashflowfactory.transitions
 			}
 			else
 			{
-				timeoutID = setTimeout(onAnimateOutComplete, speed);
+				timeoutID = setTimeout(onAnimateOutComplete, speed, page);
 			}
 		}
 		
-		private function onAnimateOutComplete():void 
+		private function onAnimateOutComplete(page:Page):void 
 		{
 			clearTimeout(timeoutID);
 			page.onHideComplete();

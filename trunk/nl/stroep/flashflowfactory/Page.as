@@ -1,6 +1,5 @@
 package nl.stroep.flashflowfactory
 {
-	import com.greensock.easing.*;
 	import flash.display.BlendMode;
 	import flash.events.Event;
 	import nl.stroep.flashflowfactory.display.EventManagedSprite;
@@ -92,7 +91,7 @@ package nl.stroep.flashflowfactory
 		/**
 		 * Dispatches global event PageEvent.SHOW_COMPLETE after completing transition-in animation. Cannot be overridden. Listen to PageEvent.SHOW_COMPLETE instead.
 		 */
-		final public function onShowComplete():void
+		final public function onShowComplete(e:* = null):void
 		{			
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_COMPLETE, pageName ) );
 			
@@ -104,7 +103,7 @@ package nl.stroep.flashflowfactory
 		/**
 		 * Dispatches global event PageEvent.HIDE_COMPLETE after completing transition-out animation. Cannot be overridden. Listen to PageEvent.HIDE_COMPLETE instead.
 		 */
-		final public function onHideComplete():void
+		final public function onHideComplete(e:* = null):void
 		{
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.HIDE_COMPLETE, pageName ) );
 		}
