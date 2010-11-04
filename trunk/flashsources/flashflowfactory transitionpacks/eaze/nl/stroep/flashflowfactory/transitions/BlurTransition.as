@@ -1,9 +1,6 @@
 package nl.stroep.flashflowfactory.transitions 
 {
-	import com.greensock.plugins.AutoAlphaPlugin;
-	import com.greensock.plugins.BlurFilterPlugin;
-	import com.greensock.plugins.TweenPlugin;
-	import com.greensock.TweenLite;
+	import aze.motion.eaze;
 	import nl.stroep.flashflowfactory.Page;
 	import nl.stroep.flashflowfactory.transitions.interfaces.ITransition;
 	/**
@@ -17,26 +14,22 @@ package nl.stroep.flashflowfactory.transitions
 		private var quality:uint;
 		private var blurAmount:Number;
 		
-		public function BlurTransition(quality:uint = 2, blurAmount:Number = 10) 
+		public function BlurTransition(blurAmount:Number = 20, quality:uint = 2) 
 		{
 			this.quality = quality;
 			this.blurAmount = blurAmount;
-			
-			TweenPlugin.activate([AutoAlphaPlugin, BlurFilterPlugin]);
 		}
 		
 		/* INTERFACE nl.stroep.flashflowfactory.transitions.interfaces.ITransition */
 		
 		public function animateIn(page:Page, speed:Number, easing:Function):void
 		{
-			page.alpha = 0;
-			TweenLite.to( page, 0, { autoAlpha: 0, blurFilter: { blurX:0, blurY:0, quality:this.quality, remove:false } });
-			TweenLite.to( page, speed, { delay:0.01, overwrite:false, autoAlpha: 1, blurFilter: { blurX:0, blurY:0, quality:this.quality, remove:true }, onComplete: page.onShowComplete, ease: easing } );
+			eaze(page).from(speed, {alpha: 0, blurFilter: { blurX:blurAmount, blurY:blurAmount, quality:this.quality}}).onComplete(page.onShowComplete).easing(easing);
 		}
 		
 		public function animateOut(page:Page, speed:Number, easing:Function):void
 		{
-			TweenLite.to( page,  speed, { autoAlpha: 0, blurFilter: { blurX:blurAmount, blurY:blurAmount, quality:this.quality, remove:false }, onComplete: page.onHideComplete, ease: easing } );
+			eaze(page).to(speed, {alpha: 0, blurFilter: { blurX:blurAmount, blurY:blurAmount, quality:this.quality}}).onComplete(page.onHideComplete).easing(easing);
 		}
 	}
 
