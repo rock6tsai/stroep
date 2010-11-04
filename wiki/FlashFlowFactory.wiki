@@ -221,6 +221,11 @@ package
 
 If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition`, `Slide3DTransition` and `ExplosionTransition`), and some of them have some customizable options (see [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions]). 
 
+Note on easing:
+You are using easing functions from your tween engine, this means you have to import the right easings functions.
+
+Special note on easing (only applies for Tweener)
+Normally when you use Tweener, you would use something like  `transition:"linear"` to define an easing. The string definitions are not compatible with flashflowfactory. If you want to define easing in your pageSetting when you are using the Tweener pack, you should use the static functions from 'caurina.transitions.Equations'. for example Equations.easeOutElastic 
 
 ----
 
