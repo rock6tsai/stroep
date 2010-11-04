@@ -11,7 +11,7 @@ _Sources are available here in the repository_
 
 = Introduction =
 
-Over time I have created this mini-framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress` for deeplinking and `TweenLite` for transitions. When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. I mostly used it for custom projects like viral websites. The best of flashflowfactory is its simplicity (no need to learn hard design-patterns, it is really straight-forward if you know the basics). You don't have to develop a page setup or start from scratch, but keep the freedom to build the site in your style.
+Over time I have created this mini-framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress` for deeplinking and your favorite tweenengine for transitions (`TweenLite, Tweener, gTween or Eaze-Tween`). When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. I mostly used it for custom projects like viral websites. The best of flashflowfactory is its simplicity (no need to learn hard design-patterns, it is really straight-forward if you know the basics). You don't have to develop a page setup or start from scratch, but keep the freedom to build the site in your style.
 
 = Flashflowfactory Features =
 
@@ -20,7 +20,8 @@ These are the features of flashflowfactory
   * Deeplinking made easy: it's included and no need to worry about it anymore
   * Page class with transition settings and states
   * Transitions between pages 
-    * There are cool+useful [FlashFlowFactory#Flashflowfactory_Transitions Transitions] included
+    * There are cool+useful [FlashFlowFactory#Flashflowfactory_Transitions Transitions] included, download your pack from your favorite tween engine now.
+    * Use your own tween engine: `TweenLite, Tweener, gTween or Eaze-Tween`. 
     *  [FlashFlowFactory#How_to_create_your_own_transition Creating your own transitions] is possible. This keeps your freedom of expression and makes it usable for every custom project.
   * Global page settings and these settings can be overrided on page level
     * Transition in/out between page
@@ -43,9 +44,21 @@ These are the features of flashflowfactory
 Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, export as SWC), and use an external AS editor for ultimate coding-fun. 
 All classes related to the framework are inside package `nl.stroep.flashflowfactory`
 
+Before starting, you should download the source code from this googlecode using a SVN client (for example 'Tortoise SVN'). 
+
+Please 'checkout' these directories:
+
+Framework files:
+`http://stroep.googlecode.com/svn/trunk/flashsources/flashflowfactory framework`
+
+Framework transition packs:
+`http://stroep.googlecode.com/svn/trunk/flashsources/flashflowfactory transitionpacks`
+
+I have separated the framework from the transitions since this allows me to give you multiple transition packs and some freedom to create an SWC file from the framework. You should add both folders (framework / transition) to the project.
+
 === Step 1: Create flashfile  ===
 
-Just to start, create a new flash file. Save it and place the flashflowframework files next to the flash, or create your own setup where the framework is included. Make sure you include TweenLite and SWFAddress too. Now we need to design some pages.
+Just to start, create a new flash file / project. Save it and place the flashflowframework files next to the flash, or create your own setup where the framework is included. Make sure you included the tween engine and SWFAddress too. In case you want to use TweenLite, you should download the SWC/sources from greensock.com, since I cannot offer the file from googlecode (because of it's license). Now we need to design some pages. In the next examples I am using the TweenLite pack.
 
 === Step 2: Create Pages ===
 
