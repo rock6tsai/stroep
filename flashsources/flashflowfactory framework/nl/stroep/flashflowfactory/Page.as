@@ -13,13 +13,21 @@ package nl.stroep.flashflowfactory
 	 */
 	public class Page extends EventManagedSprite
 	{
-		/// When enabled, the `show()` function is called onAddedToStage, otherwise you can call `show()` yourself (Useful when you want to load something before showing the page). Default `true`
+		/**
+		 * When enabled, the `show()` function is called onAddedToStage, otherwise you can call `show()` yourself (Useful when you want to load something before showing the page). Default `true`
+		 */
 		public var autoShow:Boolean = true;
-		/// Internal page name, auto filled by the PageFactory. The pageName reflects the deeplink url, which is set using SWFAddress. There is no need to modify this value.
-		public var pageName:String;
-		/// Page title, auto filled by the PageFactory. The pageTitle reflects the browser title, which is set using SWFAddress. There is no need to modify this value.
+		/** 
+		 * Internal page name, auto filled by the PageFactory. The pageName reflects the deeplink url, which is set using SWFAddress. There is no need to modify this value.
+		 */
+		 public var pageName:String;
+		/** 
+		 * Page title, auto filled by the PageFactory. The pageTitle reflects the browser title, which is set using SWFAddress. There is no need to modify this value.
+		 */
 		public var pageTitle:String;
-		/// Settings from the page. auto filled by the PageFactory. All values from these settings can be overwritten. 
+		/** 
+		 * Settings from the page. auto filled by the PageFactory. All values from these settings can be overwritten. 
+		 */
 		public var settings:PageSettings;
 		
 		public function Page():void

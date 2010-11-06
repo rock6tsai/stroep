@@ -20,8 +20,6 @@ package nl.stroep.flashflowfactory.navigation
 	 */
 	public class NavigationButton extends EventManagedMovieClip
 	{
-		//private var eventcenter:EventCenter = EventCenter.getInstance();
-		
 		private static const OVER:String = "over";
 		private static const OUT:String = "out";
 		private static const DOWN:String = "down";
@@ -110,7 +108,12 @@ package nl.stroep.flashflowfactory.navigation
 				}
 			}
 		}
-		
+		/**
+		 * Easy click function, sets path,type and parameters within one function.
+		 * @param	path	Based on the type, this refferes to the path where you should go after the click.
+		 * @param	type	Use ButtonTypes to define what kind of action the action should be handled on click.
+		 * @param	...parameters Optional parameters. In case of ButtonTypes.JAVASCRIPT, ButtonTypes.FUNCTION and ButtonTypes.Event; you can pass optional (function) parameter here. In case of ButtonTypes.EXTERNAL you can pass a window-target.
+		 */
 		public function click(path:*, type:String = "internal", ...parameters):void
 		{
 			this.path = path;
@@ -118,7 +121,11 @@ package nl.stroep.flashflowfactory.navigation
 			if (parameters) this.parameters = parameters;
 		}
 		
-		public function setEnabled(value:Boolean = false):void 
+		/**
+		 * Enables or disables current button
+		 * @param	value	Required. true = make enabled, false = make disabled
+		 */
+		public function setEnabled(value:Boolean):void 
 		{
 			enabled = value;
 			

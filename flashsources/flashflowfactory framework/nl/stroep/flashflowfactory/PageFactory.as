@@ -17,13 +17,21 @@ package nl.stroep.flashflowfactory
 	 */
 	public class PageFactory
 	{
-		/// Milliseconds after automatic call of System.GC();. Default value 5000 ms.
-		public var cleanupDelay:uint = 5000;
-		/// Default prefix title for all pages. The PageFactory will set the browser title like this: 'titlePrefix pageTitle'
+		/**
+		 * Milliseconds after automatic call of System.GC();. Default value 15000 ms.
+		 */
+		public var cleanupDelay:uint = 15000;
+		/**
+		 * Default prefix title for all pages. The PageFactory will set the browser title like this: 'titlePrefix pageTitle'
+		 */
 		public var titlePrefix:String = "";
-		/// You can use this value to start on this page, after you call init()
+		/**
+		 * You can use this value to start on this page (startPage), after you call init()
+		 */
 		public var defaultPageName:String;
-		///`PageSettings` class which will be applied on every `Page`. These settings can be overridden in the `Page` Class itself.
+		/**
+		 * PageSettings` class which will be applied on every `Page`. These settings can be overridden in the `Page` Class itself.
+		 */
 		public var defaultSettings:PageSettings;
 		
 		private var _view:Sprite;
