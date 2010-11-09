@@ -3,10 +3,7 @@ package nl.stroep.flashflowfactory
 	import com.usual.SWFAddress;
 	import com.usual.SWFAddressEvent;
 	import flash.display.Sprite;
-	import flash.system.System;
-	import flash.utils.clearTimeout;
 	import flash.utils.Dictionary;
-	import flash.utils.setTimeout;
 	import nl.stroep.flashflowfactory.events.PageEvent;
 	import nl.stroep.flashflowfactory.utils.EventCenter;
 	/**
@@ -17,10 +14,6 @@ package nl.stroep.flashflowfactory
 	 */
 	public class PageFactory
 	{
-		/**
-		 * Milliseconds after automatic call of System.GC();. Default value 15000 ms.
-		 */
-		public var cleanupDelay:uint = 15000;
 		/**
 		 * Default prefix title for all pages. The PageFactory will set the browser title like this: 'titlePrefix pageTitle'
 		 */
@@ -39,7 +32,6 @@ package nl.stroep.flashflowfactory
 		private var eventcenter:EventCenter;
 		private var pageDataList:Dictionary;
 		private var page:Page;
-		private var timeoutID:int;
 		
 		public function PageFactory() 
 		{	
@@ -96,8 +88,6 @@ package nl.stroep.flashflowfactory
 		 */
 		public function dispose():void
 		{
-			clearTimeout(timeoutID);
-			
 			destroyPage();
 			
 			eventcenter.removeListeners(this);
@@ -111,26 +101,13 @@ package nl.stroep.flashflowfactory
 		{
 			eventcenter.addListener(this, PageEvent.NEW_PAGE, onNewPage);
 			eventcenter.addListener(this, PageEvent.HIDE_COMPLETE, onPageHideComplete);
-			eventcenter.addListener(this, PageEvent.SHOW_COMPLETE, onPageShowComplete);
 			
 			// Automaticly triggers to call first page or deep linked page
 			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, handleSWFAddress);
 		}
 		
-		private function onPageShowComplete(e:PageEvent):void 
-		{
-			timeoutID = setTimeout(cleanup, cleanupDelay);
-		}
-		
-		private function cleanup():void
-		{
-			System.gc();
-		}
-		
 		private function onNewPage(e:PageEvent):void
 		{
-			clearTimeout(timeoutID);
-			
 			if (e.pageName != currentPageName)
 			{
 				currentPageName = e.pageName;
