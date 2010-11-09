@@ -39,12 +39,15 @@ These are the features of flashflowfactory
 
 = References / Download =
 
-_Download in 2 steps:_ 
- * *DOWNLOAD framework SWC: http://code.google.com/p/stroep/source/browse/#svn/trunk/flashsources/flashflowframework%20swc *
- * *CHECKOUT framework transition pack(s) * http://code.google.com/p/stroep/source/browse/trunk/flashsources/flashflowfactory+transitionpacks/
+== framework SWC ==
+http://code.google.com/p/stroep/source/browse/#svn/trunk/flashsources/flashflowframework%20swc *
 
-*DOCUMENTATION: http://code.google.com/p/stroep/wiki/FlashFlowFactory *
-*ASDOC DOCUMENTATION: http://flashflowfactory.stroep.nl/Documentation/flashflowfactory/ *
+== Framework transition pack(s) ==
+http://code.google.com/p/stroep/source/browse/trunk/flashsources/flashflowfactory+transitionpacks/
+
+== DOCUMENTATION ==
+  * wiki : http://code.google.com/p/stroep/wiki/FlashFlowFactory (current page)
+  * asdoc documentation: http://flashflowfactory.stroep.nl/Documentation/flashflowfactory/ 
 
 ----
 
