@@ -37,6 +37,16 @@ These are the features of flashflowfactory
   
 ----
 
+= References / Download =
+
+_Download in 2 steps:_ 
+ * *DOWNLOAD framework SWC: http://code.google.com/p/stroep/source/browse/#svn/trunk/flashsources/flashflowframework%20swc *
+ * *CHECKOUT framework transition pack(s) * http://code.google.com/p/stroep/source/browse/trunk/flashsources/flashflowfactory+transitionpacks/
+
+*DOCUMENTATION: http://code.google.com/p/stroep/wiki/FlashFlowFactory *
+*ASDOC DOCUMENTATION: http://flashflowfactory.stroep.nl/Documentation/flashflowfactory/ *
+
+
 = Flashflowfactory Tutorial =
 
 == How to use ==
