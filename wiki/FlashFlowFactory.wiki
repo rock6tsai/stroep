@@ -1,7 +1,7 @@
 #summary Description of flashflowfactory
 
 
-<h2><font color='red'>This is a working draft. The framework is not official released yet</font></h2>
+<h2><font color='red'>This is a working draft and will frequently be changed. The framework is not official released yet</font></h2>
 
 _Sources are available here in the repository_
 <img src='http://blog.stroep.nl/wp-content/flashflowfactory1.png' align='right' alt='flash flow factory' title='flashflowfactory' width='250' />
@@ -333,9 +333,7 @@ You can find code documentation here.
 == Page Factory ==
 
 This is the Page system which creates/destroys pages and takes care of SWFAddress and it's handling. It is a custom factory design pattern.
-
-  * `cleanupDelay:uint`
-    Milliseconds after automatic call of `System.GC();`. Default value 5000 ms.
+  
   * `titlePrefix:String`
     Default prefix title for all pages. The `PageFactory` will set the browser title like this: _'titlePrefix pageTitle'_
   * `view`
@@ -512,7 +510,7 @@ Creating a transition is a bit abstract because you don't have to set the time o
 
 === Example ===
 
-Take a look at a simple transition, called `FadeTransition`. This one is already included in the framework. This should give a clear example of how to setup an own transition:
+Take a look at a simple transition, called `FadeTransition`. This one is already included in the transition packs, and this is from the `TweenLite` pack. This should give a clear example of how to setup an own transition:
 
 {{{
 package nl.stroep.flashflowfactory.transitions 
@@ -545,12 +543,13 @@ package nl.stroep.flashflowfactory.transitions
 }}}
 
 = Troubleshooting checklist =
-  * If you use an external code editor which compiles the code, don't forget to build your assets first. 
-  * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
-  * Always disable 'Automatically declare stage instances' when using a code centered project
+  * Make sure you have chosen and downloaded a transition pack from your tween engine. 
   * If you are using the `TweenLite` pack: Make sure you have downloaded the sources from greensock.com and linked it to your project. See online docs. http://www.greensock.com/tweenlite/
   * Make sure `SWFAddress` is included and linked. When running from browser, the `swfaddress.js` javascript file should be added too. See online docs. http://www.asual.com/swfaddress/
   * Events are automatically removed from the Page class. This excludes child objects; they could extend `EventManagedSprite` too or you have to remove the listeners manually.
+  * If you use an external code editor which compiles the code, don't forget to build your assets first. 
+  * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
+  * Always disable 'Automatically declare stage instances' when using a code centered project  
   * When using `EventCenter.getInstance().addEventListener` on a not-`EventManagedSprite`, you should call the `EventCenter.getInstance().removeListeners(this)` on `Event.REMOVED_FROM_STAGE`, since the `EventCenter` is a global object and keeps existing forever. Otherwise you have references to removed objects, which could cause strange behaviors.
 {{{
 EventCenter.getInstance().addListener(this, MyCustomEvent.SAY_HELLO, onSayHello);
