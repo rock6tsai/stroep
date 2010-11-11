@@ -80,7 +80,7 @@ package nl.stroep.flashflowfactory
 		 */
 		public static function gotoPage(pageName:String):void
 		{
-			EventCenter.getInstance().dispatchEvent( new PageEvent( PageEvent.NEW_PAGE, pageName) );
+			EventCenter.getInstance().dispatchEvent( new PageEvent(PageEvent.NEW_PAGE, pageName) );
 		}
 		
 		/**
@@ -124,6 +124,7 @@ package nl.stroep.flashflowfactory
 			destroyPage();
 			
 			var pageData:PageData = findPageData(currentPageName);
+			
 			SWFAddress.setTitle( titlePrefix + pageData.pageTitle );
 			SWFAddress.setValue( currentPageName );
 		}
@@ -154,36 +155,14 @@ package nl.stroep.flashflowfactory
 		{
 			if (pageName && pageName.length > 0)
 			{
-				var pageData:PageData = pageDataList[pageName] as PageData;
-				
-				var PageReference:Class;
-				
-				if (pageData)
-				{
-					return pageData;
-				}
-				else
-				{
-					pageData = findWildCardPageData(pageName);
-					
-					if (pageData)
-					{
-						return pageData;
-					}
-					else
-					{
-						pageData = findDefaultPage();
-						return pageData;
-					}
-				}
+				return pageDataList[pageName] as PageData || findWildCardPageData(pageName) || findDefaultPage();
 			}
 			return null;
 		}
 		
 		private function findDefaultPage():PageData
 		{
-			var pageData:PageData = pageDataList[defaultPageName] as PageData;
-			return pageData;
+			return pageDataList[defaultPageName] as PageData;
 		}
 		
 		private function findWildCardPageData(name:String):PageData
@@ -211,10 +190,9 @@ package nl.stroep.flashflowfactory
 		/**
 		 * All pages will be added to this Sprite. Don't forget to addChild 'em in your main document.
 		 */
-		public function get view():Sprite 
-		{ 
-			if (!_view) _view = new Sprite();
-			return _view; 
+		public function get view() : Sprite 
+		{
+			return _view ||= new Sprite(); 
 		}
 		
 		public function set view(value:Sprite):void 
