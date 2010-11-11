@@ -51,13 +51,13 @@ package nl.stroep.flashflowfactory
 		 */
 		public function PageSettings( transition:ITransition = null, easingInFunc:Function = null, easingOutFunc:Function = null, transitionInSpeed:Number = 0, transitionOutSpeed:Number = 0, pageAlignment:String = "left_top", clipAlignment:String = "left_top"):void
 		{
-			this.transition = (transition) ? transition : new NoTransition();
+			this.transition = transition || new NoTransition();
 			
-			this.easingInFunc = (easingInFunc != null) ? easingInFunc : defaultEasing;
-			this.easingOutFunc = (easingOutFunc != null) ? easingOutFunc : defaultEasing;
+			this.easingInFunc = easingInFunc || defaultEasing;
+			this.easingOutFunc = easingOutFunc || defaultEasing;
 			
-			this.transitionInSpeed = (transitionInSpeed) ? transitionInSpeed : 0;
-			this.transitionOutSpeed = (transitionOutSpeed) ? transitionOutSpeed : 0;
+			this.transitionInSpeed = transitionInSpeed || 0;
+			this.transitionOutSpeed = transitionOutSpeed | 0;
 			
 			this.pageAlignment = pageAlignment;
 			this.clipAlignment = clipAlignment;

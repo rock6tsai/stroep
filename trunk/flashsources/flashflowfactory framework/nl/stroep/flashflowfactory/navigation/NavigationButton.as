@@ -187,14 +187,7 @@ package nl.stroep.flashflowfactory.navigation
 			switch (type) 
 			{
 				case ButtonTypes.EXTERNAL:
-					if (parameters)
-					{
-						navigateToURL( new URLRequest( path.toString() ), parameters );
-					}
-					else
-					{
-						navigateToURL( new URLRequest( path.toString() ), "_blank" );
-					}
+					navigateToURL( new URLRequest( path.toString() ), parameters || "_blank" );
 					break;
 			
 				case ButtonTypes.INTERNAL:

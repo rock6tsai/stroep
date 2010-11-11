@@ -121,8 +121,8 @@ package nl.stroep.flashflowfactory
 		 */
 		protected function freeze():void   
 		{
-			tabEnabled = false;
-			mouseChildren = false;
+			tabEnabled = 
+			mouseChildren = 
 			mouseEnabled = false;
 		}
 		
@@ -131,8 +131,8 @@ package nl.stroep.flashflowfactory
 		 */
 		protected function unfreeze():void   
 		{
-			tabEnabled = true;
-			mouseChildren = true;
+			tabEnabled = 
+			mouseChildren = 
 			mouseEnabled = true;
 		}
 	}
