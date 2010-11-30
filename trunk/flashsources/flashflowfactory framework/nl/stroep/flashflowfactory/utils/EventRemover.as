@@ -10,8 +10,9 @@ package nl.stroep.flashflowfactory.utils
 	public class EventRemover
 	{ 
 		private var eventsListLength:int;
-		private var eventsList:Array = [];
+		private var _eventsList:Array;
 		private var dispatcher:IEventDispatcher;
+		private var _length:uint;
 
 		public function EventRemover(dispatcher:IEventDispatcher) 
 		{
@@ -44,8 +45,8 @@ package nl.stroep.flashflowfactory.utils
 		public function destroy():void
 		{
 			removeListeners();
-			eventsList = [];
-			eventsList = null;
+			_eventsList = [];
+			_eventsList = null;
 			dispatcher = null;
 		}
 		
@@ -81,7 +82,6 @@ package nl.stroep.flashflowfactory.utils
 					//trace( "automaticly removed listener (by scope)", eventObject.type, "from", dispatcher);
 					eventObject = null;
 					eventsList.splice( i, 1);
-					eventsListLength--
 				}
             }
         }
@@ -109,6 +109,15 @@ package nl.stroep.flashflowfactory.utils
 				}
 			}
         }
+		
+		protected function get eventsList():Array { return _eventsList ||= []; }
+		
+		protected function set eventsList(value:Array):void 
+		{
+			_eventsList = value;
+		}
+		
+		public function get length():uint { return _eventsList._length; }
     }
 }
 

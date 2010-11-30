@@ -2,7 +2,7 @@ package nl.stroep.flashflowfactory
 {
 	import flash.display.BlendMode;
 	import flash.events.Event;
-	import nl.stroep.flashflowfactory.display.EventManagedSprite;
+	import nl.stroep.flashflowfactory.display.EventManagedMovieClip;
 	import nl.stroep.flashflowfactory.enum.Alignment;
 	import nl.stroep.flashflowfactory.events.PageEvent;
 	/**
@@ -11,7 +11,7 @@ package nl.stroep.flashflowfactory
 	 * Licensed under the MIT license: http://www.opensource.org/licenses/mit-license.php
 	 * @author Mark Knol
 	 */
-	public class Page extends EventManagedSprite
+	public class Page extends EventManagedMovieClip
 	{
 		/**
 		 * When enabled, the `show()` function is called onAddedToStage, otherwise you can call `show()` yourself (Useful when you want to load something before showing the page). Default `true`
