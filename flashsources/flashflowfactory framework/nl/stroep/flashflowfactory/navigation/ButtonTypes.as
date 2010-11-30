@@ -14,5 +14,4 @@ package nl.stroep.flashflowfactory.navigation
 		public static const FUNCTION:String = "function";
 		public static const JAVASCRIPT:String = "javascript";
 	}
-
 }

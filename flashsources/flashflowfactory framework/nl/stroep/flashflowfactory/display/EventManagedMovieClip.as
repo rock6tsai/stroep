@@ -62,8 +62,8 @@ package nl.stroep.flashflowfactory.display
 		}
 		
 		public function get eventRemover():EventRemover 
-		{ 
-			return _eventRemover ||= new EventRemover(this);; 
+		{
+			return _eventRemover ||= new EventRemover(this);
 		}
 
 	}
