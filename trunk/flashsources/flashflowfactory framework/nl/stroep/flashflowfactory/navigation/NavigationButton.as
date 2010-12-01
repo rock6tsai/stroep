@@ -90,21 +90,21 @@ package nl.stroep.flashflowfactory.navigation
 					
 					if (hasActiveLabel)
 					{
-						gotoAndStop(ACTIVE);
+						gotoAndPlay(ACTIVE);
 					}
 					else if (hasDownLabel)
 					{
-						gotoAndStop(DOWN);
+						gotoAndPlay(DOWN);
 					}
 					else if (hasOverLabel)
 					{
-						gotoAndStop(OVER);
+						gotoAndPlay(OVER);
 					}
 				}
 				else
 				{
 					isActive = false;
-					gotoAndStop(OUT);
+					gotoAndPlay(OUT);
 				}
 			}
 		}
@@ -136,7 +136,7 @@ package nl.stroep.flashflowfactory.navigation
 			}
 			else
 			{
-				gotoAndStop("OUT");
+				gotoAndPlay("OUT");
 				alpha = 0.5;
 				
 				buttonMode = tabEnabled = mouseEnabled = false;
