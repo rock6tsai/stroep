@@ -28,7 +28,7 @@ package nl.stroep.flashflowfactory.navigation
 		public var type:String = ButtonTypes.INTERNAL;
 		public var group:String;
 		
-		private var isActive:Boolean;
+		private var _isActive:Boolean;
 		private var hasOverLabel:Boolean;
 		private var hasOutLabel:Boolean;	
 		private var hasActiveLabel:Boolean;
@@ -86,7 +86,9 @@ package nl.stroep.flashflowfactory.navigation
 			{
 				if (e.id == ID)
 				{
-					isActive = true;
+					_isActive = true;
+					
+					setEnabled(false);
 					
 					if (hasActiveLabel)
 					{
@@ -103,7 +105,10 @@ package nl.stroep.flashflowfactory.navigation
 				}
 				else
 				{
-					isActive = false;
+					_isActive = false;
+					
+					setEnabled(true);
+					
 					gotoAndPlay(OUT);
 				}
 			}
@@ -131,14 +136,10 @@ package nl.stroep.flashflowfactory.navigation
 			
 			if (value)
 			{
-				alpha = 1;
 				buttonMode = tabEnabled = mouseEnabled = true;
 			}
 			else
 			{
-				gotoAndPlay("OUT");
-				alpha = 0.5;
-				
 				buttonMode = tabEnabled = mouseEnabled = false;
 			}
 		}
@@ -251,6 +252,8 @@ package nl.stroep.flashflowfactory.navigation
 		{
 			_path = value;
 		}
+		
+		public function get isActive():Boolean { return _isActive; }
 		
 		private function createFakeHitarea():void
 		{
