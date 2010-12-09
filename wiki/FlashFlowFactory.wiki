@@ -17,7 +17,7 @@ Over time I have created this mini-framework which helps you to easily setup a f
 
 These are the features of flashflowfactory
   * Global page creation
-  * Deeplinking made easy: it's included and no need to worry about it anymore
+  * Deeplinking made easy: `SWFAddress 2.4` is included and there is no need to worry about deeplinking anymore
   * Page class with transition settings and states
   * Transitions between pages 
     * There are cool+useful [FlashFlowFactory#Flashflowfactory_Transitions Transitions] included, download your pack from your favorite tween engine now.
@@ -79,7 +79,7 @@ Just to start, create a new flash file / project. Save it and place the flashflo
 Create a `MovieClip` called `HomePageVC`. Draw a square in it (about 500x400 px) and add some text and a title called 'Home'. Imaging this is your homepage. The centerpoint of the page should be on the top left. Find the `MovieClip` in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_  input you should enter `HomePageVC` and the base class should be `nl.stroep.flashflowfactory.Page`. You are now extending the Page class from the framework. Create two other pages, called `ContactPageVC` and `InfoPageVC`, all should extend `nl.stroep.flashflowfactory.Page`. You now have 3 pages, ready to be used.
 
 === Step 3: Create Document class ===
-Create a `Main.as` and place it in the root of your project, and use this as document-root . If you are creating a project from external code editor, mark this file as 'always compile' or compile starting point.
+Create a `Main.as` and place it in the root of your project, and use this as Document Class. If you are creating a project from external code editor, mark this file as 'always compile' or compile starting point.
 
 Note: This is the most simple usage of the framework. Ofcourse there are more settings available.
 {{{
@@ -126,10 +126,9 @@ package
 
 === Step 4: Create simple navigation ===
 
-Now you have 3 pages ready to be used. You need some navigation buttons to navigate through the pages. Create 3 buttons for each page (home, contact, info). Find the buttons in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_ input you should enter `HomePageButtonVC` and the base class should be `nl.stroep.flashflowfactory.navigation.NavigationButton`. Apply this rule for all buttons, they should all extend `nl.stroep.flashflowfactory.navigation.NavigationButton`. Place the buttons in the root, on the stage and give them the _instance names_ 'buttonHome', 'buttonInfo', 'buttonContact'.
+Now you have 3 pages ready to be used. You need some navigation buttons to navigate through the pages. Create 3 buttons for each page (home, contact, info). Find the buttons in your library and go to the linkage screen (right-click). Choose "_export for ActionScript_". In the _class_ input you should enter `HomePageButtonVC` and the base class should be `nl.stroep.flashflowfactory.navigation.NavigationButton`. Apply this rule for all buttons, they should all extend `nl.stroep.flashflowfactory.navigation.NavigationButton`. Place the buttons on the stage and give them the _instance names_ 'buttonHome', 'buttonInfo', 'buttonContact'.
 
 Go to your `Main.as`. Replace all code to this code:
-
 {{{
 package
 {
@@ -172,6 +171,8 @@ package
 	}
 }
 }}}
+Note: If you are creating an as3-only project, you should create instances of the buttons, like `buttonHome = new HomePageButtonVC()` etc.
+
 Run the movie; you should have a clickable+working "website" with navigation and deeplinking. If you don't want to use the NavigationButton from the framework you can also call `PageFactory.gotoPage(Pages.HOME_PAGE)` from any point inside your application.
 
 === Step 5: Customize settings + add Transitions ===
