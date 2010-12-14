@@ -1,5 +1,5 @@
-= Documentation CropUtil Class =
-===nl.stroep.utils.CropUtil===
+= Documentation `CropUtil` Class =
+===`nl.stroep.utils.CropUtil`===
 
 Easily crop a `DisplayObject` like a `Sprite`, `Movieclip`, `BitmapData` or even your `stage`. The class returns a cropped `Bitmap` object.
 
