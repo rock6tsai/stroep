@@ -1,4 +1,5 @@
 #summary Description of flashflowfactory
+#labels Phase-Implementation
 
 
 <h2><font color='red'>This is a working draft and will frequently be changed. The framework is not official released yet</font></h2>
@@ -55,7 +56,7 @@ http://code.google.com/p/stroep/source/browse/trunk/flashsources/flashflowfactor
 
 == How to use ==
 
-Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, export as SWC), and use an external AS editor for ultimate coding-fun. 
+Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, 'export as SWC'), and use an external AS editor for ultimate coding-fun. 
 All classes related to the framework are inside package `nl.stroep.flashflowfactory`
 
 Before starting, you should download the source code from this googlecode using a SVN client (for example 'Tortoise SVN'). 
@@ -72,7 +73,7 @@ I have separated the framework from the transitions since this allows me to give
 
 === Step 1: Create flashfile  ===
 
-Just to start, create a new flash file / project. Save it and place the flashflowframework files next to the flash, or create your own setup where the framework is included. Make sure you included the tween engine and SWFAddress too. In case you want to use TweenLite, you should download the SWC/sources from greensock.com, since I cannot offer the file from googlecode (because of it's license). Now we need to design some pages. In the next examples I am using the TweenLite pack.
+Just to start, create a new flash file / project. Save it and place the flashflowframework files next to the flash, or create your own setup where the framework is included. Make sure you included the tween engine and `SWFAddress` too. In case you want to use `TweenLite`, you should download the SWC/sources from greensock.com, since I cannot offer the file from googlecode (because of it's license). Now we need to design some pages. In the next examples I am using the `TweenLite` pack.
 
 === Step 2: Create Pages ===
 
