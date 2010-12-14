@@ -17,34 +17,35 @@ Over time I have created this mini-framework which helps you to easily setup a f
 = Flashflowfactory Features =
 
 These are the features of flashflowfactory
-  * Global page creation
-  * Deeplinking made easy: `SWFAddress 2.4` is included and there is no need to worry about deeplinking anymore
-  * Page class with transition settings and states
-  * Transitions between pages 
-    * There are cool+useful [FlashFlowFactory#Flashflowfactory_Transitions Transitions] included, download your pack from your favorite tween engine now.
-    * Use your own tween engine: `TweenLite, Tweener, gTween or Eaze-Tween`. 
+  * Fast but easy-to-learn page setup creation
+  * Transition between pages with settings and states
+    * There are useful [FlashFlowFactory#Flashflowfactory_Transitions Transitions] included, download a transitionpack from your favorite tweenengine: `TweenLite, Tweener, gTween or Eaze-Tween`. 
     *  [FlashFlowFactory#How_to_create_your_own_transition Creating your own transitions] is possible. This keeps your freedom of expression and makes it usable for every custom project.
-  * Global page settings and these settings can be overrided on page level
-    * Transition in/out between page
-    * Easing/time customizable
+  * Customizable per-page (browser-)titles
+  * Deeplinking made easy: `SWFAddress 2.4` is included and there is no need to worry about deeplinking anymore
+  * Global and local page settings
+    * Transition in/out between pages
+    * Customizable easing/time 
     * Alignment options
   * Alternative navigation (button) system
-    * Really easy linking
-    * Automatic states
-    * Grouping aka easy active state
-  * Global Event system 
-    * Listen to event from any point in your application
-  * Automatic Event removal system   
+    * Really easy click function
+    * Automatic states 
+    * Grouping aka active state
+  * Global event system 
+    * Listen to an event from any point inside your application
+  * Automatic event removal system
   
 ----
 
-= References / Download =
+= Download the framework in 2 steps =
 
-== framework SWC ==
-http://code.google.com/p/stroep/source/browse/#svn/trunk/flashsources/flashflowframework%20swc *
-
-== Framework transition pack(s) ==
-http://code.google.com/p/stroep/source/browse/trunk/flashsources/flashflowfactory+transitionpacks/
+ * *Step 1: Download framework SWC: 
+   http://stroep.googlecode.com/files/flashflowfactory.swc *
+ * *Step 2: Choose a transition pack: * 
+  * http://stroep.googlecode.com/files/Tweenlite.zip
+  * http://stroep.googlecode.com/files/gTween.zip
+  * http://stroep.googlecode.com/files/Tweener.zip
+  * http://stroep.googlecode.com/files/eaze.zip
 
 == DOCUMENTATION ==
   * wiki : http://code.google.com/p/stroep/wiki/FlashFlowFactory (current page)
@@ -56,20 +57,10 @@ http://code.google.com/p/stroep/source/browse/trunk/flashsources/flashflowfactor
 
 == How to use ==
 
-Before starting, you should know a few things: how to create link classes to MovieClips, and the basics from ActionScript 3. I really recommend to use Flash just for the graphics (link it to classes, 'export as SWC'), and use an external AS editor for ultimate coding-fun. 
+Before starting, you should know a few things: how to create link classes to `MovieClips`, and the basics from actionscript 3. I really recommend to use flash just for the graphics (link it to classes, 'export as SWC'), and use an external AS editor for ultimate coding-fun. 
 All classes related to the framework are inside package `nl.stroep.flashflowfactory`
 
-Before starting, you should download the source code from this googlecode using a SVN client (for example 'Tortoise SVN'). 
-
-Please 'checkout' these directories:
-
-Framework files:
-`http://stroep.googlecode.com/svn/trunk/flashsources/flashflowfactory framework`
-
-Framework transition packs:
-`http://stroep.googlecode.com/svn/trunk/flashsources/flashflowfactory transitionpacks`
-
-I have separated the framework from the transitions since this allows me to give you multiple transition packs and some freedom to create an SWC file from the framework. You should add both folders (framework / transition) to the project.
+I have separated the framework from the transitions since this allows me to give you multiple transition packs and some freedom to create an SWC file from the framework without any tweenengine. You should add both things (the SWC and the transition pack classes) to your project.
 
 === Step 1: Create flashfile  ===
 
@@ -631,13 +622,13 @@ package nl.stroep.flashflowfactory.transitions
 }}}
 
 = Troubleshooting checklist =
-  * Make sure you have chosen and downloaded a transition pack from your tween engine. 
+  * Make sure you have chosen and downloaded a transition pack from your tween engine.  
   * If you are using the `TweenLite` pack: Make sure you have downloaded the sources from greensock.com and linked it to your project. See online docs. http://www.greensock.com/tweenlite/
-  * Make sure `SWFAddress` is included and linked. When running from browser, the `swfaddress.js` javascript file should be added too. See online docs. http://www.asual.com/swfaddress/
-  * Events are automatically removed from the Page class. This excludes child objects; they could extend `EventManagedSprite` too or you have to remove the listeners manually.
+  * Make sure `SWFAddress 2.4` is included and linked. When running from browser, the `swfaddress.js` javascript file should be added too, from the same version. See online docs. http://www.asual.com/swfaddress/
+  * Events are automatically removed from the Page class. This excludes events which are added to child objects; You have to remove the listeners manually or they could extend `EventManagedSprite` or `EventManagedMovieClip` too.
   * If you use an external code editor which compiles the code, don't forget to build your assets first. 
-  * The `Page` class is a `Sprite`, don't add timeline animation in it. Add your animation inside a child `MovieClip`.
-  * Always disable 'Automatically declare stage instances' when using a code centered project  
+  * If there is video/sound or a `FLVPlayback` component on your page, it will not stop automatically. Please override the `onRemovedFromStage` function and call `player.stop()`. All types of streams should be stopped manually.
+  * Always disable 'Automatically declare stage instances' when using a code centered project.
   * When using `EventCenter.getInstance().addEventListener` on a not-`EventManagedSprite`, you should call the `EventCenter.getInstance().removeListeners(this)` on `Event.REMOVED_FROM_STAGE`, since the `EventCenter` is a global object and keeps existing forever. Otherwise you have references to removed objects, which could cause strange behaviors.
 {{{
 EventCenter.getInstance().addListener(this, MyCustomEvent.SAY_HELLO, onSayHello);
