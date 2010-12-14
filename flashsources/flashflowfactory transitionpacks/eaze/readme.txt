@@ -24,7 +24,7 @@ ____________________________________________________________________________
 Eaze-Tween Transition Pack for flashflowfactory
 
 
-1. I have included eaze-tween inside the package (eaze-tween-rc1-r75), which is licensed under MIT. Make sure this is the latest version. http://code.google.com/p/eaze-tween/
+1. I have included eaze-tween inside the package (EazeTween-rc1.swc), which is licensed under MIT. Make sure this is the latest version. http://code.google.com/p/eaze-tween/
 2. Add this folder to your classpath to enable the transitions. Don't forget to add the SWC to your project too.
 3. Have fun with the default transitions
 
