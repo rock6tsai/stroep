@@ -1,7 +1,7 @@
 = Documentation CropUtil Class =
 ===nl.stroep.utils.CropUtil===
 
-Easily crop a DisplayObject like a sprite, movieclip, bitmapdata or even your stage. The class returns a cropped Bitmap object.
+Easily crop a `DisplayObject` like a `Sprite`, `Movieclip`, `BitmapData` or even your `stage`. The class returns a cropped `Bitmap` object.
 
 *Example Usage*
 {{{
@@ -17,10 +17,8 @@ this.addChild ( cropFromMC);
  
 }}}
 
-*CropUtil.crop() function parameters*
+*`CropUtil.crop()` function parameters*
 
 {{{
 public static function crop( _x:Number, _y:Number, _width:Number, _height:Number, scale:Number = 1, displayObject:DisplayObject = null):Bitmap
 }}}
-
-_AS3 only_
