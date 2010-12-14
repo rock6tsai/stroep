@@ -171,12 +171,14 @@ package
 	}
 }
 }}}
+The `NavigationButton` is very powerful, please do read [#Flashflowfactory_Navigation_Button this section] about the options
+
 Note: If you are creating an as3-only project, you should create instances of the buttons, like `buttonHome = new HomePageButtonVC()` etc.
 
 Run the movie; you should have a clickable+working "website" with navigation and deeplinking. If you don't want to use the NavigationButton from the framework you can also call `PageFactory.gotoPage(Pages.HOME_PAGE)` from any point inside your application.
 
 === Step 5: Customize settings + add Transitions ===
-Lets manipulate the default settings and add a Slide transition (fading in from left). The animation-in effect should have an `Elastic.easeOut` and should take 1 second. The animation-out effect should be an `Strong.EaseIn` and should take 0.7 seconds. Note the easing functions are used from `TweenLite`.
+Lets manipulate the default settings and add a slide transition (fading in from left). The animation-in effect should have an `Elastic.easeOut` and should take 1 second. The animation-out effect should be an `Strong.EaseIn` and should take 0.7 seconds. Note the easing functions are used from `TweenLite` package.
 
 {{{
 package
@@ -234,13 +236,83 @@ package
 }
 }}}
 
-If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework (`BlurTransition`, `FadeTransition`, `SlideTransition`, `Slide3DTransition` and `ExplosionTransition`), and some of them have some customizable options (see [http://code.google.com/p/stroep/wiki/FlashFlowFactory#Flashflowfactory_Transitions Transitions]). 
+If you now run the flashfile, you should have a website with buttons, transition and deeplinking. There are a few transitions build in the framework, and some of them have some customizable options (see [#Flashflowfactory_Transitions Transitions]). 
 
-Note on easing:
+==== Easing note ====
 You are using easing functions from your tween engine, this means you have to import the right easings functions.
 
-Special note on easing (only applies for Tweener)
+* Special note on easing (only applies for Tweener) *
 Normally when you use Tweener, you would use something like  `transition:"linear"` to define an easing. The string definitions are not compatible with flashflowfactory. If you want to define easing in your pageSetting when you are using the Tweener pack, you should use the static functions from 'caurina.transitions.Equations'. for example Equations.easeOutElastic 
+
+=== Step 6: Finishing touches ===
+
+==== Add titles ===
+
+It is possible to add a title to all page references, which will be shown as browser title (and also in your browserhistory). You can add a prefix for all pages using `pageFactory.titlePrefix` to show a global text message before that. For example, use that variable for your projectname or companyname. 
+
+==== Manipulate first page ====
+
+Default the first item you'll add to the `pageFactory.` will be used as start page. You can override this by setting `pageFactory.defaultPageName`.
+
+{{{
+package
+{
+	import flash.display.Sprite;
+	import com.greensock.easing.Elastic;
+	import com.greensock.easing.Strong;
+	import nl.stroep.flashflowfactory.PageFactory;
+	import nl.stroep.flashflowfactory.PageSettings;
+	import nl.stroep.flashflowfactory.navigation.NavigationButton;
+	import nl.stroep.flashflowfactory.enum.Alignment;
+	import nl.stroep.flashflowfactory.transitions.*;
+
+	public class Main extends Sprite 
+	{		
+		private var pageFactory:PageFactory;
+		// stage instances
+		public var buttonHome:NavigationButton;
+		public var buttonInfo:NavigationButton;
+		public var buttonContact:NavigationButton;
+
+		public function Main():void 
+		{
+			pageFactory = new PageFactory();
+			
+			pageFactory.add( Pages.HOME_PAGE, HomePageVC, "Welcome!" );
+			pageFactory.add( Pages.CONTACT_PAGE, ContactPageVC, "Contact us");
+			pageFactory.add( Pages.INFO_PAGE, InfoPageVC, "About us" );	
+			
+			// set the default title prefix text
+			pageFactory.titlePrefix = "Our website - ";
+			// set the info page start page as start page.
+			pageFactory.defaultPageName = Pages.INFO_PAGE; 
+
+			pageFactory.defaultSettings = new PageSettings( 
+			    new SlideTransition(),   
+			    Elastic.easeOut,        
+			    Strong.easeIn,           
+			    1,                       
+			    0.7,                     
+			    Alignment.CENTER_MIDDLE, 
+			    Alignment.LEFT_TOP     
+			);
+
+			addChild( pageFactory.view );
+
+			pageFactory.init();
+
+			initButtons();
+		}
+
+		private function initButtons():void 
+		{
+			buttonHome.click(Pages.HOME_PAGE);
+			buttonInfo.click(Pages.INFO_PAGE);
+			buttonContact.click(Pages.CONTACT_PAGE);
+		}
+	}
+}
+}}}
 
 ----
 
