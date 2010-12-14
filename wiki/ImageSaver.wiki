@@ -1,0 +1,6 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+http://blog.stroep.nl/2008/08/as3-imagesaver-class-v10/
+http://blog.stroep.nl/2008/09/as3-imagesaver-class-updated/
