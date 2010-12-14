@@ -15,17 +15,17 @@ Over time I have created this lightweight framework which helps you to easily se
 = Flashflowfactory Features =
 
 These are the features of flashflowfactory
-  * Fast but easy-to-learn page setup creation
-  * Transition between pages with settings and states
+  * Fast but easy-to-learn [#How_to_use page setup creation]
+  * [#Step_5:_Customize_settings_+_add_Transitions Transition between pages] with settings and states
     * There are useful [FlashFlowFactory#Flashflowfactory_Transitions Transitions] included, download a transitionpack from your favorite tweenengine: `TweenLite, Tweener, gTween or Eaze-Tween`. 
     *  [FlashFlowFactory#How_to_create_your_own_transition Creating your own transitions] is possible. This keeps your freedom of expression and makes it usable for every custom project.
-  * Customizable per-page (browser-)titles
+  * [#Add_titles Customizable per-page (browser-)titles]
   * Deeplinking made easy: `SWFAddress 2.4` is included and there is no need to worry about deeplinking anymore
-  * Global and local page settings
+  * [#Step_5:_Customize_settings_+_add_Transitions Global] and [#How_to_overwrite_default_page_settings local] [#Page_Settings page settings]
     * Transition in/out between pages
     * Customizable easing/time 
     * Alignment options
-  * Alternative navigation (button) system
+  * [#Flashflowfactory_Navigation_Button Alternative navigation (button) system]
     * Really easy click function
     * Automatic states 
     * Grouping aka active state
