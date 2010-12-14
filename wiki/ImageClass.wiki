@@ -1,23 +1,23 @@
 = Documentation Image Class =
-===nl.stroep.utils.Image===
+===nl.stroep.display.Image===
 
 Easily create an image without taking care of loaders and URLRequest etc.
 Most simple usage of the Image class:
 
 *Usage*
 {{{
-import nl.stroep.utils.Image
+import nl.stroep.display.Image
 
 var myImage:Image = new Image("myImage.jpg");
 this.addChild(myImage);
  
 }}}
 
-You can also add the most common eventListeners to the image:
+You can also add these eventListeners to the image:
 
 *Usage*
 {{{
-import nl.stroep.utils.Image
+import nl.stroep.display.Image
 
 var myImage:Image = new Image("myImage.jpg");
 this.addChild(myImage);
@@ -40,4 +40,13 @@ function onImageLoading (e:ProgressEvent):void {
 }
 }}}
 
-_AS3 only_
+If you want a rightclick context menu on the image, you should use `nl.stroep.display.ExtendedImage`.
+
+Content context menu
+{{{
+"View Image"
+"Save Image As.."
+"Copy Image Location"
+"Send Image"
+}}}
+                        
