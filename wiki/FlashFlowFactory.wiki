@@ -1,10 +1,8 @@
 #summary Description of flashflowfactory
 #labels Phase-Implementation
 
+<h2><font color='red'>This is a working draft and will frequently be changed. The framework is currently in beta. Let me know what you think and what can be approved.</font></h2>
 
-<h2><font color='red'>This is a working draft and will frequently be changed. The framework is not official released yet</font></h2>
-
-_Sources are available here in the repository_
 <img src='http://blog.stroep.nl/wp-content/flashflowfactory1.png' align='right' alt='flash flow factory' title='flashflowfactory' width='250' />
 = Overview =
 
@@ -12,7 +10,7 @@ _Sources are available here in the repository_
 
 = Introduction =
 
-Over time I have created this mini-framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress` for deeplinking and your favorite tweenengine for transitions (`TweenLite, Tweener, gTween or Eaze-Tween`). When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. I mostly used it for custom projects like viral websites. The best of flashflowfactory is its simplicity (no need to learn hard design-patterns, it is really straight-forward if you know the basics). You don't have to develop a page setup or start from scratch, but keep the freedom to build the site in your style.
+Over time I have created this lightweight framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress 2.4` for deeplinking and your favorite tweenengine for transitions (`TweenLite, Tweener, gTween or Eaze-Tween`). When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. The best of flashflowfactory is its simplicity; no need to learn hard design-patterns, it is really straight-forward if you know the basics. You don't have to develop a page setup with deeplinking and transitions or start from scratch, but keep the freedom to build the site in your style. 
 
 = Flashflowfactory Features =
 
