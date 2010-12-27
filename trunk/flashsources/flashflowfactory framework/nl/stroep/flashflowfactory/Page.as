@@ -81,7 +81,7 @@ package nl.stroep.flashflowfactory
 			
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_START, pageName ) );
 			
-			freeze();
+			if ( settings.transitionInSpeed > 0 ) freeze();
 		}
 		
 		/**
@@ -93,7 +93,7 @@ package nl.stroep.flashflowfactory
 			
 			eventcenter.dispatchEvent( new PageEvent( PageEvent.HIDE_START, pageName ) );
 			
-			freeze();
+			if ( settings.transitionOutSpeed > 0 ) freeze();
 		}
 		
 		/**
