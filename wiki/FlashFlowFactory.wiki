@@ -1,17 +1,27 @@
 #summary Description of flashflowfactory
 #labels Phase-Implementation
 
-<h2><font color='red'>This is a working draft and will frequently be changed. The framework is currently in beta. Let me know what you think and what can be approved.</font></h2>
+<h4><font color='blue'>This is a working draft and will frequently be changed. The framework is currently in beta. Let me know what you think and what can be approved.</font></h4>
+
 
 <img src='http://blog.stroep.nl/wp-content/flashflowfactory1.png' align='right' alt='flash flow factory' title='flashflowfactory' width='250' />
-= Overview =
+= Flashflowfactory Framework =
+_current version: 0.9 beta_
+
+This lightweight framework helps you to easily setup a flash website. It is called *flashflowfactory*.
+
+The framework makes use of `SWFAddress 2.4` for deeplinking. 
+Flashflowfactory is compatible to multiple tweenengines for transitions and easing. 
+
+
+== Content overview ==
 
 <wiki:toc max_depth="5" />
-
-= Introduction =
+----
+= About =
 
 Over time I have created this lightweight framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress 2.4` for deeplinking and your favorite tweenengine for transitions (`TweenLite, Tweener, gTween or Eaze-Tween`). When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. The best of flashflowfactory is its simplicity; no need to learn hard design-patterns, it is really straight-forward if you know the basics. You don't have to develop a page setup with deeplinking and transitions or start from scratch, but keep the freedom to build the site in your style. 
-
+----
 = Flashflowfactory Features =
 
 These are the features of flashflowfactory
