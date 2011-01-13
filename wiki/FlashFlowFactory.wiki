@@ -13,7 +13,6 @@ This lightweight framework helps you to easily setup a flash website. It is call
 The framework makes use of `SWFAddress 2.4` for deeplinking. 
 Flashflowfactory is compatible to multiple tweenengines for transitions and easing. 
 
-<wiki:gadget border="0" url="http://stefansundin.com/stuff/flattr/google-project-hosting.xml" width="110" height="20" up_uid="mark.knol" up_title="Flashflowfactory on Googlecode" up_desc="This mini-framework for actionscript 3 helps you to easily setup a flash website with deeplinking and transitions" up_tags="as3, flash, framework, actionscript" up_url="http://code.google.com/p/stroep/wiki/FlashFlowFactory" />
 
 == Content overview ==
 
