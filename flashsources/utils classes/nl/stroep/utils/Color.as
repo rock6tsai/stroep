@@ -1,4 +1,4 @@
-﻿/*The MIT License
+/*The MIT License
 
 Copyright (c) 2009 Mark Knol
 
@@ -35,18 +35,13 @@ package nl.stroep.utils
 		protected var _green:int = 0;
 		protected var _blue:int = 0;
 		
-		protected var grayList:Array = [];
+		/// generated list with all grayscale color values
+		private var _grayList:/*int*/Array;
 		
 		public function Color ( value:int = 0xFFFFFF ):void
 		{
 			this.value = value;
-			
-			for (var i:uint = 0; i < 255; ++i) 
-			{
-				grayList.push((i << 16) | (i << 8) | i);
-			}
 		}
-		
 		
 		/// get the real color value
 		public function get value():int 
@@ -212,12 +207,36 @@ package nl.stroep.utils
             return slideColor(count);
 		}   
 		
-		
-        protected function limit( val:Number, lowerLimit:Number, upperLimit:Number ):Number
+		/**
+		 * Limit a value; faster alternative to Math.min / Math.max
+		 * @param	val
+		 * @param	lowerLimit
+		 * @param	upperLimit
+		 * @return	limited value
+		 */
+        private function limit( val:Number, lowerLimit:Number, upperLimit:Number ):Number
         {
 			if (val < lowerLimit){ return lowerLimit }
 			if (val > upperLimit) { return upperLimit }
 			return val;
         }
+		
+		private function get grayList():Array 
+		{ 
+			if (!_grayList)
+			{
+				_grayList = [];
+				for (var i:uint = 0; i < 255; ++i) 
+				{
+					_grayList.push( grayscale(i) );
+				}
+			}
+			return _grayList; 
+		}
+		
+		private function set grayList(value:Array):void 
+		{
+			_grayList = value;
+		}
     }
 }
