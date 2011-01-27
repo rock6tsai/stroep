@@ -1,4 +1,5 @@
 #summary Description of framework
+#labels Deprecated
 
 _This page is removed since the framework has an official name: FlashFlowFactory_
 
