@@ -1,12 +1,12 @@
 #summary One-sentence summary of this page.
 
- * *Framework*
+* *Framework*
   * [http://code.google.com/p/stroep/wiki/FlashFlowFactory FlashFlowFactory]
 
- * *Tweening*
+* *Tweening*
   * [http://code.google.com/p/stroep/wiki/Chain Chain]
 
- * *Utils*
+* *Utils*
   * [http://code.google.com/p/stroep/wiki/ImageSaver ImageSaver]
   * [http://code.google.com/p/stroep/wiki/CropUtilClass Crop util]
   * [http://code.google.com/p/stroep/wiki/ImageClass Image]
