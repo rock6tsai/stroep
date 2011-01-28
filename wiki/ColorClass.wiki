@@ -59,23 +59,35 @@ trace( myColor.value.toString(16) );
 
 All functions in this class are static.
 
-`getPureRandomColor():Color`
-Returns a pure random Color instance with value between 0x000000 and 0xFFFFFF
+  * `getPureRandomColor():Color`
 
-`getRandomColor(value:int, offset:int = 0, type:uint = 0):Color`
-Returns a pure random Color instance
+  Returns a pure random Color instance with value between 0x000000 and 0xFFFFFF
 
-`getPureRandomColorValue():int`
-Returns a pure random between 0x000000 and 0xFFFFFF
 
-`getRandomColorValue(value:int, offset:int = 0, type:uint = 0):int`
-Gets a random color value (int) based on a color. If you put 0xFFCC00 in it and an offset of 50 you get a random orange color.
-_types:_ 
- * ColorUtil.DEFAULT = 0 Lighten/darkened colors. 
- * ColorUtil.RANDOM = 1 Noisy colors
+  * `getRandomColor(value:int, offset:int = 0, type:uint = 0):Color`
 
-`getRandomColorValueList(length:int, value:int, offset:int = 0, type:uint = 0):/*int*/Array`
-Gets random list of specified length with color values (int). See `getRandomColorValue()`
+  Returns a pure random Color instance
 
-`getRandomColorList(length:int, value:int, offset:int = 0, type:uint = 0):/*Color*/Array`
-Gets random list of specified length with Color instances based on a color. See `getRandomColorValue()`
+
+  * `getPureRandomColorValue():int`
+
+  Returns a pure random between 0x000000 and 0xFFFFFF
+
+
+  * `getRandomColorValue(value:int, offset:int = 0, type:uint = 0):int`
+
+  Gets a random color value (int) based on a color. If you put 0xFFCC00 in it and an offset of 50 you get a random orange color.
+
+  _Available types_ 
+   * ColorUtil.DEFAULT = 0 Lighten/darkened colors. 
+   * ColorUtil.RANDOM = 1 Noisy colors
+
+
+  * `getRandomColorValueList(length:int, value:int, offset:int = 0, type:uint = 0):/*int*/Array`
+
+  Gets random list of specified length with color values (int). See `getRandomColorValue()`
+
+
+  * `getRandomColorList(length:int, value:int, offset:int = 0, type:uint = 0):/*Color*/Array`
+
+  Gets random list of specified length with Color instances based on a color. See `getRandomColorValue()`
