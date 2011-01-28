@@ -4,9 +4,6 @@
 
 ImageSaver class for easy saving/uploading displayobjects to JPG / PNG
 
-http://blog.stroep.nl/2008/08/as3-imagesaver-class-v10/
-
-http://blog.stroep.nl/2008/09/as3-imagesaver-class-updated/
 
 = Example usage =
 
