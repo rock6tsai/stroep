@@ -35,6 +35,7 @@ private function onSaveComplete( e:Event ):void {
 }}}
 
 * upload to server *
+
 The save / upload function works like this:
 
 `public function save( bitmapDrawable:IBitmapDrawable, filename:String, backgroundColor:Number = 0x00FFFFFF, JPGquality:int = 85, rect:Rectangle = null ):void`
