@@ -6,7 +6,7 @@ http://code.google.com/p/stroep/source/browse/trunk/flashsources/utils%20classes
 
 http://code.google.com/p/stroep/source/browse/trunk/flashsources/utils%20classes/nl/stroep/utils/ColorUtil.as
 
-===nl.stroep.utils.Color===
+=nl.stroep.utils.Color=
 
 
 Class to work/calculate with colors. You can easily abstract the red, green or blue values from a color.
@@ -82,7 +82,7 @@ When you trace myColor.value, flash returns the whole number of the color, not t
 trace( myColor.value.toString(16) );
 }}}
 
-===nl.stroep.utils.ColorUtil===
+=nl.stroep.utils.ColorUtil=
 
 All functions in this class are static.
 
