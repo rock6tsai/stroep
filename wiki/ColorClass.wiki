@@ -3,7 +3,7 @@
 
 Class to work/calculate with colors. You can easily abstract the red, green or blue values from a color.
 
-*Usage*
+==Usage==
 {{{
 import nl.stroep.utils.Color
 
@@ -28,41 +28,45 @@ trace("green ", myColor.green);
 trace("blue", myColor.blue);
 }}}
 
-*Special functions*
+==Special functions==
 
-<table border=1>
-<tr>
-<td width=250>`public static function grayscale ( val:int = 0 ):int` </td><td  width=150>Get a grayscale color from a tint</td><td>
-`trace( Color.grayscale(10).toString(16) ); `
-`// returns 0xA0A0A0` </td>
-</tr>
-</table>
 
-<table border=1>
-<tr>
-<td  width=250>`public function darker( count:int = 0 ):int`</td><td  width=150>Darken color with amount (0 to 255)</td><td>
-`var color:Color = new Color(0xFFCC00); `
-`// basic orange; `
+== `public static function grayscale ( val:int = 0 ):int` ==
 
-`trace( color.darken(50) ); `
-`// returns darker orange value. the original value of the instance has not changed `
-</td>
-</tr>
-</table>
+_Get a grayscale color from a tint_
 
-<table border=1>
-<tr>
-<td  width=250>`public function lighten( count:int = 0 ):int`</td><td  width=150>Lighten color with amount (0 to 255)</td><td>
+{{{
+trace( Color.grayscale(5).toString(16) ); 
+// returns 0x050505
+}}}
 
-`var color:Color = new Color(0xFFCC00); `
-`// basic orange`
 
-`trace( color.lighten(50) );`
-`// returns lighter orange value. the original value of the instance has not changed `
 
-</td>
-</tr>
-</table>
+== `public function darker( count:int = 0 ):int` ==
+
+_Darken color with amount (0 to 255)_
+
+{{{ 
+var color:Color = new Color(0xFFCC00); // basic orange; 
+
+trace( color.darken(50) ); 
+// returns darker orange value. the original value of the instance has not changed 
+}}}
+
+
+
+== `public function lighten( count:int = 0 ):int` ==
+
+_Lighten color with amount (0 to 255)_
+
+{{{
+var color:Color = new Color(0xFFCC00); // basic orange
+
+trace( color.lighten(50) );
+// returns lighter orange value. the original value of the instance has not changed 
+}}}
+
+
 
 *Note*
 When you trace myColor.value, flash returns the whole number of the color, not the hex-value. If you want the hexadecimal value, you should use:
