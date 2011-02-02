@@ -1,5 +1,13 @@
 = Documentation Color Class =
+
+_sources_
+
+http://code.google.com/p/stroep/source/browse/trunk/flashsources/utils%20classes/nl/stroep/utils/Color.as
+
+http://code.google.com/p/stroep/source/browse/trunk/flashsources/utils%20classes/nl/stroep/utils/ColorUtil.as
+
 ===nl.stroep.utils.Color===
+
 
 Class to work/calculate with colors. You can easily abstract the red, green or blue values from a color.
 
