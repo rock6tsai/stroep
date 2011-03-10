@@ -1,7 +1,7 @@
 #summary Description of flashflowfactory
 #labels Phase-Implementation
 
-<h4><font color='blue'>This is a working draft and will frequently be changed. The framework is currently in beta. Let me know what you think and what can be approved.</font></h4>
+<h4><font color='blue'>This is a working draft and will frequently be changed. The framework is currently in beta. Let me know what you think and what can be improved.</font></h4>
 
 
 <img src='http://blog.stroep.nl/wp-content/flashflowfactory1.png' align='right' alt='flash flow factory' title='flashflowfactory' width='250' />
