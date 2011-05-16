@@ -10,7 +10,7 @@ _current version: 0.9 beta_
 
 This lightweight framework helps you to easily setup a flash website. It is called *flashflowfactory*.
 
-The framework makes use of `SWFAddress 2.4` for deeplinking. 
+The framework makes use of `SWFAddress 2.5` for deeplinking. 
 Flashflowfactory is compatible to multiple tweenengines for transitions and easing. 
 
 
@@ -20,7 +20,7 @@ Flashflowfactory is compatible to multiple tweenengines for transitions and easi
 ----
 = About =
 
-Over time I have created this lightweight framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress 2.4` for deeplinking and your favorite tweenengine for transitions (`TweenLite, Tweener, gTween or Eaze-Tween`). When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. The best of flashflowfactory is its simplicity; no need to learn hard design-patterns, it is really straight-forward if you know the basics. You don't have to develop a page setup with deeplinking and transitions or start from scratch, but keep the freedom to build the site in your style. 
+Over time I have created this lightweight framework which helps you to easily setup a flash website. It is called *flashflowfactory*. The framework makes use of `SWFAddress 2.5` for deeplinking and your favorite tweenengine for transitions (`TweenLite, Tweener, gTween or Eaze-Tween`). When you need to create small/medium websites with deeplinking and basic transitions, flashflowfactory could help you develop faster. The best of flashflowfactory is its simplicity; no need to learn hard design-patterns, it is really straight-forward if you know the basics. You don't have to develop a page setup with deeplinking and transitions or start from scratch, but keep the freedom to build the site in your style. 
 ----
 = Flashflowfactory Features =
 
@@ -30,7 +30,7 @@ These are the features of flashflowfactory
     * There are useful [FlashFlowFactory#Flashflowfactory_Transitions Transitions] included, download a transitionpack from your favorite tweenengine: `TweenLite, Tweener, gTween or Eaze-Tween`. 
     *  [FlashFlowFactory#How_to_create_your_own_transition Creating your own transitions] is possible. This keeps your freedom of expression and makes it usable for every custom project.
   * [#Add_titles Customizable per-page (browser-)titles]
-  * Deeplinking made easy: `SWFAddress 2.4` is included and there is no need to worry about deeplinking anymore
+  * Deeplinking made easy: `SWFAddress 2.5` is included and there is no need to worry about deeplinking anymore
   * [#Step_5:_Customize_settings_+_add_Transitions Global] and [#How_to_overwrite_default_page_settings local] [#Page_Settings page settings]
     * Transition in/out between pages
     * Customizable easing/time 
@@ -632,7 +632,7 @@ package nl.stroep.flashflowfactory.transitions
 = Troubleshooting checklist =
   * Make sure you have chosen and downloaded a transition pack from your tween engine.  
   * If you are using the `TweenLite` pack: Make sure you have downloaded the sources from greensock.com and linked it to your project. See online docs. http://www.greensock.com/tweenlite/
-  * Make sure `SWFAddress 2.4` is included and linked. When running from browser, the `swfaddress.js` javascript file should be added too, from the same version. See online docs. http://www.asual.com/swfaddress/
+  * Make sure `SWFAddress 2.5` is included and linked. When running from browser, the `swfaddress.js` javascript file should be added too, from the same version. See online docs. http://www.asual.com/swfaddress/
   * Events are automatically removed from the Page class. This excludes events which are added to child objects; You have to remove the listeners manually or they could extend `EventManagedSprite` or `EventManagedMovieClip` too.
   * If you use an external code editor which compiles the code, don't forget to build your assets first. 
   * If there is video/sound or a `FLVPlayback` component on your page, it will not stop automatically. Please override the `onRemovedFromStage` function and call `player.stop()`. All types of streams should be stopped manually.
