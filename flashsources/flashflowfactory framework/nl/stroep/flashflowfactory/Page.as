@@ -29,6 +29,10 @@ package nl.stroep.flashflowfactory
 		 * Settings from the page. auto filled by the PageFactory. All values from these settings can be overwritten. 
 		 */
 		public var settings:PageSettings;
+		/**
+		 * When enabled, the `show()` function is called onAddedToStage, otherwise you can call `show()` yourself (Useful when you want to load something before showing the page). Default `true`
+		 */
+		protected var isFrozen:Boolean = true;
 		
 		public function Page():void
 		{
@@ -44,9 +48,6 @@ package nl.stroep.flashflowfactory
 		 */
 		protected function onAddedToStage(event:Event):void 
 		{
-			/// Default blendmode
-			this.blendMode = BlendMode.LAYER;
-			
 			if (autoShow) show();
 		}
 		
@@ -75,13 +76,20 @@ package nl.stroep.flashflowfactory
 		 */
 		final public function show():void
 		{
-			Alignment.setAlignment( this, settings.pageAlignment, settings.clipAlignment );
-			
-			settings.transition.animateIn(this, settings.transitionInSpeed, settings.easingInFunc);
-			
-			eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_START, pageName ) );
-			
-			if ( settings.transitionInSpeed > 0 ) freeze();
+			if ( settings && settings.transitionInSpeed && settings.transitionInSpeed > 0 )
+			{
+				Alignment.setAlignment( this, settings.pageAlignment, settings.clipAlignment );
+				
+				settings.transition.animateIn(this, settings.transitionInSpeed, settings.easingInFunc);
+				
+				eventcenter.dispatchEvent( new PageEvent( PageEvent.SHOW_START, pageName ) );
+				
+				freeze();
+			}
+			else
+			{
+				onShowComplete();
+			}
 		}
 		
 		/**
@@ -89,11 +97,18 @@ package nl.stroep.flashflowfactory
 		 */
 		final public function hide():void
 		{			
-			settings.transition.animateOut(this, settings.transitionOutSpeed, settings.easingOutFunc);
-			
-			eventcenter.dispatchEvent( new PageEvent( PageEvent.HIDE_START, pageName ) );
-			
-			if ( settings.transitionOutSpeed > 0 ) freeze();
+			if ( settings && settings.transitionOutSpeed && settings.transitionOutSpeed > 0 )
+			{
+				settings.transition.animateOut(this, settings.transitionOutSpeed, settings.easingOutFunc);
+				
+				eventcenter.dispatchEvent( new PageEvent( PageEvent.HIDE_START, pageName ) );
+				
+				freeze();
+			}
+			else
+			{
+				onHideComplete();
+			}
 		}
 		
 		/**
@@ -124,6 +139,8 @@ package nl.stroep.flashflowfactory
 			tabEnabled = 
 			mouseChildren = 
 			mouseEnabled = false;
+			
+			isFrozen = true;
 		}
 		
 		/**
@@ -134,6 +151,8 @@ package nl.stroep.flashflowfactory
 			tabEnabled = 
 			mouseChildren = 
 			mouseEnabled = true;
+			
+			isFrozen = false;
 		}
 	}
 	

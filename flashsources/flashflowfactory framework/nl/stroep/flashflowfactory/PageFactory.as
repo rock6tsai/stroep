@@ -3,8 +3,12 @@ package nl.stroep.flashflowfactory
 	import com.usual.SWFAddress;
 	import com.usual.SWFAddressEvent;
 	import flash.display.Sprite;
+	import flash.external.ExternalInterface;
+	import flash.net.navigateToURL;
+	import flash.net.URLRequest;
 	import flash.utils.Dictionary;
 	import nl.stroep.flashflowfactory.events.PageEvent;
+	import nl.stroep.flashflowfactory.navigation.ButtonTypes;
 	import nl.stroep.flashflowfactory.utils.EventCenter;
 	/**
 	 * Page system which creates/destroys pages and takes care of SWFAddress and it's handling. It is a custom factory design pattern.
@@ -26,6 +30,11 @@ package nl.stroep.flashflowfactory
 		 * PageSettings` class which will be applied on every `Page`. These settings can be overridden in the `Page` Class itself.
 		 */
 		public var defaultSettings:PageSettings;
+		
+		/**
+		 * Sets SwfAddress active/inactive
+		 */
+		public var swfAddressEnabled:Boolean = true;
 		
 		private var _view:Sprite;
 		private var currentPageName:String;
@@ -71,7 +80,86 @@ package nl.stroep.flashflowfactory
 			initListeners();
 			
 			var pageData:PageData = findPageData(defaultPageName);
-			SWFAddress.setTitle( titlePrefix + pageData.pageTitle );
+			
+			if (swfAddressEnabled)
+			{
+				SWFAddress.setTitle( titlePrefix + pageData.pageTitle );
+			}
+		}
+		
+		/**
+		 * Navigate to external website or webpage
+		 * @param	url				The target URL of the website / webpage
+		 * @param	windowTarget	Choose "_blank", "_self", "_top" or another window target.
+		 */
+		public static function gotoURL(url:String, windowTarget:String = "_blank"):void
+		{
+			navigateToURL( new URLRequest(url), windowTarget );
+		}
+		
+		/**
+		 * Global navigate function, sets path,type and parameters within one function.
+		 * @param	path	Based on the type, this refers to the path where you should navigate to.<br><br>
+		 * @param	type	Use ButtonTypes to define what kind of action the action should be handled.
+							ButtonTypes.EXTERNAL navigates to external page. First parameter could be <br><br>
+							ButtonTypes.EVENT dispatches a new event. You should pass the eventType as first parameter. Rest of parameters is based on the event parameters.<br><br>
+							ButtonTypes.INTERNAL navigates to page which should be added in PageFactory<br><br>
+							ButtonTypes.FUNCTION calls a flash function. Parameters are optional. <br><br>
+							ButtonTypes.JAVASCRIPT calls a javascript function with optional parameters;
+		 * @param	...parameters Optional parameters. In case of ButtonTypes.JAVASCRIPT, ButtonTypes.FUNCTION and ButtonTypes.Event; you can pass optional (function) parameter here. In case of ButtonTypes.EXTERNAL you could pass a window-target.
+		 */
+		public static function navigateTo(path:*, type:String = "internal", ...parameters):void
+		{
+			if (!path) { trace("Error: Property path undefined"); return }
+			
+			switch (type) 
+			{
+				case ButtonTypes.EXTERNAL:
+					gotoURL( path, (parameters && parameters.length > 0) ? parameters[0] : null );
+					break;
+			
+				case ButtonTypes.INTERNAL:
+					PageFactory.gotoPage( path.toString() );
+					break;
+					
+				case ButtonTypes.EVENT:	
+					dispatchEvent(path, (parameters) ? parameters : null);
+					break;
+				
+				case ButtonTypes.FUNCTION:	
+					if (parameters)
+					{
+						path( parameters );
+					}
+					else
+					{
+						path();
+					}
+					break;
+					
+				case ButtonTypes.JAVASCRIPT:					
+					if (ExternalInterface.available) ExternalInterface.call(path, (parameters) ? parameters : null);
+					break;	
+					
+				default:
+					trace("Error: navigateTo gets unknown type")
+			}
+		}
+		
+		static private function dispatchEvent(eventClassReference:Class, ...parameters):void 
+		{
+			switch (parameters.length)
+			{
+				case 0:  trace("Error: missing event type"); break;
+				case 1:  EventCenter.getInstance().dispatchEvent( new eventClassReference( parameters[0] )); break;
+				case 2:  EventCenter.getInstance().dispatchEvent( new eventClassReference( parameters[0], parameters[1] )); break;
+				case 3:  EventCenter.getInstance().dispatchEvent( new eventClassReference( parameters[0], parameters[1], parameters[2] )); break;
+				case 4:  EventCenter.getInstance().dispatchEvent( new eventClassReference( parameters[0], parameters[1], parameters[2], parameters[3] )); break;
+				case 5:  EventCenter.getInstance().dispatchEvent( new eventClassReference( parameters[0], parameters[1], parameters[2], parameters[3], parameters[4] )); break;
+				case 6:  EventCenter.getInstance().dispatchEvent( new eventClassReference( parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5] )); break;
+				case 7:  EventCenter.getInstance().dispatchEvent( new eventClassReference( parameters[0], parameters[1], parameters[2], parameters[3], parameters[4], parameters[5], parameters[6] )); break;
+				default: trace("Error: dispatchEvent has too much arguments..")
+			}
 		}
 		
 		/**
@@ -80,7 +168,8 @@ package nl.stroep.flashflowfactory
 		 */
 		public static function gotoPage(pageName:String):void
 		{
-			EventCenter.getInstance().dispatchEvent( new PageEvent(PageEvent.NEW_PAGE, pageName) );
+			//EventCenter.getInstance().dispatchEvent( new PageEvent(PageEvent.NEW_PAGE, pageName) );
+			dispatchEvent(PageEvent, PageEvent.NEW_PAGE, pageName);
 		}
 		
 		/**
@@ -92,7 +181,10 @@ package nl.stroep.flashflowfactory
 			
 			eventcenter.removeListeners(this);
 			
-			SWFAddress.removeEventListener(SWFAddressEvent.CHANGE, handleSWFAddress);
+			if (swfAddressEnabled)
+			{
+				SWFAddress.removeEventListener(SWFAddressEvent.CHANGE, handleSWFAddress);
+			}
 			
 			pageDataList = null;
 		}
@@ -103,7 +195,11 @@ package nl.stroep.flashflowfactory
 			eventcenter.addListener(this, PageEvent.HIDE_COMPLETE, onPageHideComplete);
 			
 			// Automaticly triggers to call first page or deep linked page
-			SWFAddress.addEventListener(SWFAddressEvent.CHANGE, handleSWFAddress);
+			if (swfAddressEnabled)
+			{
+				currentPageName = SWFAddress.getPath();
+				SWFAddress.addEventListener(SWFAddressEvent.CHANGE, handleSWFAddress);
+			}
 		}
 		
 		private function onNewPage(e:PageEvent):void
@@ -125,8 +221,15 @@ package nl.stroep.flashflowfactory
 			
 			var pageData:PageData = findPageData(currentPageName);
 			
-			SWFAddress.setTitle( titlePrefix + pageData.pageTitle );
-			SWFAddress.setValue( currentPageName );
+			if (swfAddressEnabled)
+			{
+				SWFAddress.setTitle( titlePrefix + pageData.pageTitle );
+				SWFAddress.setValue( currentPageName );
+			}
+			else
+			{
+				createPage(currentPageName);
+			}
 		}
 		
 		private function handleSWFAddress(e:SWFAddressEvent):void 
@@ -144,7 +247,10 @@ package nl.stroep.flashflowfactory
 			
 			if (page != null)
 			{
-				page.settings = (defaultSettings) ? defaultSettings.clone() : new PageSettings();
+				if (!page.settings)
+				{
+					page.settings = (defaultSettings) ? defaultSettings.clone() : new PageSettings();
+				}
 				page.pageName = pageName;
 				page.pageTitle = pageData.pageTitle;
 				view.addChild(page);

@@ -1,7 +1,7 @@
-/**
- * SWFAddress 2.4: Deep linking for Flash and Ajax <http://www.asual.com/swfaddress/>
+/*
+ * SWFAddress 2.5: Deep linking for Flash and Ajax <http://www.asual.com/swfaddress/>
  *
- * SWFAddress is (c) 2006-2009 Rostislav Hristov and contributors
+ * SWFAddress is (c) 2006-2010 Rostislav Hristov and contributors
  * This software is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
  *
  */

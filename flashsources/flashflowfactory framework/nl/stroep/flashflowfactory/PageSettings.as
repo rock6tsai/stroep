@@ -25,11 +25,11 @@ package nl.stroep.flashflowfactory
 		/**
 		 * Duration of the in-animation in milliseconds. This value should not be negative.
 		 */
-		public var transitionInSpeed:Number;
+		public var transitionInSpeed:Number = 0;
 		/**
 		 * Duration of the out-animation in milliseconds. This value should not be negative.
 		 */
-		public var transitionOutSpeed:Number;
+		public var transitionOutSpeed:Number = 0;
 		/**
 		 * Alignment of the page to the stage. You can use the Alignment class for this value. Default value: "left_top"
 		 */
