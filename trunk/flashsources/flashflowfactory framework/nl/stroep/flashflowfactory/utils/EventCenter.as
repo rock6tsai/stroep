@@ -11,8 +11,6 @@ package nl.stroep.flashflowfactory.utils
 	 */
 	public class EventCenter 
 	{
-		private var eventsList:Object = {};
-		
 		private static var instance:EventCenter;
 		private static var allowInstantiation:Boolean = false;
 		
@@ -44,10 +42,14 @@ package nl.stroep.flashflowfactory.utils
 			}
 		}
 		
-		public function dispatchEvent( event:Event ):void
+		public function dispatchEvent( event:Event ):Boolean
 		{
 			//trace("eventcenter dispatched ", event.type);
-			dispatcher.dispatchEvent( event );
+			if (dispatcher.hasEventListener(event.type) || event.bubbles) 
+			{
+				return dispatcher.dispatchEvent(event);
+			}
+			return true;
 		}
 		
 		/// Add global listener
@@ -80,10 +82,10 @@ package nl.stroep.flashflowfactory.utils
 			}
 		}
 		
-		/// remove listeners from scope
+		/// Remove listeners from scope
 		public function removeListeners(scope:*):void 
 		{
-			eventRemover.removeListenersByScope(scope);
+			if (scope) eventRemover.removeListenersByScope(scope);
 		}
 		
 		public function get eventRemover():EventRemover 

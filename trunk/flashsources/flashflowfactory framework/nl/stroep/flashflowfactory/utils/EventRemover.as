@@ -71,19 +71,22 @@ package nl.stroep.flashflowfactory.utils
 		/// Remove all listeners from specific scope
 		public function removeListenersByScope(scope:*):void
         {
-            eventsListLength = eventsList.length;
-			
-			for ( var i:int = eventsListLength - 1; i >= 0; i -- )
+			if (scope)
 			{
-				var eventObject:EventObject = eventsList[i];
+				eventsListLength = eventsList.length;
 				
-				if (eventObject.scope == scope)
+				for ( var i:int = eventsListLength - 1; i >= 0; i -- )
 				{
-					//trace( "automaticly removed listener (by scope)", eventObject.type, "from", dispatcher);
-					eventObject = null;
-					eventsList.splice( i, 1);
+					var eventObject:EventObject = eventsList[i];
+					
+					if (eventObject.scope == scope)
+					{
+						//trace( "automaticly removed listener (by scope)", eventObject.type, "from", dispatcher);
+						eventObject = null;
+						eventsList.splice( i, 1);
+					}
 				}
-            }
+			}
         }
 		
 		/// Store listener in EventRemover

@@ -1,7 +1,7 @@
-/**
- * SWFAddress 2.4: Deep linking for Flash and Ajax <http://www.asual.com/swfaddress/>
+/*
+ * SWFAddress 2.5: Deep linking for Flash and Ajax <http://www.asual.com/swfaddress/>
  *
- * SWFAddress is (c) 2006-2009 Rostislav Hristov and contributors
+ * SWFAddress is (c) 2006-2010 Rostislav Hristov and contributors
  * This software is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
  *
  */
@@ -49,6 +49,8 @@ package com.usual {
         private static var _initChange:Boolean = false;
         private static var _initChanged:Boolean = false;
         private static var _strict:Boolean = true;
+        private static var _autoUpdate:Boolean = true;
+        private static var _updating:Boolean = false;
         private static var _value:String = '';
         private static var _queue:Array = new Array();
         private static var _queueTimer:Timer = new Timer(10);
@@ -65,6 +67,16 @@ package com.usual {
          * Change event.
          */
         public static var onChange:Function;
+
+        /**
+         * Internal change event.
+         */
+        public static var onInternalChange:Function;
+        
+        /**
+         * External change event.
+         */
+        public static var onExternalChange:Function;
 
         /**
          * @throws IllegalOperationError The class cannot be instantiated.
@@ -96,14 +108,14 @@ package com.usual {
         
         private static function _check(event:TimerEvent):void {
             if ((typeof SWFAddress['onInit'] == 'function' || _dispatcher.hasEventListener(SWFAddressEvent.INIT)) && !_init) {
-                SWFAddress._setValueInit(_getValue());
-                SWFAddress._init = true;
+                _setValueInit(_getValue());
+                _init = true;
             }
             if (typeof SWFAddress['onChange'] == 'function' || _dispatcher.hasEventListener(SWFAddressEvent.CHANGE) || 
                 typeof SWFAddress['onExternalChange'] == 'function' || _dispatcher.hasEventListener(SWFAddressEvent.EXTERNAL_CHANGE)) {
                 _initTimer.stop();
-                SWFAddress._init = true;
-                SWFAddress._setValueInit(_getValue());
+                _init = true;
+                _setValueInit(_getValue());
             }
         }
         
@@ -127,7 +139,7 @@ package com.usual {
                     ids = arr.toString(); 
             }
             if (ids == null || !_availability || _initChanged) {
-                value = SWFAddress._value;
+                value = _value;
             } else if (value == 'undefined' || value == null) {
                 value = '';
             }
@@ -135,7 +147,7 @@ package com.usual {
         }
 
         private static function _setValueInit(value:String):void {
-            SWFAddress._value = value;
+            _value = value;
             if (!_init) {
                 _dispatchEvent(SWFAddressEvent.INIT);
             } else {
@@ -145,19 +157,19 @@ package com.usual {
             _initChange = true;
         }        
 
-        private static function _setValue(value:String):void {        
+        private static function _setValue(value:String, internal:Boolean):void {        
             if (value == 'undefined' || value == null) value = '';
-            if (SWFAddress._value == value && SWFAddress._init) return;
-            if (!SWFAddress._initChange) return;
-            SWFAddress._value = value;
+            if (_value == value && _init) return;
+            if (!_initChange) return;
+            _value = value;
             if (!_init) {
-                SWFAddress._init = true;
+                _init = true;
                 if (typeof SWFAddress['onInit'] == 'function' || _dispatcher.hasEventListener(SWFAddressEvent.INIT)) {
                     _dispatchEvent(SWFAddressEvent.INIT);
                 }
             }
             _dispatchEvent(SWFAddressEvent.CHANGE);
-            _dispatchEvent(SWFAddressEvent.EXTERNAL_CHANGE);
+            _dispatchEvent(internal ? SWFAddressEvent.INTERNAL_CHANGE : SWFAddressEvent.EXTERNAL_CHANGE);
         }
         
         private static function _dispatchEvent(type:String):void {
@@ -333,6 +345,35 @@ package com.usual {
         }
 
         /**
+         * Provides the state of the Auto update setting. 
+         */
+        public static function getAutoUpdate():Boolean {
+            var autoUpdate:String = 'null';
+            if (_availability)
+                autoUpdate = ExternalInterface.call('SWFAddress.getAutoUpdate') as String;
+            return (autoUpdate == null) ? _autoUpdate : (autoUpdate == 'true');
+        }
+
+        /**
+         * Enables or disables the auto updating.
+         * @param autoUpdate Auto update state.
+         */    
+        public static function setAutoUpdate(autoUpdate:Boolean):void {
+            _call('SWFAddress.setAutoUpdate', autoUpdate);
+            _autoUpdate = autoUpdate;
+        }
+        
+        /**
+         * Updates the address bar with the current value.
+         */    
+        public static function update():void {
+            _updating = true;
+            SWFAddress.setValue(_value);
+            _call('SWFAddress.update');
+            _updating = false;
+        }
+
+        /**
          * Provides the state of the history setting. 
          */
         public static function getHistory():Boolean {
@@ -421,12 +462,14 @@ package com.usual {
         public static function setValue(value:String):void {
             if (value == 'undefined' || value == null) value = '';
             value = encodeURI(decodeURI(_strictCheck(value, true)));
-            if (SWFAddress._value == value) return;
-            SWFAddress._value = value;
+            if (_value == value && !_updating) return;
+            _value = value;
             _call('SWFAddress.setValue', value);
-            if (SWFAddress._init) {
-                _dispatchEvent(SWFAddressEvent.CHANGE);
-                _dispatchEvent(SWFAddressEvent.INTERNAL_CHANGE);
+            if (_init) {
+                if (_autoUpdate || _updating) {
+                    _dispatchEvent(SWFAddressEvent.CHANGE);
+                    _dispatchEvent(SWFAddressEvent.INTERNAL_CHANGE);
+                }
             } else {
                 _initChanged = true;
             }
@@ -445,7 +488,16 @@ package com.usual {
                 return value;
             }
         }
-        
+
+        /**
+         * Sets the path part of the deep linking value.
+         * @param value A value which will be used as a path.
+         */
+        public static function setPath(value:String):void {
+            var qs:String = SWFAddress.getQueryString();
+            SWFAddress.setValue(value + (qs ? '?' + qs : ''));
+        }
+
         /**
          * Provides a list of all the folders in the deep linking path.
          */
@@ -472,6 +524,13 @@ package com.usual {
         }
 
         /**
+         * Sets the query string part of the deep linking value.
+         */
+        public static function setQueryString(value:String):void {
+            SWFAddress.setValue(SWFAddress.getPath() + (value ? '?' + value : ''));
+        }
+
+        /**
          * Provides the value of a specific query parameter as a string or array of strings.
          * @param param Parameter name.
          */
@@ -482,12 +541,11 @@ package com.usual {
                 value = value.substr(index + 1);
                 var params:Array = value.split('&');
                 var p:Array;
-                var i:Number = params.length;
                 var r:Array = new Array();
-                while(i--) {
+                for (var i:int = 0; i < params.length; i++) {
                     p = params[i].split('=');
                     if (p[0] == param) {
-                        r.push(p[1]);
+                        r.push(p.slice(1).join(''));
                     }
                 }
                 if (r.length != 0) {
@@ -495,6 +553,31 @@ package com.usual {
                 }
             }
             return null;
+        }
+
+        /**
+         * Sets the value of a specific query parameter.
+         * @param name Parameter name.
+         * @param value Parameter value.
+         * @param append Optional flag that disables parameter overwriting.
+         */
+        public static function setParameter(name:String, value:Object, append:Boolean = false):void {
+            var names:Array = SWFAddress.getParameterNames(),
+                params:Array = [];
+            for (var i:Number = 0; i < names.length; i++) {
+                var n:String = names[i];
+                var v:Object = SWFAddress.getParameter(n);
+                if (typeof v == 'string')
+                    v = [v];
+                if (n == name)
+                    v = (value === null || value == '') ? [] : 
+                        (append ? v.concat([value]) : [value]);
+                for (var j:Number = 0; j < v.length; j++)
+                    params.push(n + '=' + v[j]);
+            }
+            if (names.indexOf(name) == -1)
+                params.push(name + '=' + value);
+            SWFAddress.setQueryString(params.join('&'));
         }
 
         /**
@@ -508,10 +591,11 @@ package com.usual {
                 value = value.substr(index + 1);
                 if (value != '' && value.indexOf('=') != -1) {
                     var params:Array = value.split('&');
-                    var i:Number = 0;
-                    while(i < params.length) {
-                        names.push(params[i].split('=')[0]);
-                        i++;
+                    for (var i:int = 0; i < params.length; i++) {
+                        var name:String = params[i].split('=')[0];
+                        if (names.indexOf(name) == -1) {
+                            names.push(name);
+                        }
                     }
                 }
             }

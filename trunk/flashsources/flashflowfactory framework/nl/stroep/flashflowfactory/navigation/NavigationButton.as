@@ -5,10 +5,7 @@ package nl.stroep.flashflowfactory.navigation
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
-	import flash.external.ExternalInterface;
 	import flash.geom.Rectangle;
-	import flash.net.navigateToURL;
-	import flash.net.URLRequest;
 	import nl.stroep.flashflowfactory.display.EventManagedMovieClip;
 	import nl.stroep.flashflowfactory.navigation.events.NavigationButtonEvent;
 	import nl.stroep.flashflowfactory.PageFactory;
@@ -27,6 +24,8 @@ package nl.stroep.flashflowfactory.navigation
 		
 		public var type:String = ButtonTypes.INTERNAL;
 		public var group:String;
+		public var rollOver:Function;
+		public var rollOut:Function;
 		
 		private var _isActive:Boolean;
 		private var hasOverLabel:Boolean;
@@ -53,8 +52,6 @@ package nl.stroep.flashflowfactory.navigation
 			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			stop();
-			
-			this.blendMode = BlendMode.LAYER;
 			
 			addListeners();
 			
@@ -113,11 +110,17 @@ package nl.stroep.flashflowfactory.navigation
 				}
 			}
 		}
+		
 		/**
 		 * Easy click function, sets path,type and parameters within one function.
-		 * @param	path	Based on the type, this refferes to the path where you should go after the click.
+		 * @param	path	Based on the type, this refers to the path where you should navigate to when clicked.<br><br>
 		 * @param	type	Use ButtonTypes to define what kind of action the action should be handled on click.
-		 * @param	...parameters Optional parameters. In case of ButtonTypes.JAVASCRIPT, ButtonTypes.FUNCTION and ButtonTypes.Event; you can pass optional (function) parameter here. In case of ButtonTypes.EXTERNAL you can pass a window-target.
+							ButtonTypes.EXTERNAL navigates to external page. First parameter could be <br><br>
+							ButtonTypes.EVENT dispatches a new event. You should pass the eventType as first parameter. Rest of parameters is based on the event parameters.<br><br>
+							ButtonTypes.INTERNAL navigates to page which should be added in PageFactory<br><br>
+							ButtonTypes.FUNCTION calls a flash function. Parameters are optional. <br><br>
+							ButtonTypes.JAVASCRIPT calls a javascript function with optional parameters;
+		 * @param	...parameters Optional parameters. In case of ButtonTypes.JAVASCRIPT, ButtonTypes.FUNCTION and ButtonTypes.Event; you can pass optional (function) parameter here. In case of ButtonTypes.EXTERNAL you could pass a window-target.
 		 */
 		public function click(path:*, type:String = "internal", ...parameters):void
 		{
@@ -183,49 +186,7 @@ package nl.stroep.flashflowfactory.navigation
 		{
 			// trace("onButtonClick", this, path, type);
 			
-			if (!path) { trace("Error: Property NavigationButton path undefined"); return }
-			
-			switch (type) 
-			{
-				case ButtonTypes.EXTERNAL:
-					navigateToURL( new URLRequest( path.toString() ), parameters || "_blank" );
-					break;
-			
-				case ButtonTypes.INTERNAL:
-					PageFactory.gotoPage( path.toString() );
-					break;
-					
-				case ButtonTypes.EVENT:	
-					switch (parameters.length)
-					{
-						case 0:  trace("Error: missing event type"); break;
-						case 1:  eventcenter.dispatchEvent( new path( parameters[0] )); break;
-						case 2:  eventcenter.dispatchEvent( new path( parameters[0], parameters[1] )); break;
-						case 3:  eventcenter.dispatchEvent( new path( parameters[0], parameters[1], parameters[2] )); break;
-						case 4:  eventcenter.dispatchEvent( new path( parameters[0], parameters[1], parameters[2], parameters[3] )); break;
-						case 5:  eventcenter.dispatchEvent( new path( parameters[0], parameters[1], parameters[2], parameters[3], parameters[4] )); break;
-						default: trace("Error: too much arguments ")
-					}
-					break;
-				
-				case ButtonTypes.FUNCTION:	
-					if (parameters)
-					{
-						path( parameters );
-					}
-					else
-					{
-						path();
-					}
-					break;
-					
-				case ButtonTypes.JAVASCRIPT:					
-					if (ExternalInterface.available) ExternalInterface.call(path, (parameters) ? parameters : null);
-					break;	
-					
-				default:
-					trace("unknown type")
-			}
+			PageFactory.navigateTo(path, type, parameters);
 			
 			if (group != null) eventcenter.dispatchEvent(new NavigationButtonEvent(NavigationButtonEvent.BUTTON_SELECTED, group, this.ID));
 		}
@@ -236,6 +197,8 @@ package nl.stroep.flashflowfactory.navigation
 			{
 				if (hasOutLabel) gotoAndPlay(OUT);
 			}
+			
+			if (rollOut != null) rollOut();
 		}
 		
 		private function onRollOver(e:MouseEvent):void 
@@ -244,6 +207,8 @@ package nl.stroep.flashflowfactory.navigation
 			{
 				if (hasOverLabel) gotoAndPlay(OVER);
 			}
+			
+			if (rollOver != null) rollOver();
 		}
 		
 		public function get path():* { return _path; }
